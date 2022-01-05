@@ -3,6 +3,7 @@ package editors;
 #if desktop
 import Discord.DiscordClient;
 #end
+import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -147,7 +148,7 @@ class CharacterEditorState extends MusicBeatState
 			\nW/S - Previous/Next Animation
 			\nSpace - Play Animation
 			\nArrow Keys - Move Character Offset
-			\nZ - Reset Current Offset
+			\nR - Reset Current Offset
 			\nHold Shift to Move 10x faster\n", 12);
 		tipText.cameras = [camHUD];
 		tipText.setFormat(null, 12, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -328,6 +329,85 @@ class CharacterEditorState extends MusicBeatState
 		UI_box.addGroup(tab_group);
 	}*/
 
+	var TemplateCharacter:String = '{
+			"animations": [
+				{
+					"loop": false,
+					"offsets": [
+						0,
+						0
+					],
+					"fps": 24,
+					"anim": "idle",
+					"indices": [],
+					"name": "Dad idle dance"
+				},
+				{
+					"offsets": [
+						0,
+						0
+					],
+					"indices": [],
+					"fps": 24,
+					"anim": "singLEFT",
+					"loop": false,
+					"name": "Dad Sing Note LEFT"
+				},
+				{
+					"offsets": [
+						0,
+						0
+					],
+					"indices": [],
+					"fps": 24,
+					"anim": "singDOWN",
+					"loop": false,
+					"name": "Dad Sing Note DOWN"
+				},
+				{
+					"offsets": [
+						0,
+						0
+					],
+					"indices": [],
+					"fps": 24,
+					"anim": "singUP",
+					"loop": false,
+					"name": "Dad Sing Note UP"
+				},
+				{
+					"offsets": [
+						0,
+						0
+					],
+					"indices": [],
+					"fps": 24,
+					"anim": "singRIGHT",
+					"loop": false,
+					"name": "Dad Sing Note RIGHT"
+				}
+			],
+			"no_antialiasing": false,
+			"image": "characters/DADDY_DEAREST",
+			"position": [
+				0,
+				0
+			],
+			"healthicon": "face",
+			"flip_x": false,
+			"healthbar_colors": [
+				161,
+				161,
+				161
+			],
+			"camera_position": [
+				0,
+				0
+			],
+			"sing_duration": 6.1,
+			"scale": 1
+		}';
+
 	var charDropDown:FlxUIDropDownMenuCustom;
 	function addSettingsUI() {
 		var tab_group = new FlxUI(null, UI_box);
@@ -355,17 +435,57 @@ class CharacterEditorState extends MusicBeatState
 		charDropDown.selectedLabel = daAnim;
 		reloadCharacterDropDown();
 
-		var reloadCharacter:FlxButton = new FlxButton(140, 30, "Reload Char", function()
+		var reloadCharacter:FlxButton = new FlxButton(140, 20, "Reload Char", function()
 		{
 			loadChar(!check_player.checked);
 			reloadCharacterDropDown();
 		});
+
+		var templateCharacter:FlxButton = new FlxButton(140, 50, "Load Template", function()
+		{
+			var parsedJson:CharacterFile = cast Json.parse(TemplateCharacter);
+			var characters:Array<Character> = [char, ghostChar];
+			for (character in characters)
+			{
+				character.animOffsets.clear();
+				character.animationsArray = parsedJson.animations;
+				for (anim in character.animationsArray)
+				{
+					character.addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
+				}
+				if(character.animationsArray[0] != null) {
+					character.playAnim(character.animationsArray[0].anim, true);
+				}
+
+				character.singDuration = parsedJson.sing_duration;
+				character.positionArray = parsedJson.position;
+				character.cameraPosition = parsedJson.camera_position;
+				
+				character.imageFile = parsedJson.image;
+				character.jsonScale = parsedJson.scale;
+				character.noAntialiasing = parsedJson.no_antialiasing;
+				character.originalFlipX = parsedJson.flip_x;
+				character.healthIcon = parsedJson.healthicon;
+				character.healthColorArray = parsedJson.healthbar_colors;
+				character.setPosition(character.positionArray[0] + OFFSET_X + 100, character.positionArray[1]);
+			}
+
+			reloadCharacterImage();
+			reloadCharacterDropDown();
+			reloadCharacterOptions();
+			resetHealthBarColor();
+			updatePointerPos();
+			genBoyOffsets();
+		});
+		templateCharacter.color = FlxColor.RED;
+		templateCharacter.label.color = FlxColor.WHITE;
 		
 		tab_group.add(new FlxText(charDropDown.x, charDropDown.y - 18, 0, 'Character:'));
 		tab_group.add(check_player);
 		tab_group.add(reloadCharacter);
 		tab_group.add(charDropDown);
 		tab_group.add(reloadCharacter);
+		tab_group.add(templateCharacter);
 		UI_box.addGroup(tab_group);
 	}
 	
@@ -701,14 +821,21 @@ class CharacterEditorState extends MusicBeatState
 		if(char.animation.curAnim != null) {
 			lastAnim = char.animation.curAnim.name;
 		}
-
 		var anims:Array<AnimArray> = char.animationsArray.copy();
-		if(Paths.fileExists('images/' + char.imageFile + '.txt', TEXT)) {
+		if(Paths.fileExists('images/' + char.imageFile + '/Animation.json', TEXT)) {
+			char.frames = AtlasFrameMaker.construct(char.imageFile);
+		} else if(Paths.fileExists('images/' + char.imageFile + '.txt', TEXT)) {
 			char.frames = Paths.getPackerAtlas(char.imageFile);
 		} else {
 			char.frames = Paths.getSparrowAtlas(char.imageFile);
 		}
 
+		
+		
+		
+		
+		
+		
 		if(char.animationsArray != null && char.animationsArray.length > 0) {
 			for (anim in char.animationsArray) {
 				var animAnim:String = '' + anim.anim;
@@ -786,7 +913,6 @@ class CharacterEditorState extends MusicBeatState
 		}
 		charLayer.clear();
 		ghostChar = new Character(0, 0, daAnim, !isDad);
-		ghostChar.screenCenter();
 		ghostChar.debugMode = true;
 		ghostChar.alpha = 0.6;
 
@@ -794,7 +920,6 @@ class CharacterEditorState extends MusicBeatState
 		if(char.animationsArray[0] != null) {
 			char.playAnim(char.animationsArray[0].anim, true);
 		}
-		char.screenCenter();
 		char.debugMode = true;
 
 		charLayer.add(ghostChar);
@@ -1052,14 +1177,11 @@ class CharacterEditorState extends MusicBeatState
 
 				if (FlxG.keys.justPressed.R)
 				{
-					if(FlxG.keys.pressed.CONTROL) //Center
-					{
-						char.animationsArray[curAnim].offsets = [0, 0];
-						
-						char.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
-						ghostChar.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
-						genBoyOffsets();
-					}
+					char.animationsArray[curAnim].offsets = [0, 0];
+					
+					char.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
+					ghostChar.addOffset(char.animationsArray[curAnim].anim, char.animationsArray[curAnim].offsets[0], char.animationsArray[curAnim].offsets[1]);
+					genBoyOffsets();
 				}
 
 				var controlArray:Array<Bool> = [FlxG.keys.justPressed.LEFT, FlxG.keys.justPressed.RIGHT, FlxG.keys.justPressed.UP, FlxG.keys.justPressed.DOWN];
