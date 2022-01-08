@@ -37,6 +37,7 @@ class EditorPlayState extends MusicBeatState
 
 	var generatedMusic:Bool = false;
 	var vocals:FlxSound;
+	var vocals2:FlxSound;
 
 	var startOffset:Float = 0;
 	var startPos:Float = 0;
@@ -105,6 +106,10 @@ class EditorPlayState extends MusicBeatState
 		grpNoteSplashes.add(splash);
 		splash.alpha = 0.0;
 		
+		if (PlayState.SONG.needsVoices)
+			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+		else
+			vocals = new FlxSound();
 		if (PlayState.SONG.needsVoices)
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
 		else
@@ -471,7 +476,7 @@ class EditorPlayState extends MusicBeatState
 
 							if(!daNote.ignoreNote) {
 								songMisses++;
-								vocals.volume = 0;
+								if (PlayState.SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 							}
 						}
 					}
@@ -759,7 +764,7 @@ class EditorPlayState extends MusicBeatState
 		songMisses++;
 
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-		vocals.volume = 0;
+		if (PlayState.SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 	}
 
 	var COMBO_X:Float = 400;

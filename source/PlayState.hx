@@ -127,6 +127,7 @@ class PlayState extends MusicBeatState
 	public static var storyDifficulty:Int = 1;
 
 	public var vocals:FlxSound;
+	public var vocals2:FlxSound;
 
 	public var dad:Character;
 	public var gf:Character;
@@ -1770,11 +1771,13 @@ class PlayState extends MusicBeatState
 		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
 		FlxG.sound.music.onComplete = finishSong;
 		vocals.play();
+		vocals2.play();
 
 		if(paused) {
 			//trace('Oopsie doopsie! Paused sound');
 			FlxG.sound.music.pause();
 			vocals.pause();
+			vocals2.pause();
 		}
 
 		// Song duration in a float, useful for the time left feature
@@ -1815,8 +1818,13 @@ class PlayState extends MusicBeatState
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
 		else
 			vocals = new FlxSound();
+		if (SONG.needsVoices2)
+			vocals2 = new FlxSound().loadEmbedded(Paths.voices2(PlayState.SONG.song));
+		else
+			vocals2 = new FlxSound();
 
 		FlxG.sound.list.add(vocals);
+		FlxG.sound.list.add(vocals2);
 		FlxG.sound.list.add(new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song)));
 
 		notes = new FlxTypedGroup<Note>();
@@ -2050,6 +2058,7 @@ class PlayState extends MusicBeatState
 			{
 				FlxG.sound.music.pause();
 				vocals.pause();
+				vocals2.pause();
 			}
 
 			if (!startTimer.finished)
@@ -2174,11 +2183,14 @@ class PlayState extends MusicBeatState
 		if(finishTimer != null) return;
 
 		vocals.pause();
+		vocals2.pause();
 
 		FlxG.sound.music.play();
 		Conductor.songPosition = FlxG.sound.music.time;
 		vocals.time = Conductor.songPosition;
 		vocals.play();
+		vocals2.time = Conductor.songPosition;
+		vocals2.play();
 	}
 
 	public var paused:Bool = false;
@@ -2353,6 +2365,7 @@ class PlayState extends MusicBeatState
 				if(FlxG.sound.music != null) {
 					FlxG.sound.music.pause();
 					vocals.pause();
+					vocals2.pause();
 				}
 				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				//}
@@ -2664,6 +2677,7 @@ class PlayState extends MusicBeatState
 			if(FlxG.keys.justPressed.TWO) { //Go 10 seconds into the future :O
 				FlxG.sound.music.pause();
 				vocals.pause();
+				vocals2.pause();
 				Conductor.songPosition += 10000;
 				notes.forEachAlive(function(daNote:Note)
 				{
@@ -2695,6 +2709,8 @@ class PlayState extends MusicBeatState
 
 				vocals.time = Conductor.songPosition;
 				vocals.play();
+				vocals2.time = Conductor.songPosition;
+				vocals2.play();
 			}
 		}
 		#end
@@ -2735,6 +2751,7 @@ class PlayState extends MusicBeatState
 				paused = true;
 
 				vocals.stop();
+				vocals2.stop();
 				FlxG.sound.music.stop();
 
 				persistentUpdate = false;
@@ -3214,6 +3231,8 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
 		vocals.pause();
+		vocals2.volume = 0;
+		vocals2.pause();
 		if(ClientPrefs.noteOffset <= 0) {
 			finishCallback();
 		} else {
@@ -3422,6 +3441,7 @@ class PlayState extends MusicBeatState
 
 		// boyfriend.playAnim('hey');
 		vocals.volume = 1;
+		vocals2.volume = 1;
 
 		var placement:String = Std.string(combo);
 
@@ -3809,14 +3829,14 @@ class PlayState extends MusicBeatState
 		health -= daNote.missHealth * healthLoss;
 		if(instakillOnMiss)
 		{
-			vocals.volume = 0;
+			if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 			doDeathCheck(true);
 		}
 
 		//For testing purposes
 		//trace(daNote.missHealth);
 		songMisses++;
-		vocals.volume = 0;
+		if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 		if(!practiceMode) songScore -= 10;
 		
 		totalPlayed++;
@@ -3846,7 +3866,7 @@ class PlayState extends MusicBeatState
 			health -= 0.05 * healthLoss;
 			if(instakillOnMiss)
 			{
-				vocals.volume = 0;
+				if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 				doDeathCheck(true);
 			}
 
@@ -3880,7 +3900,7 @@ class PlayState extends MusicBeatState
 			if(boyfriend.hasMissAnimations) {
 				boyfriend.playAnim(singAnimations[Std.int(Math.abs(direction))] + 'miss', true);
 			}
-			vocals.volume = 0;
+			if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 		}
 	}
 
@@ -4032,6 +4052,7 @@ class PlayState extends MusicBeatState
 			}
 			note.wasGoodHit = true;
 			vocals.volume = 1;
+			vocals2.volume = 1;
 
 			var isSus:Bool = note.isSustainNote; //GET OUT OF MY HEAD, GET OUT OF MY HEAD, GET OUT OF MY HEAD
 			var leData:Int = Math.round(Math.abs(note.noteData));
