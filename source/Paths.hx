@@ -43,7 +43,8 @@ class Paths
 		'stages',
 		'weeks',
 		'fonts',
-		'scripts'
+		'scripts',
+		'achievements'
 	];
 	#end
 
@@ -400,6 +401,10 @@ class Paths
 
 	inline static public function modsTxt(key:String) {
 		return modFolders('images/' + key + '.txt');
+	}
+
+	inline static public function modsAchievements(key:String) {
+		return modFolders('achievements/' + key + '.json');
 	}
 
 	static public function modFolders(key:String) {
