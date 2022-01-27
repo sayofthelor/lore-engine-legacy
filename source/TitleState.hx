@@ -37,6 +37,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.math.FlxMath;
 import lime.app.Application;
 import openfl.Assets;
 
@@ -76,7 +77,7 @@ class TitleState extends MusicBeatState
 	var lastKeysPressed:Array<FlxKey> = [];
 
 	var mustUpdate:Bool = false;
-	
+	public var defaultCamZoom:Float = 1;
 	var titleJSON:TitleData;
 	
 	public static var updateVersion:String = '';
@@ -414,7 +415,7 @@ class TitleState extends MusicBeatState
 		{
 			FlxG.fullscreen = !FlxG.fullscreen;
 		}
-
+		FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
 		#if mobile
@@ -456,11 +457,7 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					if (mustUpdate) {
-						MusicBeatState.switchState(new OutdatedState());
-					} else {
-						MusicBeatState.switchState(new MainMenuState());
-					}
+					MusicBeatState.switchState(new MainMenuState());
 					closedState = true;
 				});
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
@@ -558,12 +555,11 @@ class TitleState extends MusicBeatState
 		}
 	}
 
-	private var sickBeats:Int = 0; //Basically curBeat but won't be skipped if you hold the tab or resize the screen
 	public static var closedState:Bool = false;
 	override function beatHit()
 	{
 		super.beatHit();
-
+		FlxG.camera.zoom+=0.03;
 		if(logoBl != null) 
 			logoBl.animation.play('bump', true);
 
@@ -577,24 +573,13 @@ class TitleState extends MusicBeatState
 		}
 
 		if(!closedState) {
-			sickBeats++;
-			switch (sickBeats)
+			switch (curBeat)
 			{
 				case 1:
-					#if PSYCH_WATERMARKS
-					createCoolText(['Psych Engine by'], 15);
-					#else
-					createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
-					#end
+					createCoolText(['sayofthelor']);
 				// credTextShit.visible = true;
 				case 3:
-					#if PSYCH_WATERMARKS
-					addMoreText('Shadow Mario', 15);
-					addMoreText('RiverOaken', 15);
-					addMoreText('bb-panzu', 15);
-					#else
-					addMoreText('present');
-					#end
+					addMoreText('presents');
 				// credTextShit.text += '\npresent...';
 				// credTextShit.addText();
 				case 4:
@@ -603,11 +588,7 @@ class TitleState extends MusicBeatState
 				// credTextShit.text = 'In association \nwith';
 				// credTextShit.screenCenter();
 				case 5:
-					#if PSYCH_WATERMARKS
-					createCoolText(['Not associated', 'with'], -40);
-					#else
-					createCoolText(['In association', 'with'], -40);
-					#end
+					createCoolText(['lmao'], -40);
 				case 7:
 					addMoreText('newgrounds', -40);
 					ngSpr.visible = true;
@@ -627,17 +608,18 @@ class TitleState extends MusicBeatState
 				// credTextShit.text += '\nlmao';
 				case 12:
 					deleteCoolText();
+					addMoreText('Friday');
 				// credTextShit.visible = false;
 				// credTextShit.text = "Friday";
 				// credTextShit.screenCenter();
 				case 13:
-					addMoreText('Friday');
+					addMoreText('Night');
 				// credTextShit.visible = true;
 				case 14:
-					addMoreText('Night');
+					addMoreText('Funkin\'');
 				// credTextShit.text += '\nNight';
 				case 15:
-					addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
+					addMoreText('Lore Engine'); // credTextShit.text += '\nFunkin';
 
 				case 16:
 					skipIntro();

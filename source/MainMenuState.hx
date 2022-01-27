@@ -26,12 +26,12 @@ using StringTools;
 class MainMenuState extends MusicBeatState
 {
 	public static var psychEngineVersion:String = '0.5.1'; //This is also used for Discord RPC
+	public static var loreEngineVersion:String = 'PRE-ALPHA';
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
-	
 	var optionShit:Array<String> = [
 		'story_mode',
 		'freeplay',
@@ -46,7 +46,10 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
-
+	override function beatHit() // for later use
+	{
+		super.beatHit();
+	}
 	override function create()
 	{
 		#if desktop
@@ -129,9 +132,10 @@ class MainMenuState extends MusicBeatState
 		// versionShit.scrollFactor.set();
 		// versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		// add(versionShit);
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Lore v"+psychEngineVersion + " x Funkin' v" + Application.current.meta.get('version'), 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Lore " + loreEngineVersion + " x Funkin' " + Application.current.meta.get('version'), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("assets/fonts/vcr.ttf", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionShit.screenCenter(X);
 		add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
@@ -170,10 +174,8 @@ class MainMenuState extends MusicBeatState
 		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 		}
-
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
-
 		if (!selectedSomethin)
 		{
 			if (controls.UI_UP_P)
