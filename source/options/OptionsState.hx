@@ -23,12 +23,16 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
+import flixel.addons.display.FlxBackdrop;
 import Controls;
 
 using StringTools;
 
 class OptionsState extends MusicBeatState
 {
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'), 0.2, 0.2, true, true);
+	public static var checkerX:Float = 0;
+	public static var checkerY:Float = 0;
 	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay'];
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
@@ -66,14 +70,18 @@ class OptionsState extends MusicBeatState
 		bg.screenCenter();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
-
+		checker.x=BaseOptionsMenu.checkerX;
+		checker.y=BaseOptionsMenu.checkerY;
+		add(checker);
+		checker.scrollFactor.set(0.07,0);
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
 
 		for (i in 0...options.length)
 		{
 			var optionText:Alphabet = new Alphabet(0, 0, options[i], true, false);
-			optionText.screenCenter();
+			optionText.x = 128;
+			optionText.screenCenter(Y);
 			optionText.y += (100 * (i - (options.length / 2))) + 50;
 			grpOptions.add(optionText);
 		}
@@ -96,7 +104,10 @@ class OptionsState extends MusicBeatState
 
 	override function update(elapsed:Float) {
 		super.update(elapsed);
-
+		checker.x -= 0.45 / (ClientPrefs.framerate / 60);
+		checkerX = checker.x;
+		checker.y -= 0.16 / (ClientPrefs.framerate / 60);
+		checkerY = checker.y;
 		if (controls.UI_UP_P) {
 			changeSelection(-1);
 		}

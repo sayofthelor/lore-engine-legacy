@@ -23,6 +23,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
+import flixel.addons.display.FlxBackdrop;
 import Controls;
 
 using StringTools;
@@ -32,7 +33,9 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	private var curOption:Option = null;
 	private var curSelected:Int = 0;
 	private var optionsArray:Array<Option>;
-
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'), 0.2, 0.2, true, true);
+	public static var checkerX:Float=0;
+	public static var checkerY:Float=0;
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
 	private var grpTexts:FlxTypedGroup<AttachedText>;
@@ -62,7 +65,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		bg.screenCenter();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
-
+		checker.x = OptionsState.checkerX;
+		checker.y = OptionsState.checkerY;
+		add(checker);
+		checker.scrollFactor.set(0.07,0);
 		// avoids lagspikes while scrolling through menus!
 		grpOptions = new FlxTypedGroup<Alphabet>();
 		add(grpOptions);
@@ -137,6 +143,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	var holdValue:Float = 0;
 	override function update(elapsed:Float)
 	{
+		checker.x -= 0.45 / (ClientPrefs.framerate / 60);
+		checkerX = checker.x;
+		checker.y -= 0.16 / (ClientPrefs.framerate / 60);
+		checkerY = checker.y;
 		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
