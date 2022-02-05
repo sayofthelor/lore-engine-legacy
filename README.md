@@ -1,7 +1,7 @@
 # Friday Night Funkin' Lore Engine
 Psych engine with some neat tweaks.
 
-NOTE: If you're running on Linux, please use the official Linux build instead of running the game through Wine. FNF has quite a few input and stuttering issues with Wine at the moment.
+NOTE: If you're running on Linux, please use the official Linux build instead of running the game through Wine. FNF has quite a few input, stuttering, and minimization issues with Wine at the moment.
 
 use haxe 4.2.4 bozos
 ## Installation:
