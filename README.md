@@ -6,7 +6,7 @@ NOTE: If you're running on Linux, please use the official Linux build instead of
 use haxe 4.2.4 bozos
 ## Installation:
 Follow a Friday Night Funkin' source code compilation tutorial, after this you will need to install LuaJIT.
-You can do this with: `haxelib install linc_luajit` on a Command prompt/PowerShell
+You can do this with: `haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit` on a Command prompt/PowerShell
 ## Credits:
 * Shadow Mario - PE Coding
 * RiverOaken - PE Arts and Animations
