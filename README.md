@@ -1,5 +1,12 @@
 # Friday Night Funkin' Lore Engine
-Psych engine with some neat tweaks.
+Psych Engine with some neat tweaks.
+
+Extra features include:
+- Improved frame rate counter
+- Aesthetic improvements
+- Hitsounds
+- Basic support for two vocal tracks (still sorta buggy)
+- More to come!
 
 NOTE: If you're running on Linux, please use the official Linux build instead of running the game through Wine. FNF has quite a few input, stuttering, and minimization issues with Wine at the moment.
 
