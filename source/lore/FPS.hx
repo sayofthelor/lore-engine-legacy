@@ -39,7 +39,7 @@ class FPS extends TextField
 		selectable = false;
 		mouseEnabled = false;
 		defaultTextFormat = new TextFormat("VCR OSD Mono", 16, color);
-		text = "0 FPS                                "; // hack to add width lmao
+		text = "0 FPS";
 
 		cacheCount = 0;
 		currentTime = 0;

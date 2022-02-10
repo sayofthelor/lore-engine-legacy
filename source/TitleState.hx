@@ -2,6 +2,8 @@ package;
 
 #if desktop
 import Discord.DiscordClient;
+#end
+#if cpp
 import sys.thread.Thread;
 #end
 import flixel.FlxG;
