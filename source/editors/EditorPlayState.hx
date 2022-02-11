@@ -732,6 +732,7 @@ class EditorPlayState extends MusicBeatState
 
 			if (!note.isSustainNote)
 			{
+				if(ClientPrefs.hitSounds != "OFF") FlxG.sound.play(Paths.sound("hitsounds/" + ClientPrefs.hitSounds.toLowerCase()));
 				popUpScore(note);
 				combo += 1;
 				songHits++;

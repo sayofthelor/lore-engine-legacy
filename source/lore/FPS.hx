@@ -71,7 +71,7 @@ class FPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = currentFPS + " FPS\nLore " + MainMenuState.loreEngineVersion;
+			text = #if debug "DEV BUILD\n" + #end currentFPS + " FPS\nLore " + MainMenuState.loreEngineVersion;
 
 			#if (gl_stats && !disable_cffi && (!html5 || !canvas))
 			text += "\ntotalDC: " + Context3DStats.totalDrawCalls();

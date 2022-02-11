@@ -44,12 +44,20 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			false); //Default value
 		addOption(option);
 
+		var option:Option = new Option('Scroll Underlay Opacity', //Name
+			'Opacity of underlay of notes', //Description
+			'underlayAlpha', //Save data variable name
+			'int', //Variable type
+			0); //Default value
+		addOption(option);
+		option.minValue = 0;
+		option.maxValue = 100;
+
 		var option:Option = new Option('Anti-Aliasing',
 			'If unchecked, disables anti-aliasing, increases performance\nat the cost of sharper visuals.',
 			'globalAntialiasing',
 			'bool',
 			true);
-		option.showBoyfriend = true;
 		option.onChange = onChangeAntiAliasing; //Changing onChange is only needed if you want to make a special interaction after it changes the value
 		addOption(option);
 
