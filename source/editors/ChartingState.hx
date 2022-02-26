@@ -208,7 +208,7 @@ class ChartingState extends MusicBeatState
 				events: [],
 				bpm: 150.0,
 				needsVoices: true,
-				needsVoices2: true,
+				needsVoices2: false,
 				arrowSkin: '',
 				splashSkin: 'noteSplashes',//idk it would crash if i didn't
 				player1: 'bf',

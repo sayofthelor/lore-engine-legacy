@@ -133,6 +133,7 @@ class FunkinLua {
 		set('version', MainMenuState.psychEngineVersion.trim());
 		
 		set('inGameOver', false);
+		set('updateUnderlay', false);
 		set('mustHitSection', false);
 		set('altAnim', false);
 		set('gfSection', false);
@@ -640,6 +641,9 @@ class FunkinLua {
 		});*/
 		
 		//stupid bietch ass functions
+		Lua_helper.add_callback(lua, "setUnderlayUpdate", function(value:Bool = false) {
+			PlayState.instance.updateUnderlay = value;
+		});
 		Lua_helper.add_callback(lua, "addScore", function(value:Int = 0) {
 			PlayState.instance.songScore += value;
 			PlayState.instance.RecalculateRating();

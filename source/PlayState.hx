@@ -68,19 +68,28 @@ using StringTools;
 class PlayState extends MusicBeatState
 {
 	public static var STRUM_X = 42;
+	public var updateUnderlay:Bool = false;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	public var laneunderlay:FlxSprite;
 	public static var ratingStuff:Array<Dynamic> = [
-		['You Suck!', 0.2], //From 0% to 19%
-		['Shit', 0.4], //From 20% to 39%
-		['Bad', 0.5], //From 40% to 49%
-		['Bruh', 0.6], //From 50% to 59%
-		['Meh', 0.69], //From 60% to 68%
-		['Nice', 0.7], //69%
-		['Good', 0.8], //From 70% to 79%
-		['Great', 0.9], //From 80% to 89%
-		['Sick!', 1], //From 90% to 99%
-		['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
+		['D', 0.46], // 0 to 45
+		['D+', 0.51], // 45 to 50
+		['C-', 0.56], // 50 to 55
+		['C', 0.59], // 55 to 58
+		['C+', 0.65], // 58 to 64
+		['B-', 0.69], //64 to 68
+		['B', 0.73], // 68 to 72
+		['B+', 0.77], // 72 to 76
+		['A-', 0.81], // 76 to 80
+		['A', 0.84], // 80 to 83
+		['A+', 0.87], // 83 to 86
+		['S-', 0.9], // 86 to 89
+		['S', 0.93], // 89 to 92
+		['S+', 0.95], // 92 to 94
+		['S++', 0.97], // 94 to 96
+		['S+++', 0.99], // 96 to 98
+		['S++++', 1], // 98 to 99.99
+		['P', 1] // 100
 	];
 	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
@@ -1020,8 +1029,8 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 		reloadHealthBarColors();
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 36, FlxG.width, "", 20);
-		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreTxt = new FlxText(0, healthBarBG.y + 26, FlxG.width, "", 20);
+		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.hideHud;
@@ -2215,7 +2224,7 @@ class PlayState extends MusicBeatState
 		{
 			iconP1.swapOldIcon();
 		}*/
-
+		if (updateUnderlay == true) laneunderlay.x = playerStrums.members[0].x - 25;
 		callOnLuas('onUpdate', [elapsed]);
 
 		switch (curStage)
