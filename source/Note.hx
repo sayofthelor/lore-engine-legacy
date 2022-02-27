@@ -7,6 +7,7 @@ import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import flash.display.BitmapData;
 import editors.ChartingState;
+#if cpp import sys.FileSystem; #else import js.html.FileSystem; #end
 
 using StringTools;
 
@@ -57,7 +58,8 @@ class Note extends FlxSprite
 	public var noteSplashHue:Float = 0;
 	public var noteSplashSat:Float = 0;
 	public var noteSplashBrt:Float = 0;
-
+	public var noteSkeen:String = "NOTE_assets";
+	public var inEdit:Bool = false;
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
 	public var offsetAngle:Float = 0;
@@ -119,10 +121,11 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?noteSkin:String = "NOTE_assets")
 	{
 		super();
-
+		noteSkeen=noteSkin;
+		inEdit=inEditor;
 		if (prevNote == null)
 			prevNote = this;
 
@@ -241,7 +244,7 @@ class Note extends FlxSprite
 		if(texture.length < 1) {
 			skin = PlayState.SONG.arrowSkin;
 			if(skin == null || skin.length < 1) {
-				skin = 'NOTE_assets';
+				if (inEdit==true) skin = 'NOTE_assets' else skin = noteSkeen;
 			}
 		}
 

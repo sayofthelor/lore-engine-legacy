@@ -17,6 +17,9 @@ class ClientPrefs {
 	public static var framerate:Int = 60;
 	public static var underlayAlpha:Int = 0;
 	public static var hitSounds:String = "OFF";
+	public static var optimization:Bool = false;
+	public static var ignoreSkin:Bool = false;
+	public static var fpsPosition:String = "BOTTOM LEFT";
 	public static var cursing:Bool = true;
 	public static var violence:Bool = true;
 	public static var camZooms:Bool = true;
@@ -100,6 +103,9 @@ class ClientPrefs {
 		FlxG.save.data.lowQuality = lowQuality;
 		FlxG.save.data.framerate = framerate;
 		FlxG.save.data.hitSounds = hitSounds;
+		FlxG.save.data.optimization = optimization;
+		FlxG.save.data.ignoreSkin = ignoreSkin;
+		FlxG.save.data.fpsPosition = fpsPosition;
 		//FlxG.save.data.cursing = cursing;
 		//FlxG.save.data.violence = violence;
 		FlxG.save.data.camZooms = camZooms;
@@ -140,6 +146,15 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.hitSounds != null) {
 			hitSounds = FlxG.save.data.hitSounds;
+		}
+		if(FlxG.save.data.optimization != null) {
+			optimization = FlxG.save.data.optimization;
+		}
+		if(FlxG.save.data.ignoreSkin != null) {
+			ignoreSkin = FlxG.save.data.ignoreSkin;
+		}
+		if(FlxG.save.data.fpsPosition != null) {
+			fpsPosition = FlxG.save.data.fpsPosition;
 		}
 		if(FlxG.save.data.middleScroll != null) {
 			middleScroll = FlxG.save.data.middleScroll;

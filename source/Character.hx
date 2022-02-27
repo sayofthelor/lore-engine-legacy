@@ -26,7 +26,7 @@ typedef CharacterFile = {
 	var scale:Float;
 	var sing_duration:Float;
 	var healthicon:String;
-
+	var noteSkin:String;
 	var position:Array<Float>;
 	var camera_position:Array<Float>;
 
@@ -75,6 +75,7 @@ class Character extends FlxSprite
 	public var imageFile:String = '';
 	public var jsonScale:Float = 1;
 	public var noAntialiasing:Bool = false;
+	public var noteSkin:String = "NOTE_assets";
 	public var originalFlipX:Bool = false;
 	public var healthColorArray:Array<Int> = [255, 0, 0];
 
@@ -82,7 +83,6 @@ class Character extends FlxSprite
 	public function new(x:Float, y:Float, ?character:String = 'bf', ?isPlayer:Bool = false)
 	{
 		super(x, y);
-
 		#if (haxe >= "4.0.0")
 		animOffsets = new Map();
 		#else
@@ -197,6 +197,7 @@ class Character extends FlxSprite
 				cameraPosition = json.camera_position;
 
 				healthIcon = json.healthicon;
+				noteSkin = json.noteSkin;
 				singDuration = json.sing_duration;
 				flipX = !!json.flip_x;
 				if(json.no_antialiasing) {

@@ -73,6 +73,7 @@ class CharacterEditorState extends MusicBeatState
 
 	var changeBGbutton:FlxButton;
 	var leHealthIcon:HealthIcon;
+	var leNoteSkin:String;
 	var characterList:Array<String> = [];
 
 	var cameraFollowPointer:FlxSprite;
@@ -464,6 +465,7 @@ class CharacterEditorState extends MusicBeatState
 				character.imageFile = parsedJson.image;
 				character.jsonScale = parsedJson.scale;
 				character.noAntialiasing = parsedJson.no_antialiasing;
+				character.noteSkin = parsedJson.noteSkin;
 				character.originalFlipX = parsedJson.flip_x;
 				character.healthIcon = parsedJson.healthicon;
 				character.healthColorArray = parsedJson.healthbar_colors;
@@ -491,6 +493,7 @@ class CharacterEditorState extends MusicBeatState
 	
 	var imageInputText:FlxUIInputText;
 	var healthIconInputText:FlxUIInputText;
+	var noteSkinInputText:FlxUIInputText;
 
 	var singDurationStepper:FlxUINumericStepper;
 	var scaleStepper:FlxUINumericStepper;
@@ -532,7 +535,8 @@ class CharacterEditorState extends MusicBeatState
 			});
 
 		healthIconInputText = new FlxUIInputText(15, imageInputText.y + 35, 75, leHealthIcon.getCharacter(), 8);
-
+		
+		noteSkinInputText = new FlxUIInputText(healthIconInputText.x + 92, imageInputText.y + 35, 75, char.noteSkin, 8);
 		singDurationStepper = new FlxUINumericStepper(15, healthIconInputText.y + 45, 0.1, 4, 0, 999, 1);
 
 		scaleStepper = new FlxUINumericStepper(15, singDurationStepper.y + 40, 0.1, 1, 0.05, 10, 1);
@@ -574,6 +578,7 @@ class CharacterEditorState extends MusicBeatState
 
 		tab_group.add(new FlxText(15, imageInputText.y - 18, 0, 'Image file name:'));
 		tab_group.add(new FlxText(15, healthIconInputText.y - 18, 0, 'Health icon name:'));
+		tab_group.add(new FlxText(noteSkinInputText.x, noteSkinInputText.y - 18, 0, 'Noteskin name:'));
 		tab_group.add(new FlxText(15, singDurationStepper.y - 18, 0, 'Sing Animation length:'));
 		tab_group.add(new FlxText(15, scaleStepper.y - 18, 0, 'Scale:'));
 		tab_group.add(new FlxText(positionXStepper.x, positionXStepper.y - 18, 0, 'Character X/Y:'));
@@ -583,6 +588,7 @@ class CharacterEditorState extends MusicBeatState
 		tab_group.add(reloadImage);
 		tab_group.add(decideIconColor);
 		tab_group.add(healthIconInputText);
+		tab_group.add(noteSkinInputText);
 		tab_group.add(singDurationStepper);
 		tab_group.add(scaleStepper);
 		tab_group.add(flipXCheckBox);
@@ -762,6 +768,8 @@ class CharacterEditorState extends MusicBeatState
 			else if(sender == imageInputText) {
 				char.imageFile = imageInputText.text;
 			}
+			else if(sender == noteSkinInputText)
+				char.noteSkin = noteSkinInputText.text;
 		} else if(id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)) {
 			if (sender == scaleStepper)
 			{
@@ -976,6 +984,7 @@ class CharacterEditorState extends MusicBeatState
 		if(UI_characterbox != null) {
 			imageInputText.text = char.imageFile;
 			healthIconInputText.text = char.healthIcon;
+			noteSkinInputText.text = char.noteSkin;
 			singDurationStepper.value = char.singDuration;
 			scaleStepper.value = char.jsonScale;
 			flipXCheckBox.checked = char.originalFlipX;
@@ -1285,6 +1294,7 @@ class CharacterEditorState extends MusicBeatState
 		
 			"flip_x": char.originalFlipX,
 			"no_antialiasing": char.noAntialiasing,
+			"noteSkin": char.noteSkin,
 			"healthbar_colors": char.healthColorArray
 		};
 

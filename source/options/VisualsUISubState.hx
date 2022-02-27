@@ -41,6 +41,13 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
+		var option:Option = new Option('Ignore Custom Noteskin', //Name
+			'If checked, ignores any custom character-wise noteskin values.', //Description
+			'ignoreSkin', //Save data variable name
+			'bool', //Variable type
+			false); //Default value
+		addOption(option);
+
 		var option:Option = new Option('Hide HUD',
 			'If checked, hides most HUD elements.',
 			'hideHud',
@@ -97,6 +104,12 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
+		var option:Option = new Option('FPS Counter Position: ',
+			"The position the FPS counter is in. Takes effect on restart.",
+			'fpsPosition',
+			'string',
+			'BOTTOM LEFT', ['TOP LEFT', 'BOTTOM LEFT']);
+		addOption(option);
 		#end
 
 		super();

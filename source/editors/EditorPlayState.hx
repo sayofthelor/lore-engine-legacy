@@ -20,6 +20,9 @@ import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 import FunkinLua;
+#if sys
+import sys.FileSystem;
+#end
 
 using StringTools;
 
@@ -478,7 +481,7 @@ class EditorPlayState extends MusicBeatState
 
 							if(!daNote.ignoreNote) {
 								songMisses++;
-								if (PlayState.SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
+								if (FileSystem.exists(Paths.voices2(PlayState.SONG.song))) vocals2.volume = 0 else vocals.volume = 0;
 							}
 						}
 					}
@@ -767,7 +770,7 @@ class EditorPlayState extends MusicBeatState
 		songMisses++;
 
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-		if (PlayState.SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
+		if (FileSystem.exists(Paths.voices2(PlayState.SONG.song))) vocals2.volume = 0 else vocals.volume = 0;
 	}
 
 	var COMBO_X:Float = 400;

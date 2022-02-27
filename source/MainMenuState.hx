@@ -26,7 +26,7 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var loreEngineVersion:String = '0.2-alpha';
+	public static var loreEngineVersion:String = '0.2';
 	public static var psychEngineVersion:String = '0.5.1'; // to maximize compatibility
 	public static var curSelected:Int = 0;
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Main_Checker'), 0.2, 0.2, true, true);
@@ -143,6 +143,7 @@ class MainMenuState extends MusicBeatState
 		changeItem();
 
 		#if ACHIEVEMENTS_ALLOWED
+		Achievements.loadAchievements(); // I HAVE BRAIN DAMAGE
 		var leDate = Date.now();
 		if (leDate.getDay() == 5 && leDate.getHours() >= 18) {
 			var achieveID:Int = Achievements.getAchievementIndex('friday_night_play');

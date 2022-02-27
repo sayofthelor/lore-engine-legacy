@@ -33,7 +33,7 @@ class FPS extends TextField
 		super();
 
 		this.x = x;
-		this.y = y;
+		if (ClientPrefs.fpsPosition == "TOP LEFT") this.y = 3 else this.y = y;
 
 		currentFPS = 0;
 		selectable = false;

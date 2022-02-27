@@ -77,7 +77,7 @@ class Main extends Sprite
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
 
 		#if !mobile
-		fpsVar = new lore.FPS(3,#if debug FlxG.height-51#else FlxG.height - 39#end, 0xFFFFFF);
+		fpsVar = new lore.FPS(3,#if debug FlxG.height-52#else FlxG.height - 39#end, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
