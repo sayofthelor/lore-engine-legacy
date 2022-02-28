@@ -121,6 +121,9 @@ class Note extends FlxSprite
 		return value;
 	}
 
+	public var sustainParent:Note;
+    public var sustainChildren:Array<Note> = [];
+	
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?noteSkin:String = "NOTE_assets")
 	{
 		super();
@@ -164,7 +167,16 @@ class Note extends FlxSprite
 			}
 		}
 
-		// trace(prevNote);
+		// super cool parent child note shit, thanks vidyagirl
+		if (!inEditor) {
+            if (isSustainNote && !prevNote.isSustainNote) {
+                sustainParent = prevNote;
+                prevNote.sustainChildren.push(this);
+            } else if (isSustainNote && prevNote.isSustainNote) {
+                sustainParent = prevNote.sustainParent;
+                sustainParent.sustainChildren.push(this);
+            }
+        }
 
 		if (isSustainNote && prevNote != null)
 		{
