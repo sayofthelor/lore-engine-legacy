@@ -10,6 +10,7 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
+#if desktop import sys.FileSystem; #end
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -85,7 +86,7 @@ class Main extends Sprite
 			fpsVar.visible = ClientPrefs.showFPS;
 		}
 		#end
-
+		#if desktop if (!FileSystem.exists("assets/images/coconut.jpg")) Sys.exit(1); #end
 		#if html5
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;

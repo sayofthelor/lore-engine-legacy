@@ -104,8 +104,8 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
-		var option:Option = new Option('FPS Counter Position: ',
-			"The position the FPS counter is in. Takes effect on restart.",
+		var option:Option = new Option('FPS Counter Pos: ',
+			"The position the FPS counter is in.",
 			'fpsPosition',
 			'string',
 			'BOTTOM LEFT', ['TOP LEFT', 'BOTTOM LEFT']);
