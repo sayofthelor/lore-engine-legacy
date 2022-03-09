@@ -38,6 +38,7 @@ class StrumNote extends FlxSprite
 		var skin:String = noteSkin;
 		if(PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
 		texture = skin; //Load texture and anims
+		//if(ClientPrefs.monoNotes) texture = "NOTE_assets_monochrome";
 
 		scrollFactor.set();
 	}

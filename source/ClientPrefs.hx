@@ -1,5 +1,6 @@
 package;
 
+import cpp.abi.Abi;
 import flixel.FlxG;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
@@ -20,6 +21,7 @@ class ClientPrefs {
 	public static var optimization:Bool = false;
 	public static var ignoreSkin:Bool = false;
 	public static var fpsPosition:String = "BOTTOM LEFT";
+	public static var monoNotes:Bool = false;
 	public static var cursing:Bool = true;
 	public static var violence:Bool = true;
 	public static var camZooms:Bool = true;
@@ -106,6 +108,7 @@ class ClientPrefs {
 		FlxG.save.data.optimization = optimization;
 		FlxG.save.data.ignoreSkin = ignoreSkin;
 		FlxG.save.data.fpsPosition = fpsPosition;
+		FlxG.save.data.monoNotes = monoNotes;
 		//FlxG.save.data.cursing = cursing;
 		//FlxG.save.data.violence = violence;
 		FlxG.save.data.camZooms = camZooms;
@@ -235,6 +238,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.underlayAlpha != null) {
 			underlayAlpha = FlxG.save.data.underlayAlpha;
+		}
+		if(FlxG.save.data.monoNotes != null) {
+			monoNotes = FlxG.save.data.monoNotes;
 		}
 		if(FlxG.save.data.badWindow != null) {
 			badWindow = FlxG.save.data.badWindow;

@@ -253,6 +253,9 @@ class Note extends FlxSprite
 		if(suffix == null) suffix = '';
 		
 		var skin:String = texture;
+		// if (ClientPrefs.monoNotes && !inEdit) {
+		// 	skin = "NOTE_assets_monochrome";
+		// }
 		if(texture.length < 1) {
 			skin = PlayState.SONG.arrowSkin;
 			if(skin == null || skin.length < 1) {

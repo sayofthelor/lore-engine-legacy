@@ -1,3 +1,4 @@
+import haxe.iterators.StringIterator;
 #if LUA_ALLOWED
 import llua.Lua;
 import llua.LuaL;
@@ -499,6 +500,20 @@ class FunkinLua {
 				}));
 			}
 		});
+		Lua_helper.add_callback(lua, "changeIcon", function(player:Int, icon:String) {
+			var iconToChange:Dynamic = null;
+			if (Paths.fileExists("images/icons/icon-" + icon, IMAGE)) iconToChange = Paths.image("images/icons/icon-" + icon) else if (Paths.fileExists("images/icons/" + icon, IMAGE)) iconToChange = Paths.image("images/icons/"+icon);
+			if (iconToChange != null)
+				{
+					switch (player)
+					{
+						case 0:
+							PlayState.instance.iconP1.changeIcon(iconToChange);
+						case 1:
+							PlayState.instance.iconP2.changeIcon(iconToChange);
+					}
+				}
+		});
 		Lua_helper.add_callback(lua, "noteTweenY", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
 			cancelTween(tag);
 			if(note < 0) note = 0;
@@ -520,6 +535,33 @@ class FunkinLua {
 
 			if(testicle != null) {
 				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle, {angle: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			}
+		});
+		Lua_helper.add_callback(lua, "noteTweenScaleX", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			if(note < 0) note = 0;
+			var testicle:StrumNote = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
+
+			if(testicle != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle.scale, {x: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			}
+		});
+		Lua_helper.add_callback(lua, "noteTweenScaleY", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			if(note < 0) note = 0;
+			var testicle:StrumNote = PlayState.instance.strumLineNotes.members[note % PlayState.instance.strumLineNotes.length];
+			if(testicle != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(testicle.scale, {y: value}, duration, {ease: getFlxEaseByString(ease),
 					onComplete: function(twn:FlxTween) {
 						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
 						PlayState.instance.modchartTweens.remove(tag);
