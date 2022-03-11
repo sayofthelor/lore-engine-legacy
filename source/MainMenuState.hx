@@ -27,7 +27,7 @@ using StringTools;
 class MainMenuState extends MusicBeatState
 {
 	public static var loreEngineVersion:String = '0.3 ALPHA';
-	public static var psychEngineVersion:String = '0.5.1'; // to maximize compatibility
+	public static var psychEngineVersion:String = '0.5.2'; // to maximize compatibility
 	public static var curSelected:Int = 0;
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Main_Checker'), 0.2, 0.2, true, true);
 	var menuItems:FlxTypedGroup<FlxSprite>;
