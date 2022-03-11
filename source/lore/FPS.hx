@@ -34,7 +34,7 @@ class FPS extends TextField
 
 		this.x = x;
 		if (ClientPrefs.fpsPosition == "TOP LEFT") this.y = 3 else this.y = y;
-
+		width = FlxG.width;
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;

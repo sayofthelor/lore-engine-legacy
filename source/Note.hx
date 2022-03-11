@@ -68,6 +68,8 @@ class Note extends FlxSprite
 	public var copyX:Bool = true;
 	public var copyY:Bool = true;
 	public var copyAngle:Bool = true;
+	public var copyScaleX:Bool = true;
+	public var copyScaleY:Bool = true;
 	public var copyAlpha:Bool = true;
 
 	public var hitHealth:Float = 0.023;
@@ -82,7 +84,6 @@ class Note extends FlxSprite
 	public var hitCausesMiss:Bool = false;
 	public var distance:Float = 2000; //plan on doing scroll directions soon -bb
 
-	public var hitsoundDisabled:Bool = false;
 
 	private function set_texture(value:String):String {
 		if(texture != value) {
@@ -187,11 +188,12 @@ class Note extends FlxSprite
 		{
 			alpha = 0.6;
 			multAlpha = 0.6;
-			hitsoundDisabled = true;
 			if(ClientPrefs.downScroll) flipY = true;
 
 			offsetX += width / 2;
 			copyAngle = false;
+			copyScaleX = false;
+			copyScaleY = false;
 
 			switch (noteData)
 			{
