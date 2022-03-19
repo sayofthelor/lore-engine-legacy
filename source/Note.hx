@@ -127,7 +127,7 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	public var sustainParent:Note;
+	public var sustainParent:Note = null;
     public var sustainChildren:Array<Note> = [];
 	
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?noteSkin:String = "NOTE_assets")
@@ -374,7 +374,6 @@ class Note extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
 		if (mustPress)
 		{
 			// ok river

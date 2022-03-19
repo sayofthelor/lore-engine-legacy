@@ -97,6 +97,8 @@ class NoteOffsetState extends MusicBeatState
 		add(gf);
 		add(boyfriend);
 
+		generateStaticArrows(0);
+		generateStaticArrows(1);
 		// Combo stuff
 
 		coolText = new FlxText(0, 0, 0, '', 32);
@@ -473,4 +475,44 @@ class NoteOffsetState extends MusicBeatState
 		changeModeText.text = changeModeText.text.toUpperCase();
 		FlxG.mouse.visible = onComboMenu;
 	}
+	public static var STRUM_X = 42;
+	public static var STRUM_X_MIDDLESCROLL = -278;
+	private var strumLine:FlxSprite;
+	private function generateStaticArrows(player:Int):Void
+		{
+			strumLine = new FlxSprite(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, 50).makeGraphic(FlxG.width, 10);
+			if(ClientPrefs.downScroll) strumLine.y = FlxG.height - 150;
+			strumLine.scrollFactor.set();
+			for (i in 0...4)
+			{
+				// FlxG.log.add(i);
+				var targetAlpha:Float = 1;
+				if (player < 1 && ClientPrefs.middleScroll) targetAlpha = 0.35;
+	
+				var babyArrow:StrumNote;
+				babyArrow = new StrumNote(ClientPrefs.middleScroll ? STRUM_X_MIDDLESCROLL : STRUM_X, strumLine.y, i, player, true);
+				babyArrow.cameras = [camHUD];
+				babyArrow.scrollFactor.set();
+				babyArrow.downScroll = ClientPrefs.downScroll;
+	
+				if (player == 1)
+				{
+					add(babyArrow);
+				}
+				else
+				{
+					if(ClientPrefs.middleScroll)
+					{
+						babyArrow.x += 310;
+						if(i > 1) { //Up and Right
+							babyArrow.x += FlxG.width / 2 + 25;
+						}
+					}
+					add(babyArrow);
+				}
+	
+				add(babyArrow);
+				babyArrow.postAddedToGroup();
+			}
+		}
 }

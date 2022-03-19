@@ -66,6 +66,7 @@ class EditorPlayState extends MusicBeatState
 	private var keysArray:Array<Dynamic>;
 
 	public static var instance:EditorPlayState;
+	public var laneunderlay:FlxSprite;
 
 	override function create()
 	{
@@ -77,6 +78,14 @@ class EditorPlayState extends MusicBeatState
 		add(bg);
 		add(checker);
 		checker.scrollFactor.set(0.07,0);
+
+		laneunderlay = new FlxSprite(0, 0).makeGraphic(110 * 4 + 50, FlxG.height * 2);
+		laneunderlay.alpha = ClientPrefs.underlayAlpha / 100;
+		laneunderlay.color = FlxColor.BLACK;
+		laneunderlay.scrollFactor.set();
+		add(laneunderlay);
+
+
 		keysArray = [
 			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_left')),
 			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_down')),
@@ -98,6 +107,10 @@ class EditorPlayState extends MusicBeatState
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
+
+		laneunderlay.x = playerStrums.members[0].x - 25;
+		laneunderlay.screenCenter(Y);
+
 		/*if(ClientPrefs.middleScroll) {
 			opponentStrums.forEachAlive(function (note:StrumNote) {
 				note.visible = false;
@@ -138,25 +151,26 @@ class EditorPlayState extends MusicBeatState
 		scoreTxt = new FlxText(0, FlxG.height - 50, FlxG.width, "Hits: 0 | Misses: 0", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
-		scoreTxt.borderSize = 1.25;
+		scoreTxt.borderSize = 2;
 		scoreTxt.visible = !ClientPrefs.hideHud;
 		add(scoreTxt);
 		
 		beatTxt = new FlxText(10, 610, FlxG.width, "Beat: 0", 20);
 		beatTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		beatTxt.scrollFactor.set();
-		beatTxt.borderSize = 1.25;
+		beatTxt.borderSize = 2;
 		add(beatTxt);
 
 		stepTxt = new FlxText(10, 640, FlxG.width, "Step: 0", 20);
 		stepTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		stepTxt.scrollFactor.set();
-		stepTxt.borderSize = 1.25;
+		stepTxt.borderSize = 2;
 		add(stepTxt);
 
 		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press ESC to Go Back to Chart Editor', 16);
 		tipText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		tipText.borderSize = 2;
+		tipText.screenCenter(X);
 		tipText.scrollFactor.set();
 		add(tipText);
 		FlxG.mouse.visible = false;
@@ -834,110 +848,31 @@ class EditorPlayState extends MusicBeatState
 
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating + pixelShitPart2));
 		rating.screenCenter();
-		rating.x = coolText.x - 40;
-		rating.y -= 60;
-		rating.acceleration.y = 550;
-		rating.velocity.y -= FlxG.random.int(140, 175);
-		rating.velocity.x -= FlxG.random.int(0, 10);
 		rating.visible = !ClientPrefs.hideHud;
 		rating.x += ClientPrefs.comboOffset[0];
 		rating.y -= ClientPrefs.comboOffset[1];
+		add(rating);
 
-		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
-		comboSpr.screenCenter();
-		comboSpr.x = coolText.x;
-		comboSpr.acceleration.y = 600;
-		comboSpr.velocity.y -= 150;
-		comboSpr.visible = !ClientPrefs.hideHud;
-		comboSpr.x += ClientPrefs.comboOffset[0];
-		comboSpr.y -= ClientPrefs.comboOffset[1];
-
-		comboSpr.velocity.x += FlxG.random.int(1, 10);
-		comboGroup.add(rating);
 
 		if (!PlayState.isPixelStage)
 		{
 			rating.setGraphicSize(Std.int(rating.width * 0.7));
 			rating.antialiasing = ClientPrefs.globalAntialiasing;
-			comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
-			comboSpr.antialiasing = ClientPrefs.globalAntialiasing;
 		}
 		else
 		{
 			rating.setGraphicSize(Std.int(rating.width * PlayState.daPixelZoom * 0.85));
-			comboSpr.setGraphicSize(Std.int(comboSpr.width * PlayState.daPixelZoom * 0.85));
 		}
 
-		comboSpr.updateHitbox();
 		rating.updateHitbox();
 
-		var seperatedScore:Array<Int> = [];
 
-		if(combo >= 1000) {
-			seperatedScore.push(Math.floor(combo / 1000) % 10);
-		}
-		seperatedScore.push(Math.floor(combo / 100) % 10);
-		seperatedScore.push(Math.floor(combo / 10) % 10);
-		seperatedScore.push(combo % 10);
 
-		var daLoop:Int = 0;
-		for (i in seperatedScore)
-		{
-			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
-			numScore.screenCenter();
-			numScore.x = coolText.x + (43 * daLoop) - 90;
-			numScore.y += 80;
-
-			numScore.x += ClientPrefs.comboOffset[2];
-			numScore.y -= ClientPrefs.comboOffset[3];
-
-			if (!PlayState.isPixelStage)
-			{
-				numScore.antialiasing = ClientPrefs.globalAntialiasing;
-				numScore.setGraphicSize(Std.int(numScore.width * 0.5));
-			}
-			else
-			{
-				numScore.setGraphicSize(Std.int(numScore.width * PlayState.daPixelZoom));
-			}
-			numScore.updateHitbox();
-
-			numScore.acceleration.y = FlxG.random.int(200, 300);
-			numScore.velocity.y -= FlxG.random.int(140, 160);
-			numScore.velocity.x = FlxG.random.float(-5, 5);
-			numScore.visible = !ClientPrefs.hideHud;
-
-			if (combo >= 10 || combo == 0)
-				insert(members.indexOf(strumLineNotes), numScore);
-
-			FlxTween.tween(numScore, {alpha: 0}, 0.2, {
-				onComplete: function(tween:FlxTween)
-				{
-					numScore.destroy();
-				},
-				startDelay: Conductor.crochet * 0.002
-			});
-
-			daLoop++;
-		}
-		/* 
-			trace(combo);
-			trace(seperatedScore);
-			*/
-
-		coolText.text = Std.string(seperatedScore);
-		// comboGroup.add(coolText);
 
 		FlxTween.tween(rating, {alpha: 0}, 0.2, {
-			startDelay: Conductor.crochet * 0.001
-		});
-
-		FlxTween.tween(comboSpr, {alpha: 0}, 0.2, {
 			onComplete: function(tween:FlxTween)
 			{
 				coolText.destroy();
-				comboSpr.destroy();
-
 				rating.destroy();
 			},
 			startDelay: Conductor.crochet * 0.001

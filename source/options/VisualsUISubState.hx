@@ -41,16 +41,16 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		var option:Option = new Option('Monochrome Notes',
-		"If checked, the notes will be monochrome, which allows for more accurate color customization.\nNOTE: This also disables custom noteskins.",
-		'monoNotes',
-		'bool',
-		false);
-		addOption(option);
-
 		var option:Option = new Option('Ignore Custom Noteskin', //Name
 			'If checked, ignores any custom character-wise noteskin values.', //Description
 			'ignoreSkin', //Save data variable name
+			'bool', //Variable type
+			false); //Default value
+		addOption(option);
+
+		var option:Option = new Option('StepMania style animations', //Name
+			'If checked, StepMania style judgement animations will be used.', //Description
+			'smJudges', //Save data variable name
 			'bool', //Variable type
 			false); //Default value
 		addOption(option);

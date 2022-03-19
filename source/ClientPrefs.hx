@@ -27,6 +27,7 @@ class ClientPrefs {
 	public static var camZooms:Bool = true;
 	public static var hideHud:Bool = false;
 	public static var noteOffset:Int = 0;
+	public static var smJudges:Bool = false;
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var imagesPersist:Bool = false;
 	public static var ghostTapping:Bool = true;
@@ -135,6 +136,7 @@ class ClientPrefs {
 		FlxG.save.data.gameplaySettings = gameplaySettings;
 		FlxG.save.data.controllerMode = controllerMode;
 		FlxG.save.data.pauseMusic = pauseMusic;
+		FlxG.save.data.smJudges = smJudges;
 	
 		FlxG.save.flush();
 
@@ -172,6 +174,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.flashing != null) {
 			flashing = FlxG.save.data.flashing;
+		}
+		if(FlxG.save.data.smJudges != null) {
+			smJudges = FlxG.save.data.smJudges;
 		}
 		if(FlxG.save.data.globalAntialiasing != null) {
 			globalAntialiasing = FlxG.save.data.globalAntialiasing;
