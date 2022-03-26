@@ -208,6 +208,7 @@ class ChartingState extends MusicBeatState
 				events: [],
 				bpm: 150.0,
 				needsVoices: true,
+				needsVoices2: false,
 				arrowSkin: '',
 				splashSkin: 'noteSplashes',//idk it would crash if i didn't
 				player1: 'bf',
@@ -401,14 +402,21 @@ class ChartingState extends MusicBeatState
 		UI_songTitle = new FlxUIInputText(10, 10, 70, _song.song, 8);
 		blockPressWhileTypingOn.push(UI_songTitle);
 		
-		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has voice track", 100);
+		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has Voice Track", 100);
+		var check_voices2 = new FlxUICheckBox(10, 28 + check_voices.height, null, null, "Has VoiceTrack2", 100);
 		check_voices.checked = _song.needsVoices;
+		check_voices2.checked = _song.needsVoices2;
 		// _song.needsVoices = check_voices.checked;
 		check_voices.callback = function()
 		{
 			_song.needsVoices = check_voices.checked;
 			//trace('CHECKED!');
 		};
+		check_voices2.callback = function()
+			{
+				_song.needsVoices2 = check_voices2.checked;
+				trace('CHECKED!');
+			};
 
 		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
 		{
@@ -601,6 +609,7 @@ class ChartingState extends MusicBeatState
 		tab_group_song.add(UI_songTitle);
 
 		tab_group_song.add(check_voices);
+		tab_group_song.add(check_voices2);
 		tab_group_song.add(clear_events);
 		tab_group_song.add(clear_notes);
 		tab_group_song.add(saveButton);
@@ -2765,6 +2774,7 @@ class ChartingState extends MusicBeatState
 			events: _song.events,
 			bpm: _song.bpm,
 			needsVoices: _song.needsVoices,
+			needsVoices2: _song.needsVoices2,
 			speed: _song.speed,
 			arrowSkin: _song.arrowSkin,
 			splashSkin: _song.splashSkin,

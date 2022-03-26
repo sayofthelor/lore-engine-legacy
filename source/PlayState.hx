@@ -320,7 +320,6 @@ class PlayState extends MusicBeatState
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
 		camOther = new FlxCamera();
-		camHUD.zoom = 0.95;
 		camHUD.bgColor.alpha = 0;
 		camOther.bgColor.alpha = 0;
 
@@ -792,6 +791,7 @@ class PlayState extends MusicBeatState
 		if(!modchartSprites.exists('blammedLightsBlack')) { //Creates blammed light black fade in case you didn't make your own
 			blammedLightsBlack = new ModchartSprite(FlxG.width * -0.5, FlxG.height * -0.5);
 			blammedLightsBlack.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
+			blammedLightsBlack.scale.x = blammedLightsBlack.scale.y = 10;
 			var position:Int = members.indexOf(gfGroup);
 			if(members.indexOf(boyfriendGroup) < position) {
 				position = members.indexOf(boyfriendGroup);
@@ -1801,7 +1801,7 @@ class PlayState extends MusicBeatState
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
 		else
 			vocals = new FlxSound();
-		if (FileSystem.exists(Paths.voices2(SONG.song))) 
+		if (SONG.needsVoices2) 
 			vocals2 = new FlxSound().loadEmbedded(Paths.voices2(PlayState.SONG.song));
 		else
 			vocals2 = new FlxSound();
@@ -2473,7 +2473,7 @@ class PlayState extends MusicBeatState
 		if (camZooming)
 		{
 			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
-			camHUD.zoom = FlxMath.lerp(0.95, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
 		}
 
 		FlxG.watch.addQuick("beatShit", curBeat);
@@ -3385,7 +3385,7 @@ class PlayState extends MusicBeatState
 	var ratingTween:FlxTween;
 	private function popUpScore(note:Note = null):Void
 	{
-		lastRating.destroy();
+		if (ClientPrefs.smJudges) lastRating.destroy();
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 		//trace(noteDiff, ' ' + Math.abs(note.strumTime - Conductor.songPosition));
 
@@ -3618,8 +3618,6 @@ class PlayState extends MusicBeatState
 			{
 				coolText.destroy();
 				comboSpr.destroy();
-
-				if (!ClientPrefs.smJudges) rating.destroy();
 			},
 			startDelay: Conductor.crochet * 0.001
 		});
@@ -3831,14 +3829,14 @@ class PlayState extends MusicBeatState
 		health -= daNote.missHealth * healthLoss;
 		if(instakillOnMiss)
 		{
-			if (FileSystem.exists(Paths.voices2(PlayState.SONG.song))) vocals2.volume = 0 else vocals.volume = 0;
+			if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 			doDeathCheck(true);
 		}
 
 		//For testing purposes
 		//trace(daNote.missHealth);
 		songMisses++;
-		if (FileSystem.exists(Paths.voices2(PlayState.SONG.song))) vocals2.volume = 0 else vocals.volume = 0;
+		if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 		if(!practiceMode) songScore -= 10;
 		
 		totalPlayed++;
@@ -3868,7 +3866,7 @@ class PlayState extends MusicBeatState
 			health -= 0.05 * healthLoss;
 			if(instakillOnMiss)
 			{
-				if (FileSystem.exists(Paths.voices2(PlayState.SONG.song))) vocals2.volume = 0 else vocals.volume = 0;
+				if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 				doDeathCheck(true);
 			}
 
@@ -3902,7 +3900,7 @@ class PlayState extends MusicBeatState
 			if(boyfriend.hasMissAnimations) {
 				boyfriend.playAnim(singAnimations[Std.int(Math.abs(direction))] + 'miss', true);
 			}
-			if (FileSystem.exists(Paths.voices2(PlayState.SONG.song))) vocals2.volume = 0 else vocals.volume = 0;
+			if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 		}
 	}
 
