@@ -3,9 +3,7 @@ package;
 // STOLEN FROM HAXEFLIXEL DEMO LOL
 import flixel.system.FlxAssets.FlxShader;
 import openfl.display.BitmapData;
-import openfl.display.Shader;
 import openfl.display.ShaderInput;
-import openfl.utils.Assets;
 import flixel.FlxG;
 import openfl.Lib;
 using StringTools;

@@ -1,10 +1,8 @@
 package;
 
-import cpp.abi.Abi;
 import flixel.FlxG;
 import flixel.util.FlxSave;
 import flixel.input.keyboard.FlxKey;
-import flixel.graphics.FlxGraphic;
 import Controls;
 
 class ClientPrefs {
@@ -21,6 +19,7 @@ class ClientPrefs {
 	public static var optimization:Bool = false;
 	public static var ignoreSkin:Bool = false;
 	public static var fpsPosition:String = "BOTTOM LEFT";
+	public static var tinyIcons:Bool = false;
 	public static var monoNotes:Bool = false;
 	public static var cursing:Bool = true;
 	public static var violence:Bool = true;
@@ -60,6 +59,7 @@ class ClientPrefs {
 
 	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
 	public static var ratingOffset:Int = 0;
+	public static var marvWindow:Int = 20;
 	public static var sickWindow:Int = 45;
 	public static var goodWindow:Int = 90;
 	public static var badWindow:Int = 135;
@@ -104,6 +104,7 @@ class ClientPrefs {
 		FlxG.save.data.flashing = flashing;
 		FlxG.save.data.globalAntialiasing = globalAntialiasing;
 		FlxG.save.data.noteSplashes = noteSplashes;
+		FlxG.save.data.tinyIcons = tinyIcons;
 		FlxG.save.data.lowQuality = lowQuality;
 		FlxG.save.data.framerate = framerate;
 		FlxG.save.data.hitSounds = hitSounds;
@@ -156,6 +157,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.optimization != null) {
 			optimization = FlxG.save.data.optimization;
+		}
+		if(FlxG.save.data.tinyIcons != null) {
+			tinyIcons = FlxG.save.data.tinyIcons;
 		}
 		if(FlxG.save.data.ignoreSkin != null) {
 			ignoreSkin = FlxG.save.data.ignoreSkin;

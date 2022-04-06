@@ -99,15 +99,9 @@ class PlayState extends MusicBeatState
 	public var shaderUpdates:Array<Float->Void> = [];
 	//event variables
 	private var isCameraOnForcedPos:Bool = false;
-	#if (haxe >= "4.0.0")
 	public var boyfriendMap:Map<String, Boyfriend> = new Map();
 	public var dadMap:Map<String, Character> = new Map();
 	public var gfMap:Map<String, Character> = new Map();
-	#else
-	public var boyfriendMap:Map<String, Boyfriend> = new Map<String, Boyfriend>();
-	public var dadMap:Map<String, Character> = new Map<String, Character>();
-	public var gfMap:Map<String, Character> = new Map<String, Character>();
-	#end
 
 	public var BF_X:Float = 770;
 	public var BF_Y:Float = 100;
@@ -170,6 +164,7 @@ class PlayState extends MusicBeatState
 	private var timeBarBG:AttachedSprite;
 	public var timeBar:FlxBar;
 	
+	public var marvs:Int = 0;
 	public var sicks:Int = 0;
 	public var goods:Int = 0;
 	public var bads:Int = 0;
@@ -282,12 +277,22 @@ class PlayState extends MusicBeatState
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
 
+	var iconSmallGo:Float = 0.8;
+	var iconBigGo:Float = 1.2;
+	var iconSize:Float = 1;
+
 	override public function create()
 	{
 		Paths.clearStoredMemory();
 
 		// for lua
 		instance = this;
+
+		if (ClientPrefs.tinyIcons) {
+			iconSmallGo = 0.6;
+			iconBigGo = 1;
+			iconSize = 0.8;
+		}
 
 		debugKeysChart = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
 		debugKeysCharacter = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_2'));
@@ -1202,6 +1207,10 @@ class PlayState extends MusicBeatState
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
 
+		if (Paths.formatToSongPath(SONG.song) != 'tutorial')
+			camZooming = true;
+
+
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
 		callOnLuas('onCreatePost', []);
 		
@@ -1512,6 +1521,7 @@ class PlayState extends MusicBeatState
 	var finishTimer:FlxTimer = null;
 
 	// For being able to mess with the sprites on Lua
+	public var countdownThreeLol:FlxSprite;
 	public var countdownReady:FlxSprite;
 	public var countdownSet:FlxSprite;
 	public var countdownGo:FlxSprite;
@@ -1574,8 +1584,8 @@ class PlayState extends MusicBeatState
 				}
 
 				var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
-				introAssets.set('default', ['ready', 'set', 'go']);
-				introAssets.set('pixel', ['pixelUI/ready-pixel', 'pixelUI/set-pixel', 'pixelUI/date-pixel']);
+				introAssets.set('default', ['3', '2', '1', 'go']);
+				introAssets.set('pixel', ['', 'pixelUI/ready-pixel', 'pixelUI/set-pixel', 'pixelUI/date-pixel']);
 
 				var introAlts:Array<String> = introAssets.get('default');
 				var antialias:Bool = ClientPrefs.globalAntialiasing;
@@ -1597,18 +1607,42 @@ class PlayState extends MusicBeatState
 				{
 					case 0:
 						FlxG.sound.play(Paths.sound('intro3' + introSoundsSuffix), 0.6);
+						if (introAlts[0] != '') {
+							countdownThreeLol = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
+							countdownThreeLol.scrollFactor.set();
+							countdownThreeLol.updateHitbox();
+
+							if (PlayState.isPixelStage)
+								countdownThreeLol.setGraphicSize(Std.int(countdownThreeLol.width * daPixelZoom));
+
+							countdownThreeLol.cameras = [camHUD];
+							countdownThreeLol.scale.set(countdownThreeLol.scale.x * .75, countdownThreeLol.scale.y * .75);
+							countdownThreeLol.screenCenter();
+							countdownThreeLol.antialiasing = antialias;
+							add(countdownThreeLol);
+							FlxTween.tween(countdownThreeLol, {alpha: 0, 'scale.x': countdownThreeLol.scale.x * 0.75, 'scale.y': countdownThreeLol.scale.y * 0.75}, Conductor.crochet / 1000, {
+								ease: FlxEase.cubeInOut,
+								onComplete: function(twn:FlxTween)
+								{
+									remove(countdownThreeLol);
+									countdownThreeLol.destroy();
+								}
+							});
+						}
 					case 1:
-						countdownReady = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
+						countdownReady = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
 						countdownReady.scrollFactor.set();
 						countdownReady.updateHitbox();
 
 						if (PlayState.isPixelStage)
 							countdownReady.setGraphicSize(Std.int(countdownReady.width * daPixelZoom));
 
+						countdownReady.cameras = [camHUD];
+						countdownReady.scale.set(countdownReady.scale.x * .75, countdownReady.scale.y * .75);
 						countdownReady.screenCenter();
 						countdownReady.antialiasing = antialias;
 						add(countdownReady);
-						FlxTween.tween(countdownReady, {/*y: countdownReady.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
+						FlxTween.tween(countdownReady, {alpha: 0, 'scale.x': countdownReady.scale.x * 0.75, 'scale.y': countdownReady.scale.y * 0.75}, Conductor.crochet / 1000, {
 							ease: FlxEase.cubeInOut,
 							onComplete: function(twn:FlxTween)
 							{
@@ -1618,7 +1652,7 @@ class PlayState extends MusicBeatState
 						});
 						FlxG.sound.play(Paths.sound('intro2' + introSoundsSuffix), 0.6);
 					case 2:
-						countdownSet = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
+						countdownSet = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
 						countdownSet.scrollFactor.set();
 
 						if (PlayState.isPixelStage)
@@ -1626,8 +1660,10 @@ class PlayState extends MusicBeatState
 
 						countdownSet.screenCenter();
 						countdownSet.antialiasing = antialias;
+						countdownSet.cameras = [camHUD];
+						countdownSet.scale.set(countdownSet.scale.x * .75, countdownSet.scale.y * .75);
 						add(countdownSet);
-						FlxTween.tween(countdownSet, {/*y: countdownSet.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
+						FlxTween.tween(countdownSet, {alpha: 0, 'scale.x': countdownSet.scale.x * 0.75, 'scale.y': countdownSet.scale.y * 0.75}, Conductor.crochet / 1000, {
 							ease: FlxEase.cubeInOut,
 							onComplete: function(twn:FlxTween)
 							{
@@ -1637,7 +1673,7 @@ class PlayState extends MusicBeatState
 						});
 						FlxG.sound.play(Paths.sound('intro1' + introSoundsSuffix), 0.6);
 					case 3:
-						countdownGo = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
+						countdownGo = new FlxSprite().loadGraphic(Paths.image(introAlts[3]));
 						countdownGo.scrollFactor.set();
 
 						if (PlayState.isPixelStage)
@@ -1647,8 +1683,10 @@ class PlayState extends MusicBeatState
 
 						countdownGo.screenCenter();
 						countdownGo.antialiasing = antialias;
+						countdownGo.cameras = [camHUD];
+						countdownGo.scale.set(countdownGo.scale.x * .75, countdownGo.scale.y * .75);
 						add(countdownGo);
-						FlxTween.tween(countdownGo, {/*y: countdownGo.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
+						FlxTween.tween(countdownGo, {alpha: 0, 'scale.x': countdownGo.scale.x * 0.75, 'scale.y': countdownGo.scale.y * 0.75}, Conductor.crochet / 1000, {
 							ease: FlxEase.cubeInOut,
 							onComplete: function(twn:FlxTween)
 							{
@@ -2359,14 +2397,6 @@ class PlayState extends MusicBeatState
 				persistentDraw = true;
 				paused = true;
 
-				// 1 / 1000 chance for Gitaroo Man easter egg
-				/*if (FlxG.random.bool(0.1))
-				{
-					// gitaroo man easter egg
-					cancelMusicFadeTween();
-					MusicBeatState.switchState(new GitarooPause());
-				}
-				else {*/
 				if(FlxG.sound.music != null) {
 					FlxG.sound.music.pause();
 					vocals.pause();
@@ -2389,11 +2419,11 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		var mult:Float = FlxMath.lerp(iconSize, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		iconP1.scale.set(mult, mult);
 		iconP1.updateHitbox();
 
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		var mult:Float = FlxMath.lerp(iconSize, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
 
@@ -3427,10 +3457,15 @@ class PlayState extends MusicBeatState
 				totalNotesHit += 1;
 				note.ratingMod = 1;
 				if(!note.ratingDisabled) sicks++;
+			case "marv": // marv
+				totalNotesHit += 1;
+				note.ratingMod = 1;
+				score = 400;
+				if(!note.ratingDisabled) marvs++;
 		}
 		note.rating = daRating;
 
-		if(daRating == 'sick' && !note.noteSplashDisabled)
+		if((daRating == 'sick' || daRating == 'marv') && !note.noteSplashDisabled)
 		{
 			spawnNoteSplashOnNote(note);
 		}
@@ -3817,13 +3852,6 @@ class PlayState extends MusicBeatState
 				note.destroy();
 			}
 		});
-		if (daNote.sustainChildren.length > 0 || daNote.sustainParent != null) {
-			for (child in daNote.sustainChildren){
-				child.kill();
-				notes.remove(child, true);
-				child.destroy();
-			};
-		}
 		combo = 0;
 
 		health -= daNote.missHealth * healthLoss;
@@ -3906,9 +3934,6 @@ class PlayState extends MusicBeatState
 
 	function opponentNoteHit(note:Note):Void
 	{
-		if (Paths.formatToSongPath(SONG.song) != 'tutorial')
-			camZooming = true;
-
 		if(note.noteType == 'Hey!' && dad.animOffsets.exists('hey')) {
 			dad.playAnim('hey', true);
 			dad.specialAnim = true;
@@ -4355,8 +4380,8 @@ class PlayState extends MusicBeatState
 			camHUD.zoom += 0.03;
 		}
 
-		if (!ClientPrefs.optimization) if (curBeat % 2 != 0) iconP1.scale.set(1.2, 1.2) else iconP1.scale.set(0.8, 0.8);
-		if (!ClientPrefs.optimization) if (curBeat % 2 != 0) iconP2.scale.set(1.2, 1.2) else iconP2.scale.set(0.8, 0.8);
+		if (!ClientPrefs.optimization) if (curBeat % 2 != 0) iconP1.scale.set(iconBigGo, iconBigGo) else iconP1.scale.set(iconSmallGo, iconSmallGo);
+		if (!ClientPrefs.optimization) if (curBeat % 2 != 0) iconP2.scale.set(iconBigGo, iconBigGo) else iconP2.scale.set(iconSmallGo, iconSmallGo);
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();

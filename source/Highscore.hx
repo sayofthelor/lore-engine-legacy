@@ -6,15 +6,9 @@ using StringTools;
 
 class Highscore
 {
-	#if (haxe >= "4.0.0")
 	public static var weekScores:Map<String, Int> = new Map();
 	public static var songScores:Map<String, Int> = new Map();
 	public static var songRating:Map<String, Float> = new Map();
-	#else
-	public static var weekScores:Map<String, Int> = new Map();
-	public static var songScores:Map<String, Int> = new Map<String, Int>();
-	public static var songRating:Map<String, Float> = new Map<String, Float>();
-	#end
 
 
 	public static function resetSong(song:String, diff:Int = 0):Void
