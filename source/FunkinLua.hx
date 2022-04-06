@@ -112,6 +112,7 @@ class FunkinLua {
 		// PlayState cringe ass nae nae bullcrap
 		set('curBeat', 0);
 		set('curStep', 0);
+		set('topTimeSignature', 0);
 
 		set('score', 0);
 		set('misses', 0);

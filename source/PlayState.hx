@@ -67,6 +67,7 @@ using StringTools;
 class PlayState extends MusicBeatState
 {
 	public static var STRUM_X = 42;
+	public static var topTimeSignature:Int = 4;
 	public var updateUnderlay:Bool = false;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	public var laneunderlay:FlxSprite;
@@ -4374,7 +4375,7 @@ class PlayState extends MusicBeatState
 		{
 			moveCameraSection(Std.int(curStep / 16));
 		}
-		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % 4 == 0 && !ClientPrefs.optimization)
+		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % topTimeSignature == 0 && !ClientPrefs.optimization)
 		{
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.03;
