@@ -67,7 +67,7 @@ using StringTools;
 class PlayState extends MusicBeatState
 {
 	public static var STRUM_X = 42;
-	public static var topTimeSignature:Int = 4;
+	public var topTimeSignature:Int = 4;
 	public var updateUnderlay:Bool = false;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	public var laneunderlay:FlxSprite;
@@ -1214,6 +1214,14 @@ class PlayState extends MusicBeatState
 
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
 		callOnLuas('onCreatePost', []);
+
+		#if debug
+		var notFinalTxt:FlxText = new FlxText(0, 20, FlxG.width, "NOT REPRESENTATIVE OF FINAL VERSION");
+		notFinalTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		notFinalTxt.alpha = 0.5;
+		notFinalTxt.cameras = [camOther];
+		add(notFinalTxt);
+		#end
 		
 		super.create();
 
