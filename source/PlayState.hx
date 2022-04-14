@@ -1,5 +1,7 @@
 package;
 
+import flixel.group.FlxGroup;
+import flixel.math.FlxRandom;
 import flixel.graphics.FlxGraphic;
 #if desktop
 import Discord.DiscordClient;
@@ -3422,6 +3424,7 @@ class PlayState extends MusicBeatState
 	var lastRating:FlxSprite = new FlxSprite();
 	var comboSpr:FlxSprite;
 	var ratingTween:FlxTween;
+	var numGroup:FlxGroup = new FlxGroup();
 	private function popUpScore(note:Note = null):Void
 	{
 		if (ClientPrefs.smJudges) lastRating.destroy();
@@ -3549,7 +3552,7 @@ class PlayState extends MusicBeatState
 
 		comboSpr.velocity.x += FlxG.random.int(1, 10);
 		remove(rating);
-		insert(members.indexOf(strumLineNotes), rating);
+		add(rating);
 
 		if (!PlayState.isPixelStage)
 		{
@@ -3603,6 +3606,11 @@ class PlayState extends MusicBeatState
 
 		}
 		var daLoop:Int = 0;
+		if (ClientPrefs.smJudges) {
+			numGroup.destroy();
+			numGroup = new FlxGroup();
+			add(numGroup);
+		}
 		for (i in seperatedScore)
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
@@ -3633,8 +3641,12 @@ class PlayState extends MusicBeatState
 			numScore.visible = !ClientPrefs.hideHud;
 
 			//if (combo >= 10 || combo == 0)
-				insert(members.indexOf(strumLineNotes), numScore);
-
+				if (ClientPrefs.smJudges) numGroup.add(numScore) else add(numScore);
+			var oldy:Float = numScore.y;
+				if (ClientPrefs.smJudges) {
+					numScore.y -= new FlxRandom().int(20,30);
+					FlxTween.tween(numScore, {y: oldy}, 0.2, {ease:FlxEase.circOut});
+				}
 			FlxTween.tween(numScore, {alpha: 0}, 0.2, {
 				onComplete: function(tween:FlxTween)
 				{
