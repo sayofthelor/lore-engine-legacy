@@ -280,9 +280,9 @@ class PlayState extends MusicBeatState
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
 
-	var iconSmallGo:Float = 0.8;
-	var iconBigGo:Float = 1.2;
-	var iconSize:Float = 1;
+	public var iconSmallGo:Float = 0.8;
+	public var iconBigGo:Float = 1.2;
+	public var iconSize:Float = 1;
 
 	override public function create()
 	{
@@ -2431,11 +2431,13 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
 		var mult:Float = FlxMath.lerp(iconSize, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP1.scale.set(mult, mult);
+		var mult2:Float = FlxMath.lerp(iconSize, iconP1.scale.y, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		iconP1.scale.set(mult, mult2);
 		iconP1.updateHitbox();
 
 		var mult:Float = FlxMath.lerp(iconSize, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP2.scale.set(mult, mult);
+		var mult2:Float = FlxMath.lerp(iconSize, iconP2.scale.y, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		iconP2.scale.set(mult, mult2);
 		iconP2.updateHitbox();
 
 		var iconOffset:Int = 26;
@@ -3441,7 +3443,7 @@ class PlayState extends MusicBeatState
 		coolText.screenCenter();
 		coolText.x = FlxG.width * 0.35;
 		//
-
+		
 		rating = new FlxSprite();
 		var score:Int = 350;
 
@@ -4400,9 +4402,15 @@ class PlayState extends MusicBeatState
 			FlxG.camera.zoom += 0.015;
 			camHUD.zoom += 0.03;
 		}
-
-		if (!ClientPrefs.optimization) if (curBeat % 2 != 0) iconP1.scale.set(iconBigGo, iconBigGo) else iconP1.scale.set(iconSmallGo, iconSmallGo);
-		if (!ClientPrefs.optimization) if (curBeat % 2 != 0) iconP2.scale.set(iconBigGo, iconBigGo) else iconP2.scale.set(iconSmallGo, iconSmallGo);
+		var ret:Dynamic = callOnLuas('onHeadBop', []);
+		if(ret != FunkinLua.Function_Stop && !ClientPrefs.optimization) switch (ClientPrefs.bopStyle) {
+			case "LORE":
+				if (curBeat % 2 != 0) iconP1.scale.set(iconBigGo, iconBigGo) else iconP1.scale.set(iconSmallGo, iconSmallGo);
+				if (curBeat % 2 != 0) iconP2.scale.set(iconBigGo, iconBigGo) else iconP2.scale.set(iconSmallGo, iconSmallGo);
+			case "PSYCH":
+				iconP1.scale.set(iconBigGo, iconBigGo);
+				iconP2.scale.set(iconBigGo, iconBigGo);
+		}
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
@@ -4559,7 +4567,7 @@ class PlayState extends MusicBeatState
 
 			// Rating FC
 			ratingFC = "";
-			if (sicks > 0) ratingFC = "SFC";
+			if (sicks > 0 || marvs > 0) ratingFC = "SFC";
 			if (goods > 0) ratingFC = "GFC";
 			if (bads > 0 || shits > 0) ratingFC = "FC";
 			if (songMisses > 0 && songMisses < 10) ratingFC = "SDCB";

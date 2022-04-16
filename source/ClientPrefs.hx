@@ -19,6 +19,8 @@ class ClientPrefs {
 	public static var optimization:Bool = false;
 	public static var ignoreSkin:Bool = false;
 	public static var fpsPosition:String = "BOTTOM LEFT";
+	public static var bopStyle:String = "LORE";
+	public static var colorblindFilter:String = "OFF";
 	public static var tinyIcons:Bool = false;
 	public static var monoNotes:Bool = false;
 	public static var cursing:Bool = true;
@@ -99,6 +101,8 @@ class ClientPrefs {
 
 	public static function saveSettings() {
 		FlxG.save.data.downScroll = downScroll;
+		FlxG.save.data.bopStyle = bopStyle;
+		FlxG.save.data.colorblindFilter = colorblindFilter;
 		FlxG.save.data.middleScroll = middleScroll;
 		FlxG.save.data.showFPS = showFPS;
 		FlxG.save.data.flashing = flashing;
@@ -151,6 +155,12 @@ class ClientPrefs {
 	public static function loadPrefs() {
 		if(FlxG.save.data.downScroll != null) {
 			downScroll = FlxG.save.data.downScroll;
+		}
+		if(FlxG.save.data.bopStyle != null) {
+			bopStyle = FlxG.save.data.bopStyle;
+		}
+		if(FlxG.save.data.colorblindFilter != null) {
+			colorblindFilter = FlxG.save.data.colorblindFilter;
 		}
 		if(FlxG.save.data.hitSounds != null) {
 			hitSounds = FlxG.save.data.hitSounds;

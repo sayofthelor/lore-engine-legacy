@@ -10,7 +10,18 @@ class VisualsUISubState extends BaseOptionsMenu
 	{
 		title = 'Visuals and UI';
 		rpcTitle = 'Visuals & UI Settings Menu'; //for Discord Rich Presence
-
+		var option:Option = new Option('Colorblind filter: ',
+			"Changes the filter used to make the game more accessible to colorblind people.",
+			'colorblindFilter',
+			'string',
+			'NONE', ['NONE',
+			"DEUTERANOPIA",
+			"PROTANOPIA",
+			"TRITANOPIA",]
+			);
+		#if debug option.description += "\nUses a lot of resources in debug mode, so it's recommended to lower the FPS cap."; #end
+		option.onChange = lore.Colorblind.updateFilter;
+		addOption(option);
 		var option:Option = new Option('Note Splashes',
 			"If unchecked, hitting \"Sick!\" notes won't show particles.",
 			'noteSplashes',
@@ -37,6 +48,16 @@ class VisualsUISubState extends BaseOptionsMenu
 			'tinyIcons', //Save data variable name
 			'bool', //Variable type
 			false); //Default value
+		addOption(option);
+
+		var option:Option = new Option('Icon head bop style: ',
+			"The style in which the icon heads will bop to the beat.",
+			'bopStyle',
+			'string',
+			'LORE', ['LORE',
+			'PSYCH',
+			'DISABLED'
+		]);
 		addOption(option);
 
 		var option:Option = new Option('Hide HUD',
