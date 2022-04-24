@@ -82,7 +82,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.displayFormat = '%vms';
 		option.scrollSpeed = 10;
 		option.minValue = 5;
-		option.maxValue = 20;
+		option.maxValue = 15;
 		addOption(option);
 
 

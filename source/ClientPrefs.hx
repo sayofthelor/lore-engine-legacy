@@ -61,11 +61,12 @@ class ClientPrefs {
 
 	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
 	public static var ratingOffset:Int = 0;
-	public static var marvWindow:Int = 20;
+	public static var marvWindow:Int = 15;
 	public static var sickWindow:Int = 45;
 	public static var goodWindow:Int = 90;
 	public static var badWindow:Int = 135;
 	public static var safeFrames:Float = 10;
+	public static var showNoteTimeHitbox:Bool = false;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
@@ -142,6 +143,7 @@ class ClientPrefs {
 		FlxG.save.data.controllerMode = controllerMode;
 		FlxG.save.data.pauseMusic = pauseMusic;
 		FlxG.save.data.smJudges = smJudges;
+		FlxG.save.data.showNoteTimeHitbox = showNoteTimeHitbox;
 	
 		FlxG.save.flush();
 
@@ -158,6 +160,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.bopStyle != null) {
 			bopStyle = FlxG.save.data.bopStyle;
+		}
+		if(FlxG.save.data.showNoteTimeHitbox != null) {
+			showNoteTimeHitbox = FlxG.save.data.showNoteTimeHitbox;
 		}
 		if(FlxG.save.data.colorblindFilter != null) {
 			colorblindFilter = FlxG.save.data.colorblindFilter;

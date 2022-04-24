@@ -1918,7 +1918,7 @@ class PlayState extends MusicBeatState
 					oldNote = null;
 
 				var swagNote:Note;
-				if (gottaHitNote) swagNote = new Note(daStrumTime, daNoteData, oldNote, boyfriend.noteSkin) else if (ClientPrefs.ignoreSkin) swagNote= new Note(daStrumTime, daNoteData, oldNote, "NOTE_assets") else swagNote= new Note(daStrumTime, daNoteData, oldNote, dad.noteSkin);
+				if (ClientPrefs.ignoreSkin) swagNote= new Note(daStrumTime, daNoteData, oldNote, "NOTE_assets") else if (gottaHitNote) swagNote = new Note(daStrumTime, daNoteData, oldNote, boyfriend.noteSkin) else swagNote= new Note(daStrumTime, daNoteData, oldNote, dad.noteSkin);
 				swagNote.mustPress = gottaHitNote;
 				swagNote.sustainLength = songNotes[2];
 				swagNote.gfNote = (section.gfSection && (songNotes[1]<4));
@@ -4041,6 +4041,19 @@ class PlayState extends MusicBeatState
 				if (!cpuControlled) {
 					if(ClientPrefs.hitSounds != "OFF") FlxG.sound.play(Paths.sound("hitsounds/" + ClientPrefs.hitSounds.toLowerCase()));
 				}
+				if (ClientPrefs.showNoteTimeHitbox && !cpuControlled)
+					{
+						var hitSprite:FlxSprite = new FlxSprite(note.x + (note.width / 2) - 4, note.y + (note.height / 2) - 4).makeGraphic(8,8,FlxColor.WHITE);
+						hitSprite.cameras = [camHUD];
+						hitSprite.scrollFactor.set();
+						add(hitSprite);
+						new FlxTimer().start(1, function(_) {
+							FlxTween.tween(hitSprite, {alpha:0}, 0.25, {onComplete: function(_) {
+								hitSprite.kill();
+								hitSprite.destroy();
+							}});
+						});
+					}
 				combo += 1;
 				popUpScore(note);
 				if(combo > 9999) combo = 9999;

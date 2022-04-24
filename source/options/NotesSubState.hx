@@ -62,6 +62,7 @@ class NotesSubState extends MusicBeatSubstate
 		grpNotes = new FlxTypedGroup<FlxSprite>();
 		add(grpNotes);
 		grpNumbers = new FlxTypedGroup<Alphabet>();
+		var animations:Array<String> = ['purple', 'blue', 'green', 'red'];
 		add(grpNumbers);
 
 		for (i in 0...ClientPrefs.arrowHSV.length) {
@@ -72,12 +73,8 @@ class NotesSubState extends MusicBeatSubstate
 				grpNumbers.add(optionText);
 			}
 
-			var note:FlxSprite = new FlxSprite(posX, yPos);
-			note.frames = Paths.getSparrowAtlas('NOTE_assets');
-			//if (ClientPrefs.monoNotes) note.frames = Paths.getSparrowAtlas('NOTE_assets_monochrome');
-			var animations:Array<String> = ['purple0', 'blue0', 'green0', 'red0'];
-			note.animation.addByPrefix('idle', animations[i]);
-			note.animation.play('idle');
+			trace(animations[i]);
+			var note:FlxSprite = new FlxSprite(posX, yPos).loadGraphic(Paths.image(animations[i]));
 			note.antialiasing = ClientPrefs.globalAntialiasing;
 			grpNotes.add(note);
 

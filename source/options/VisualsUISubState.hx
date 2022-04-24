@@ -36,21 +36,28 @@ class VisualsUISubState extends BaseOptionsMenu
 			false); //Default value
 		addOption(option);
 
-		var option:Option = new Option('StepMania style animations', //Name
+		var option:Option = new Option('Show Note Timing Hitbox', //Name
+			'If checked, shows a small hitbox where your note hit in relation to the receptor.', //Description
+			'showNoteTimeHitbox', //Save data variable name
+			'bool', //Variable type
+			false); //Default value
+		addOption(option);
+
+		var option:Option = new Option('StepMania Style Animations', //Name
 			'If checked, StepMania style judgement animations will be used.', //Description
 			'smJudges', //Save data variable name
 			'bool', //Variable type
 			false); //Default value
 		addOption(option);
 
-		var option:Option = new Option('Smaller icons', //Name
+		var option:Option = new Option('Smaller Icons', //Name
 			'If checked, the health icons will be smaler on the health bar.', //Description
 			'tinyIcons', //Save data variable name
 			'bool', //Variable type
 			false); //Default value
 		addOption(option);
 
-		var option:Option = new Option('Icon head bop style: ',
+		var option:Option = new Option('Icon Head Bop Style: ',
 			"The style in which the icon heads will bop to the beat.",
 			'bopStyle',
 			'string',
