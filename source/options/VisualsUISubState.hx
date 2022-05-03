@@ -96,9 +96,16 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		var option:Option = new Option('Score Text Zoom on Hit',
-			"If unchecked, disables the Score text zooming\neverytime you hit a note.",
+		var option:Option = new Option('Score Bar Zoom on Hit',
+			"If unchecked, disables the Score bar zooming\neverytime you hit a note.",
 			'scoreZoom',
+			'bool',
+			true);
+		addOption(option);
+
+		var option:Option = new Option('Show Score Bar',
+			"If unchecked, disables the Score bar.",
+			'showScoreBar',
 			'bool',
 			true);
 		addOption(option);

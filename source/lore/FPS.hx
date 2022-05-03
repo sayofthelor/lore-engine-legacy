@@ -55,8 +55,8 @@ class FPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = #if debug "DEV BUILD\n" + #end currentFPS + " FPS\nLore " + MainMenuState.loreEngineVersion;
-			if (ClientPrefs.fpsPosition == "TOP LEFT") this.y = 3 else this.y = #if debug Lib.application.window.height-52#else Lib.application.window.height - 39#end;
+			text = currentFPS + " FPS\nLore v" + MainMenuState.loreEngineVersion #if debug + " (debug)" #end;
+			if (ClientPrefs.fpsPosition == "TOP LEFT") this.y = 3 else this.y = Lib.application.window.height - 39;
 		}
 
 		cacheCount = currentCount;

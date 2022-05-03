@@ -1064,7 +1064,8 @@ class PlayState extends MusicBeatState
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
-		scoreTxt.visible = !ClientPrefs.hideHud;
+		if (ClientPrefs.hideHud) scoreTxt.visible = false;
+		if (!ClientPrefs.showScoreBar) scoreTxt.visible = false;
 		add(scoreTxt);
 
 		strumLineNotes.cameras = [camHUD];

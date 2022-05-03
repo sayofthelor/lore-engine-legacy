@@ -26,7 +26,7 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	public static var loreEngineVersion:String = '0.3.1';
+	public static var loreEngineVersion:String = '0.3.5';
 	public static var psychEngineVersion:String = '0.5.2'; // to maximize compatibility
 	public static var curSelected:Int = 0;
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Main_Checker'), 0.2, 0.2, true, true);
@@ -132,7 +132,7 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Lore " + loreEngineVersion + " x Funkin' " + Application.current.meta.get('version')#if debug + " (DEV BUILD, FOR BUG REPORTS PLEASE COMPILE IN RELEASE MODE!)"#end, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Lore v" + loreEngineVersion + " x Funkin' v" + Application.current.meta.get('version')#if debug + " (debug)"#end, 12);
 		versionShit.scrollFactor.set();
 		versionShit.screenCenter(X);
 		versionShit.setFormat("assets/fonts/vcr.ttf", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);

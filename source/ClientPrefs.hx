@@ -19,6 +19,7 @@ class ClientPrefs {
 	public static var optimization:Bool = false;
 	public static var ignoreSkin:Bool = false;
 	public static var fpsPosition:String = "BOTTOM LEFT";
+	public static var showScoreBar:Bool = true;
 	public static var bopStyle:String = "LORE";
 	public static var colorblindFilter:String = "OFF";
 	public static var tinyIcons:Bool = false;
@@ -114,6 +115,7 @@ class ClientPrefs {
 		FlxG.save.data.framerate = framerate;
 		FlxG.save.data.hitSounds = hitSounds;
 		FlxG.save.data.optimization = optimization;
+		FlxG.save.data.showScoreBar = showScoreBar;
 		FlxG.save.data.ignoreSkin = ignoreSkin;
 		FlxG.save.data.fpsPosition = fpsPosition;
 		FlxG.save.data.monoNotes = monoNotes;
@@ -184,6 +186,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.middleScroll != null) {
 			middleScroll = FlxG.save.data.middleScroll;
+		}
+		if(FlxG.save.data.showScoreBar != null) {
+			showScoreBar = FlxG.save.data.showScoreBar;
 		}
 		if(FlxG.save.data.showFPS != null) {
 			showFPS = FlxG.save.data.showFPS;
