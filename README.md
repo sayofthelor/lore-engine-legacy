@@ -3,9 +3,12 @@ Psych Engine with some neat tweaks.
 
 Extra features include:
 - Improved frame rate counter
-- Aesthetic improvements
+- Aesthetic and customizability improvements
+- Colorblind mode
 - Hitsounds
-- Basic support for two vocal tracks (still sorta buggy)
+- Dual vocal track support
+- Added LUA functions
+- Custom noteskins per-character
 - More to come!
 
 NOTE: If you're running on Linux, please use the official Linux build instead of running the game through Wine. FNF has quite a few input, stuttering, and minimization issues with Wine at the moment.
@@ -19,3 +22,5 @@ See [wiki page](https://github.com/sayofthelor/lore-engine/wiki/How-to-compile-L
 * sayofthelor - woman
 ### Special Thanks
 * Keoiki - PE Note Splash Animations
+* Yoshubs - PE Input System
+* bbpanzu - Misc PE Contributions
