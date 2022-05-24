@@ -19,3 +19,5 @@ export/*
 !.vscode/launch.json
 !.vscode/extensions.json
 leakertrack.txt
+crash-dialog/build
+crash-built/

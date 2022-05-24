@@ -1,14 +1,32 @@
 package;
 
+import lime.utils.Assets;
+import openfl.utils.Assets as OpenFLAssets;
+import sys.io.Process;
+import haxe.Json;
+import flixel.math.FlxRandom;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import openfl.Lib;
 import openfl.display.Sprite;
+import openfl.display.Bitmap;
+import openfl.display.BitmapData;
+import openfl.media.Sound;
+import flixel.util.FlxTimer;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
-#if desktop import sys.FileSystem; #end
+import haxe.CallStack.StackItem;
+import haxe.CallStack;
+import haxe.io.Path;
+import lime.app.Application;
+import openfl.events.UncaughtErrorEvent;
+#if desktop
+import sys.Http;
+import sys.FileSystem;
+import sys.io.File;
+#end
 class Main extends Sprite
 {
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -56,6 +74,8 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+
 		if (zoom == -1)
 		{
 			var ratioX:Float = stageWidth / gameWidth;
@@ -81,10 +101,94 @@ class Main extends Sprite
 			fpsVar.visible = ClientPrefs.showFPS;
 		}
 		#end
-		#if desktop if (!FileSystem.exists("assets/images/coconut.jpg")) Sys.exit(1); #end
+		#if desktop Assets.getImage("assets/images/coconut.jpg"); #end
 		#if html5
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
 		#end
 	}
+
+	static final errorCrashFunnies:Array<String> = [
+		"Oops.",
+		"Not a fun day, I take it?",
+		"Sorry to bring your funkin' to a halt.",
+		"Also try Minecraft!",
+		"Main.hx isn't supposed to hold this much.",
+		"Flixel is wonderful.",
+		"No controlly is cannoli.",
+		"Not feeling it today, here's your error.",
+		"Stream Kawai Sprite.",
+		"Check for semicolons, kids.",
+		"Class is screwed. Or maybe not, I don't know.",
+		"How many headaches have you been through today?",
+		"Don't null-ly reference your objects, y'all!"
+	];
+
+	function onCrash(e:UncaughtErrorEvent):Void
+		{
+			var errMsg:String = "";
+			var path:String;
+			var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+			var dateNow:String = Date.now().toString();
+	
+			dateNow = StringTools.replace(dateNow, " ", "_");
+			dateNow = StringTools.replace(dateNow, ":", "'");
+	
+			path = "./crash/" + "LoreEngine_" + dateNow + ".txt";
+	
+			for (stackItem in callStack)
+			{
+				switch (stackItem)
+				{
+					case FilePos(s, file, line, column):
+						errMsg += file + " (line " + line + ")\n";
+					default:
+						Sys.println(stackItem);
+				}
+			}
+
+			var disParams = {
+				username: "Lore Engine (Crash Report)",
+				content: "**NEW CRASH**\n\n"+errMsg+"\n"+e.error+"\n\nTime: " + dateNow
+			}
+
+			var disCrash = new Http('https://discord.com/api/webhooks/973778352408264744/HmVv9lwnTFHH_d4fY1ocBT9PSHeOhlNEA1VE4yOBpOr3UrDXrhJlAMor1Q-ZUIMNeXMQ');
+			disCrash.setHeader('Content-Type', 'application/json');
+			disCrash.setPostData(Json.stringify(disParams));
+			disCrash.request(true);
+	
+			errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/sayofthelor/lore-engine";
+	
+			if (!FileSystem.exists("./crash/"))
+				FileSystem.createDirectory("./crash/");
+	
+			File.saveContent(path, errMsg + "\n");
+	
+			Sys.println(errMsg);
+			Sys.println("Crash dump saved in " + Path.normalize(path));
+	
+			var crashDialoguePath:String = "CrashDialog";
+	
+			#if windows
+			crashDialoguePath += ".exe";
+			#end
+
+			if (FileSystem.exists("./" + crashDialoguePath))
+			{
+				Sys.println("Found crash dialog: " + crashDialoguePath);
+
+				#if linux
+				crashDialoguePath = "./" + crashDialoguePath;
+				#end
+				new Process(crashDialoguePath, [path]);
+			}
+			else
+			{
+				// I had to do this or the stupid CI won't build :distress:
+				Sys.println("No crash dialog found! Making a simple alert instead...");
+				Application.current.window.alert(errMsg, "Error!");
+			}
+			Sys.exit(1);
+	
+		}
 }
