@@ -103,8 +103,8 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		var option:Option = new Option('Show Score Bar',
-			"If unchecked, disables the Score bar.",
+		var option:Option = new Option('Show Score Text',
+			"If unchecked, disables the Score text.",
 			'showScoreBar',
 			'bool',
 			true);
