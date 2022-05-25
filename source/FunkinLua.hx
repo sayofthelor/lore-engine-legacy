@@ -11,7 +11,6 @@ import flixel.FlxG;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
-import flixel.math.FlxRandom;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.system.FlxSound;
 import flixel.util.FlxTimer;
@@ -565,9 +564,6 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "split", function(str:String, delim:String):Array<String> {
 			return str.split(delim);
-		});
-		Lua_helper.add_callback(lua, "flixelRandom", function(min:Float, max:Float):Float {
-			return new FlxRandom().float(min, max);
 		});
 		Lua_helper.add_callback(lua, "noteTweenScaleY", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
 			cancelTween(tag);
