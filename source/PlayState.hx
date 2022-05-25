@@ -464,12 +464,26 @@ class PlayState extends MusicBeatState
 					var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 					add(bg);
 
-				phillyLightsColors = [0xFF31A2FD, 0xFF31FD8C, 0xFFFB33F5, 0xFFFD4531, 0xFFFBA633];
-				phillyWindow = new BGSprite('philly/window', city.x, city.y, 0.3, 0.3);
-				phillyWindow.setGraphicSize(Std.int(phillyWindow.width * 0.85));
-				phillyWindow.updateHitbox();
-				add(phillyWindow);
-				phillyWindow.alpha = 0;
+					var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
+					stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+					stageFront.updateHitbox();
+					add(stageFront);
+					if(!ClientPrefs.lowQuality) {
+						var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
+						stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
+						stageLight.updateHitbox();
+						add(stageLight);
+						var stageLight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
+						stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
+						stageLight.updateHitbox();
+						stageLight.flipX = true;
+						add(stageLight);
+
+						var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
+						stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+						stageCurtains.updateHitbox();
+						add(stageCurtains);
+					}
 
 				case 'spooky': //Week 2
 					if(!ClientPrefs.lowQuality) {
@@ -485,8 +499,8 @@ class PlayState extends MusicBeatState
 					halloweenWhite.blend = ADD;
 
 					//PRECACHE SOUNDS
-					CoolUtil.precacheSound('thunder_1');
-					CoolUtil.precacheSound('thunder_2');
+					precacheList.set('thunder_1', 'sound');
+					precacheList.set('thunder_2', 'sound');
 
 				case 'philly': //Week 3
 					if(!ClientPrefs.lowQuality) {
@@ -499,17 +513,12 @@ class PlayState extends MusicBeatState
 					city.updateHitbox();
 					add(city);
 
-					phillyCityLights = new FlxTypedGroup<BGSprite>();
-					add(phillyCityLights);
-
-					for (i in 0...5)
-					{
-						var light:BGSprite = new BGSprite('philly/win' + i, city.x, city.y, 0.3, 0.3);
-						light.visible = false;
-						light.setGraphicSize(Std.int(light.width * 0.85));
-						light.updateHitbox();
-						phillyCityLights.add(light);
-					}
+					phillyLightsColors = [0xFF31A2FD, 0xFF31FD8C, 0xFFFB33F5, 0xFFFD4531, 0xFFFBA633];
+					phillyWindow = new BGSprite('philly/window', city.x, city.y, 0.3, 0.3);
+					phillyWindow.setGraphicSize(Std.int(phillyWindow.width * 0.85));
+					phillyWindow.updateHitbox();
+					add(phillyWindow);
+					phillyWindow.alpha = 0;
 
 					if(!ClientPrefs.lowQuality) {
 						var streetBehind:BGSprite = new BGSprite('philly/behindTrain', -40, 50);
@@ -520,11 +529,10 @@ class PlayState extends MusicBeatState
 					add(phillyTrain);
 
 					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
-					CoolUtil.precacheSound('train_passes');
 					FlxG.sound.list.add(trainSound);
 
-					var street:BGSprite = new BGSprite('philly/street', -40, 50);
-					add(street);
+					phillyStreet = new BGSprite('philly/street', -40, 50);
+					add(phillyStreet);
 
 				case 'limo': //Week 4
 					var skyBG:BGSprite = new BGSprite('limo/limoSunset', -120, -50, 0.1, 0.1);
@@ -566,7 +574,7 @@ class PlayState extends MusicBeatState
 						resetLimoKill();
 
 						//PRECACHE SOUND
-						CoolUtil.precacheSound('dancerdeath');
+						precacheList.set('dancerdeath', 'sound');
 					}
 
 					limo = new BGSprite('limo/limoDrive', -120, 550, 1, 1, ['Limo stage'], true);
@@ -607,7 +615,7 @@ class PlayState extends MusicBeatState
 
 					santa = new BGSprite('christmas/santa', -840, 150, 1, 1, ['santa idle in fear']);
 					add(santa);
-					CoolUtil.precacheSound('Lights_Shut_off');
+					precacheList.set('Lights_Shut_off', 'sound');
 
 				case 'mallEvil': //Week 5 - Winter Horrorland
 					var bg:BGSprite = new BGSprite('christmas/evilBG', -400, -500, 0.2, 0.2);
@@ -715,8 +723,6 @@ class PlayState extends MusicBeatState
 						bg.antialiasing = false;
 						add(bg);
 					}
-			}
-				}
 
 				case 'tank': //Week 7 - Ugh, Guns, Stress
 					var sky:BGSprite = new BGSprite('tankSky', -400, -400, 0, 0);
@@ -775,6 +781,7 @@ class PlayState extends MusicBeatState
 					if(!ClientPrefs.lowQuality) foregroundSprites.add(new BGSprite('tank4', 1300, 900, 1.5, 1.5, ['fg']));
 					foregroundSprites.add(new BGSprite('tank5', 1620, 700, 1.5, 1.5, ['fg']));
 					if(!ClientPrefs.lowQuality) foregroundSprites.add(new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']));
+			}
 		}
 
 		switch(Paths.formatToSongPath(SONG.song))
@@ -810,14 +817,12 @@ class PlayState extends MusicBeatState
 		#end
 
 		if(curStage == 'philly') {
-			phillyCityLightsEvent = new FlxTypedGroup<BGSprite>();
 			for (i in 0...5)
 			{
 				var light:BGSprite = new BGSprite('philly/win' + i, -10, 0, 0.3, 0.3);
 				light.visible = false;
 				light.setGraphicSize(Std.int(light.width * 0.85));
 				light.updateHitbox();
-				if (!ClientPrefs.optimization) phillyCityLightsEvent.add(light);
 			}
 		}
 
@@ -867,25 +872,6 @@ class PlayState extends MusicBeatState
 		if(doPush) 
 			luaArray.push(new FunkinLua(luaFile));
 		#end
-
-		if(!modchartSprites.exists('blammedLightsBlack')) { //Creates blammed light black fade in case you didn't make your own
-			blammedLightsBlack = new ModchartSprite(FlxG.width * -0.5, FlxG.height * -0.5);
-			blammedLightsBlack.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
-			blammedLightsBlack.scale.x = blammedLightsBlack.scale.y = 10;
-			var position:Int = members.indexOf(gfGroup);
-			if(members.indexOf(boyfriendGroup) < position) {
-				position = members.indexOf(boyfriendGroup);
-			} else if(members.indexOf(dadGroup) < position) {
-				position = members.indexOf(dadGroup);
-			}
-			insert(position, blammedLightsBlack);
-
-			blammedLightsBlack.wasAdded = true;
-			modchartSprites.set('blammedLightsBlack', blammedLightsBlack);
-		}
-		if(curStage == 'philly') insert(members.indexOf(blammedLightsBlack) + 1, phillyCityLightsEvent);
-		blammedLightsBlack = modchartSprites.get('blammedLightsBlack');
-		blammedLightsBlack.alpha = 0.0;
 
 		var gfVersion:String = SONG.gfVersion;
 		if(gfVersion == null || gfVersion.length < 1)
@@ -3277,123 +3263,7 @@ class PlayState extends MusicBeatState
 				if(Math.isNaN(value) || value < 1) value = 1;
 				gfSpeed = value;
 
-			case 'Blammed Lights':
-				if (!ClientPrefs.optimization) {
-					var lightId:Int = Std.parseInt(value1);
-					if(Math.isNaN(lightId)) lightId = 0;
-
-					var chars:Array<Character> = [boyfriend, gf, dad];
-					if(lightId > 0 && curLightEvent != lightId) {
-						if(lightId > 5) lightId = FlxG.random.int(1, 5, [curLightEvent]);
-
-						var color:Int = 0xffffffff;
-						switch(lightId) {
-							case 1: //Blue
-								color = 0xff31a2fd;
-							case 2: //Green
-								color = 0xff31fd8c;
-							case 3: //Pink
-								color = 0xfff794f7;
-							case 4: //Red
-								color = 0xfff96d63;
-							case 5: //Orange
-								color = 0xfffba633;
-						}
-						curLightEvent = lightId;
-
-						if(blammedLightsBlack.alpha == 0) {
-							if(blammedLightsBlackTween != null) {
-								blammedLightsBlackTween.cancel();
-							}
-							blammedLightsBlackTween = FlxTween.tween(blammedLightsBlack, {alpha: 1}, 1, {ease: FlxEase.quadInOut,
-								onComplete: function(twn:FlxTween) {
-									blammedLightsBlackTween = null;
-								}
-							});
-
-							for (char in chars) {
-								if(char.colorTween != null) {
-									char.colorTween.cancel();
-								}
-								char.colorTween = FlxTween.color(char, 1, FlxColor.WHITE, color, {onComplete: function(twn:FlxTween) {
-									char.colorTween = null;
-								}, ease: FlxEase.quadInOut});
-							}
-						} else {
-							if(blammedLightsBlackTween != null) {
-								blammedLightsBlackTween.cancel();
-							}
-							blammedLightsBlackTween = null;
-							blammedLightsBlack.alpha = 1;
-
-							for (char in chars) {
-								if(char.colorTween != null) {
-									char.colorTween.cancel();
-								}
-								char.colorTween = null;
-							}
-							dad.color = color;
-							boyfriend.color = color;
-							if (gf != null)
-								gf.color = color;
-						}
-							
-						if(curStage == 'philly') {
-							if(phillyCityLightsEvent != null) {
-								phillyCityLightsEvent.forEach(function(spr:BGSprite) {
-									spr.visible = false;
-								});
-								phillyCityLightsEvent.members[lightId - 1].visible = true;
-								phillyCityLightsEvent.members[lightId - 1].alpha = 1;
-							}
-						}
-					} else {
-						if(blammedLightsBlack.alpha != 0) {
-							if(blammedLightsBlackTween != null) {
-								blammedLightsBlackTween.cancel();
-							}
-							blammedLightsBlackTween = FlxTween.tween(blammedLightsBlack, {alpha: 0}, 1, {ease: FlxEase.quadInOut,
-								onComplete: function(twn:FlxTween) {
-									blammedLightsBlackTween = null;
-								}
-							});
-						}
-
-						if(curStage == 'philly') {
-							phillyCityLights.forEach(function(spr:BGSprite) {
-								spr.visible = false;
-							});
-							phillyCityLightsEvent.forEach(function(spr:BGSprite) {
-								spr.visible = false;
-							});
-
-							var memb:FlxSprite = phillyCityLightsEvent.members[curLightEvent - 1];
-							if(memb != null) {
-								memb.visible = true;
-								memb.alpha = 1;
-								if(phillyCityLightsEventTween != null)
-									phillyCityLightsEventTween.cancel();
-
-								phillyCityLightsEventTween = FlxTween.tween(memb, {alpha: 0}, 1, {onComplete: function(twn:FlxTween) {
-									phillyCityLightsEventTween = null;
-								}, ease: FlxEase.quadInOut});
-							}
-						}
-
-						for (char in chars) {
-							if(char.colorTween != null) {
-								char.colorTween.cancel();
-							}
-							char.colorTween = FlxTween.color(char, 1, char.color, FlxColor.WHITE, {onComplete: function(twn:FlxTween) {
-								char.colorTween = null;
-							}, ease: FlxEase.quadInOut});
-						}
-
-						curLight = 0;
-						curLightEvent = 0;
-					}
-				}
-
+		
 			case 'Philly Glow':
 				var lightId:Int = Std.parseInt(value1);
 				if(Math.isNaN(lightId)) lightId = 0;

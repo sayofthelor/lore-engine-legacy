@@ -215,7 +215,8 @@ class EditorPlayState extends MusicBeatState
 		FlxG.sound.music.pause();
 		FlxG.sound.music.onComplete = endSong;
 		vocals.pause();
-		vocals.volume = 0;
+		vocals2.pause();
+		vocals.volume = vocals2.volume = 0;
 
 		var songData = PlayState.SONG;
 		Conductor.changeBPM(songData.bpm);
@@ -325,9 +326,10 @@ class EditorPlayState extends MusicBeatState
 		FlxG.sound.music.time = startPos;
 		FlxG.sound.music.play();
 		FlxG.sound.music.volume = 1;
-		vocals.volume = 1;
-		vocals.time = startPos;
+		vocals.volume = vocals2.volume = 1;
+		vocals.time = vocals2.time = startPos;
 		vocals.play();
+		vocals2.play();
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int
@@ -344,6 +346,7 @@ class EditorPlayState extends MusicBeatState
 		{
 			FlxG.sound.music.pause();
 			vocals.pause();
+			vocals2.pause();
 			LoadingState.loadAndSwitchState(new editors.ChartingState());
 		}
 		checker.x -= 0.45 / (ClientPrefs.framerate / 60);
@@ -461,6 +464,8 @@ class EditorPlayState extends MusicBeatState
 				{
 					if (PlayState.SONG.needsVoices)
 						vocals.volume = 1;
+					if (PlayState.SONG.needsVoices2)
+						vocals2.volume = 1;
 
 					var time:Float = 0.15;
 					if(daNote.isSustainNote && !daNote.animation.curAnim.name.endsWith('end')) {
@@ -497,7 +502,7 @@ class EditorPlayState extends MusicBeatState
 
 							if(!daNote.ignoreNote) {
 								songMisses++;
-								if (FileSystem.exists(Paths.voices2(PlayState.SONG.song))) vocals2.volume = 0 else vocals.volume = 0;
+								if (PlayState.SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 							}
 						}
 					}
@@ -522,6 +527,7 @@ class EditorPlayState extends MusicBeatState
 	override public function onFocus():Void
 	{
 		vocals.play();
+		vocals2.play();
 
 		super.onFocus();
 	}
@@ -529,6 +535,7 @@ class EditorPlayState extends MusicBeatState
 	override public function onFocusLost():Void
 	{
 		vocals.pause();
+		vocals2.pause();
 
 		super.onFocusLost();
 	}
@@ -555,11 +562,13 @@ class EditorPlayState extends MusicBeatState
 	function resyncVocals():Void
 	{
 		vocals.pause();
+		vocals2.pause();
 
 		FlxG.sound.music.play();
 		Conductor.songPosition = FlxG.sound.music.time;
-		vocals.time = Conductor.songPosition;
+		vocals.time = vocals2.time = Conductor.songPosition;
 		vocals.play();
+		vocals2.play();
 	}
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
@@ -738,7 +747,8 @@ class EditorPlayState extends MusicBeatState
 					}
 
 					note.wasGoodHit = true;
-					vocals.volume = 0;
+					if (PlayState.SONG.needsVoices) vocals.volume = 0;
+					else vocals2.volume = 0;
 
 					if (!note.isSustainNote)
 					{
@@ -768,6 +778,7 @@ class EditorPlayState extends MusicBeatState
 
 			note.wasGoodHit = true;
 			vocals.volume = 1;
+			vocals2.volume = 1;
 
 			if (!note.isSustainNote)
 			{
@@ -786,7 +797,7 @@ class EditorPlayState extends MusicBeatState
 		songMisses++;
 
 		FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
-		if (FileSystem.exists(Paths.voices2(PlayState.SONG.song))) vocals2.volume = 0 else vocals.volume = 0;
+		if (PlayState.SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 	}
 
 	var COMBO_X:Float = 400;
@@ -1075,6 +1086,8 @@ class EditorPlayState extends MusicBeatState
 		FlxG.sound.music.stop();
 		vocals.stop();
 		vocals.destroy();
+		vocals2.stop();
+		vocals2.destroy();
 
 		if(!ClientPrefs.controllerMode)
 		{

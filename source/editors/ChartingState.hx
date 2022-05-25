@@ -144,6 +144,7 @@ class ChartingState extends MusicBeatState
 	var tempBpm:Float = 0;
 
 	var vocals:FlxSound = null;
+	var vocals2:FlxSound = null;
 
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
@@ -1195,7 +1196,7 @@ class ChartingState extends MusicBeatState
 			ignoreWarnings = FlxG.save.data.ignoreWarnings;
 		};
 
-		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + 120, check_mute_inst.y, null, null, "Mute Vocals (in editor)", 100);
+		var check_mute_vocals = new FlxUICheckBox(check_mute_inst.x + 120, check_mute_inst.y - 25, null, null, "Mute Vocals (in editor)", 100);
 		check_mute_vocals.checked = false;
 		check_mute_vocals.callback = function()
 		{
@@ -1209,7 +1210,21 @@ class ChartingState extends MusicBeatState
 			}
 		};
 
-		playSoundBf = new FlxUICheckBox(check_mute_inst.x, check_mute_vocals.y + 30, null, null, 'Play Sound (Boyfriend notes)', 100,
+		var check_mute_vocals2 = new FlxUICheckBox(check_mute_inst.x + 120, check_mute_inst.y, null, null, "Mute Vocals2 (in editor)", 100);
+		check_mute_vocals2.checked = false;
+		check_mute_vocals2.callback = function()
+		{
+			if(vocals2 != null) {
+				var vol:Float = 1;
+
+				if (check_mute_vocals2.checked)
+					vol = 0;
+
+				vocals2.volume = vol;
+			}
+		};
+
+		playSoundBf = new FlxUICheckBox(check_mute_inst.x, check_mute_inst.y + 30, null, null, 'Play Sound (Boyfriend notes)', 100,
 			function() {
 				FlxG.save.data.chart_playSoundBf = playSoundBf.checked;
 			}
@@ -1272,6 +1287,7 @@ class ChartingState extends MusicBeatState
 		tab_group_chart.add(voicesVolume);
 		tab_group_chart.add(check_mute_inst);
 		tab_group_chart.add(check_mute_vocals);
+		tab_group_chart.add(check_mute_vocals2);
 		tab_group_chart.add(check_vortex);
 		tab_group_chart.add(check_warnings);
 		tab_group_chart.add(playSoundBf);
@@ -1288,12 +1304,16 @@ class ChartingState extends MusicBeatState
 		}
 
 		var file:Dynamic = Paths.voices(currentSongName);
-		var file2:Dynamic;
-		if (FileSystem.exists(Paths.voices2(currentSongName))) file2 = Paths.voices2(currentSongName);
+		var file2:Dynamic = Paths.voices2(currentSongName);
 		vocals = new FlxSound();
+		vocals2 = new FlxSound();
 		if (Std.isOfType(file, Sound) || OpenFlAssets.exists(file)) {
 			vocals.loadEmbedded(file);
 			FlxG.sound.list.add(vocals);
+		}
+		if (Std.isOfType(file2, Sound) || OpenFlAssets.exists(file2)) {
+			vocals2.loadEmbedded(file2);
+			FlxG.sound.list.add(vocals2);
 		}
 		generateSong();
 		FlxG.sound.music.pause();
@@ -1314,11 +1334,16 @@ class ChartingState extends MusicBeatState
 				vocals.pause();
 				vocals.time = 0;
 			}
+			if(vocals2 != null) {
+				vocals2.pause();
+				vocals2.time = 0;
+			}
 			changeSection();
 			curSection = 0;
 			updateGrid();
 			updateSectionUI();
 			vocals.play();
+			vocals2.play();
 		};
 	}
 
@@ -1409,6 +1434,7 @@ class ChartingState extends MusicBeatState
 			else if (wname == 'voices_volume')
 			{
 				vocals.volume = nums.value;
+				vocals2.volume = nums.value;
 			}
 		}
 		else if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
@@ -1618,6 +1644,7 @@ class ChartingState extends MusicBeatState
 				PlayState.SONG = _song;
 				FlxG.sound.music.stop();
 				if(vocals != null) vocals.stop();
+				if(vocals2 != null) vocals2.stop();
 
 				//if(_song.stage == null) _song.stage = stageDropDown.selectedLabel;
 				StageData.loadDirectory(_song);
@@ -1682,6 +1709,7 @@ class ChartingState extends MusicBeatState
 				{
 					FlxG.sound.music.pause();
 					if(vocals != null) vocals.pause();
+					if(vocals2 != null) vocals.pause();
 				}
 				else
 				{
@@ -1690,6 +1718,12 @@ class ChartingState extends MusicBeatState
 						vocals.pause();
 						vocals.time = FlxG.sound.music.time;
 						vocals.play();
+					}
+					if(vocals2 != null) {
+						vocals2.play();
+						vocals2.pause();
+						vocals2.time = FlxG.sound.music.time;
+						vocals2.play();
 					}
 					FlxG.sound.music.play();
 				}
@@ -1710,6 +1744,10 @@ class ChartingState extends MusicBeatState
 				if(vocals != null) {
 					vocals.pause();
 					vocals.time = FlxG.sound.music.time;
+				}
+				if(vocals2 != null) {
+					vocals2.pause();
+					vocals2.time = FlxG.sound.music.time;
 				}
 			}
 
@@ -1737,6 +1775,11 @@ class ChartingState extends MusicBeatState
 				if(vocals != null) {
 					vocals.pause();
 					vocals.time = FlxG.sound.music.time;
+				}
+				
+				if(vocals2 != null) {
+					vocals2.pause();
+					vocals2.time = FlxG.sound.music.time;
 				}
 			}
 			
@@ -1830,6 +1873,10 @@ class ChartingState extends MusicBeatState
 				if(vocals != null) {
 					vocals.pause();
 					vocals.time = FlxG.sound.music.time;
+				}
+				if(vocals2 != null) {
+					vocals2.pause();
+					vocals2.time = FlxG.sound.music.time;
 				}
 				
 				var dastrum = 0;
@@ -1996,12 +2043,12 @@ class ChartingState extends MusicBeatState
 		#if MODS_ALLOWED
 		if(FileSystem.exists(Paths.modFolders('songs/' + currentSongName + '/Voices.ogg'))) {
 			audioBuffers[1] = AudioBuffer.fromFile(Paths.modFolders('songs/' + currentSongName + '/Voices.ogg'));
-			//trace('Custom vocals found');
 		} else { #end
 			var leVocals:String = Paths.getPath(currentSongName + '/Voices.' + Paths.SOUND_EXT, SOUND, 'songs');
 			if (OpenFlAssets.exists(leVocals)) { //Vanilla voices
 			
 				audioBuffers[1] = AudioBuffer.fromFile('./' + leVocals.substr(6));
+				
 				//trace('Voices found, LETS FUCKING GOOOO');
 			}
 		#if MODS_ALLOWED
@@ -2164,6 +2211,10 @@ class ChartingState extends MusicBeatState
 			vocals.pause();
 			vocals.time = FlxG.sound.music.time;
 		}
+		if(vocals2 != null) {
+			vocals2.pause();
+			vocals2.time = FlxG.sound.music.time;
+		}
 		updateCurStep();
 
 		updateGrid();
@@ -2197,6 +2248,10 @@ class ChartingState extends MusicBeatState
 				if(vocals != null) {
 					vocals.pause();
 					vocals.time = FlxG.sound.music.time;
+				}
+				if(vocals2 != null) {
+					vocals2.pause();
+					vocals2.time = FlxG.sound.music.time;
 				}
 				updateCurStep();
 			}

@@ -2,7 +2,6 @@ package;
 
 import lime.utils.Assets;
 import openfl.utils.Assets as OpenFLAssets;
-import sys.io.Process;
 import haxe.Json;
 import flixel.math.FlxRandom;
 import flixel.graphics.FlxGraphic;
@@ -23,6 +22,7 @@ import haxe.io.Path;
 import lime.app.Application;
 import openfl.events.UncaughtErrorEvent;
 #if desktop
+import sys.io.Process;
 import sys.Http;
 import sys.FileSystem;
 import sys.io.File;
@@ -74,7 +74,7 @@ class Main extends Sprite
 		var stageWidth:Int = Lib.current.stage.stageWidth;
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+		#if desktop Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash); #end
 
 		if (zoom == -1)
 		{
@@ -108,6 +108,7 @@ class Main extends Sprite
 		#end
 	}
 
+	#if desktop
 	static final errorCrashFunnies:Array<String> = [
 		"Oops.",
 		"Not a fun day, I take it?",
@@ -191,4 +192,5 @@ class Main extends Sprite
 			Sys.exit(1);
 	
 		}
+		#end
 }

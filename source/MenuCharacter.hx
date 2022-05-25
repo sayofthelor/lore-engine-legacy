@@ -5,6 +5,7 @@ import flixel.FlxSprite;
 import sys.io.File;
 import sys.FileSystem;
 #end
+import lime.utils.Assets;
 import haxe.Json;
 
 typedef MenuCharacterFile = {

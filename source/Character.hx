@@ -1,14 +1,22 @@
 package;
 
 import animateatlas.AtlasFrameMaker;
+import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.effects.FlxTrail;
+import flixel.animation.FlxBaseAnimation;
+import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.tweens.FlxTween;
+import flixel.util.FlxSort;
+import Section.SwagSection;
 #if MODS_ALLOWED
 import sys.io.File;
 import sys.FileSystem;
 #end
+import openfl.utils.AssetType;
 import openfl.utils.Assets;
 import haxe.Json;
+import haxe.format.JsonParser;
 
 using StringTools;
 
@@ -49,6 +57,7 @@ class Character extends FlxSprite
 	public var heyTimer:Float = 0;
 	public var specialAnim:Bool = false;
 	public var animationNotes:Array<Dynamic> = [];
+	public var noteSkin:String = "NOTE_assets";
 	public var stunned:Bool = false;
 	public var singDuration:Float = 4; //Multiplier of how long a character holds the sing pose
 	public var idleSuffix:String = '';
@@ -67,7 +76,6 @@ class Character extends FlxSprite
 	public var imageFile:String = '';
 	public var jsonScale:Float = 1;
 	public var noAntialiasing:Bool = false;
-	public var noteSkin:String = "NOTE_assets";
 	public var originalFlipX:Bool = false;
 	public var healthColorArray:Array<Int> = [255, 0, 0];
 
@@ -75,7 +83,12 @@ class Character extends FlxSprite
 	public function new(x:Float, y:Float, ?character:String = 'bf', ?isPlayer:Bool = false)
 	{
 		super(x, y);
+
+		#if (haxe >= "4.0.0")
 		animOffsets = new Map();
+		#else
+		animOffsets = new Map<String, Array<Dynamic>>();
+		#end
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 		antialiasing = ClientPrefs.globalAntialiasing;
@@ -223,7 +236,6 @@ class Character extends FlxSprite
 					animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
 					animation.getByName('singLEFT').frames = oldRight;
 				}
-
 				// IF THEY HAVE MISS ANIMATIONS??
 				if (animation.getByName('singLEFTmiss') != null && animation.getByName('singRIGHTmiss') != null)
 				{
