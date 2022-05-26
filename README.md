@@ -1,6 +1,8 @@
 # Friday Night Funkin' Lore Engine
 Psych Engine with some neat tweaks.
 
+Originally intended for an FNF mod for my Chemistry class, but that never came through.
+
 Extra features include:
 - Improved frame rate counter
 - Aesthetic and customizability improvements
