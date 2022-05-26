@@ -8,12 +8,10 @@ import haxe.ui.macros.ComponentMacros;
 import sys.io.File;
 import sys.io.Process;
 
-class Main
+class CrashDialog
 {
-	/** 
-	 * Okay so since I am not funny (prolly never will), feel free to add a PR
-	 * extending this list of quotes, or raise an issue if you're too lazy
-	 * to do it. Thanks -gedehari
+	/*
+		massive thanks to gedehari for the crash dialog code
 	 */
 	static final quotes:Array<String> = [
 		"Oops.",

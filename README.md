@@ -28,7 +28,7 @@ use haxe 4.2.4 bozos
 ![image](https://user-images.githubusercontent.com/35895538/169087904-20bbacd5-8290-4766-a11c-d608d8d2093d.png)
 
 ## Compilation:
-See [wiki page](https://github.com/sayofthelor/lore-engine/wiki/How-to-compile-Lore-Engine).
+See [wiki page](https://github.com/sayofthelor/lore-engine/wiki/How-to-compile-Lore-Engine). (Lore Engine has some specific things you need to install, so *please* read this page.)
 ## Credits:
 * Shadow Mario - PE Coding
 * RiverOaken - PE Arts and Animations

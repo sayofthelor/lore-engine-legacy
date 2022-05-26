@@ -168,11 +168,8 @@ class Main extends Sprite
 			Sys.println(errMsg);
 			Sys.println("Crash dump saved in " + Path.normalize(path));
 	
-			var crashDialoguePath:String = "CrashDialog";
+			var crashDialoguePath:String = "CrashDialog" #if windows + ".exe" #end;
 	
-			#if windows
-			crashDialoguePath += ".exe";
-			#end
 
 			if (FileSystem.exists("./" + crashDialoguePath))
 			{

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+    <meta title="Lore Engine Crash Dialog" package="CrashDialog" version="1.0.0" company="" />
+    <app main="CrashDialog" file="CrashDialog" path="build/openfl" />
+
+    <window background="#FFFFFF" fps="60" resizable="false"/>
+    <window width="500" height="440" if="desktop" />
+    <window width="0" height="0" if="html5" />
+
+    <!-- classpath, haxe libs -->
+    <source path="src" />
+
+    <haxelib name="openfl" />
+    <haxelib name="actuate" />
+
+    <haxelib name="haxeui-core" />
+    <haxelib name="haxeui-openfl" />
+</project>
