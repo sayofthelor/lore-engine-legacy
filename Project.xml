@@ -182,13 +182,10 @@
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
-
-	<section if="BUILD_CRASH_DIALOG">
-		<section unless="debug">
-			<postbuild cmd="build-crash-dialog.bat" if="windows" />
-			<postbuild cmd="./build-crash-dialog.sh" if="linux" />
-			<postbuild cmd="./build-crash-dialog-mac.sh" if="mac" />
-		</section>
+	<section if="release">
+		<postbuild cmd="build-crash-dialog.bat" if="windows" />
+		<postbuild cmd="./build-crash-dialog.sh" if="linux" />
+		<postbuild cmd="./build-crash-dialog-mac.sh" if="mac" />
 	</section>
 
 	<!-- _________________________________ Custom _______________________________ -->
