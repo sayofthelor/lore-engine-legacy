@@ -77,24 +77,24 @@ class PlayState extends MusicBeatState
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	public var laneunderlay:FlxSprite;
 	public static var ratingStuff:Array<Dynamic> = [
-		['D', 0.46], // 0 to 45
-		['D+', 0.51], // 45 to 50
-		['C-', 0.56], // 50 to 55
-		['C', 0.59], // 55 to 58
-		['C+', 0.65], // 58 to 64
-		['B-', 0.69], //64 to 68
-		['B', 0.73], // 68 to 72
-		['B+', 0.77], // 72 to 76
-		['A-', 0.81], // 76 to 80
-		['A', 0.84], // 80 to 83
-		['A+', 0.87], // 83 to 86
-		['S-', 0.9], // 86 to 89
-		['S', 0.93], // 89 to 92
-		['S+', 0.95], // 92 to 94
-		['S++', 0.97], // 94 to 96
-		['S+++', 0.99], // 96 to 98
-		['S++++', 1], // 98 to 99.99
-		['P', 1] // 100
+		['You Suck!', 0.46], // 0 to 45
+		['F', 0.51], // 45 to F50
+		['D-', 0.56], // 50 to 55
+		['D', 0.59], // 55 to 58
+		['D+', 0.65], // 58 to 64
+		['C-', 0.69], //64 to 68
+		['C', 0.73], // 68 to 72
+		['C+', 0.77], // 72 to 76
+		['B-', 0.81], // 76 to 80
+		['B', 0.84], // 80 to 83
+		['B+', 0.87], // 83 to 86
+		['A-', 0.9], // 86 to 89
+		['A', 0.93], // 89 to 92
+		['A+', 0.95], // 92 to 94
+		['S', 0.97], // 94 to 96
+		['S+', 0.99], // 96 to 98
+		['S++', 1], // 98 to 99.99
+		['Perfect', 1] // 100
 	];
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
