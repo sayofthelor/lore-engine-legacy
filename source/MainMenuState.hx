@@ -21,15 +21,27 @@ import lime.app.Application;
 import Achievements;
 import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
+import haxe.Json;
 
 using StringTools;
 
+typedef MenuJSONData = {
+	menuItemX:Dynamic,
+	menuColor:Int,
+	menuFlashColor:Int,
+	checkerColor:Int,
+	showChecker:Bool,
+	showVersionText:Bool,
+	overrideVersionText:Bool,
+	customVersionText:String
+}
 class MainMenuState extends MusicBeatState
 {
-	public static var loreEngineVersion:String = '0.4.1';
+	var menuJson:MenuJSONData = Json.parse(Paths.getTextFromFile("data/menu.json"));
+	public static var loreEngineVersion:String = '0.5a';
 	public static var psychEngineVersion:String = '0.5.2'; // to maximize compatibility
 	public static var curSelected:Int = 0;
-	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Main_Checker'), 0.2, 0.2, true, true);
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'), 0.2, 0.2, true, true);
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
@@ -75,7 +87,9 @@ class MainMenuState extends MusicBeatState
 		persistentUpdate = persistentDraw = true;
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image('menuBG'));
+		var bg:FlxSprite = new FlxSprite(-80);
+		if (menuJson.menuColor == -1) bg.loadGraphic(Paths.image('menuBG')) else bg.loadGraphic(Paths.image('menuDesat'));
+		if (menuJson.menuColor != -1) bg.color = Std.int(menuJson.menuColor);
 		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
@@ -95,12 +109,13 @@ class MainMenuState extends MusicBeatState
 		magenta.screenCenter();
 		magenta.visible = false;
 		magenta.antialiasing = ClientPrefs.globalAntialiasing;
-		magenta.color = 0xFFfd719b;
+		if (menuJson.menuFlashColor == -1) magenta.color = 0xFFfd719b else magenta.color = menuJson.menuFlashColor;
 		add(magenta);
 		
 		// magenta.scrollFactor.set();
-		add(checker);
+		if (menuJson.showChecker) add(checker);
 		checker.scrollFactor.set(0.07,0);
+		if (menuJson.checkerColor == -1) checker.color = 0xFFfd719b else checker.color = menuJson.checkerColor;
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
 
@@ -120,7 +135,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
-			menuItem.screenCenter(X);
+			if (menuJson.menuItemX == "center") menuItem.screenCenter(X) else menuItem.x = Std.int(menuJson.menuItemX);
 			menuItems.add(menuItem);
 			var scr:Float = (optionShit.length - 4) * 0.135;
 			if(optionShit.length < 6) scr = 0;
@@ -134,9 +149,10 @@ class MainMenuState extends MusicBeatState
 
 		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, "Lore v" + loreEngineVersion + " x Funkin' v" + Application.current.meta.get('version')#if debug + " (debug)"#end, 12);
 		versionShit.scrollFactor.set();
+		if (menuJson.overrideVersionText && menuJson.customVersionText != "") versionShit.text = menuJson.customVersionText;
 		versionShit.screenCenter(X);
 		versionShit.setFormat("assets/fonts/vcr.ttf", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
+		if (menuJson.showVersionText) add(versionShit);
 
 		// NG.core.calls.event.logEvent('swag').send();
 
@@ -266,7 +282,7 @@ class MainMenuState extends MusicBeatState
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
-			spr.screenCenter(X);
+			if (menuJson.menuItemX == "center") spr.screenCenter(X) else spr.x = Std.int(menuJson.menuItemX);
 		});
 	}
 

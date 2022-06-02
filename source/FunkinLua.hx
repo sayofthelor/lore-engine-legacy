@@ -8,6 +8,7 @@ import llua.Convert;
 
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
+import lime.app.Application;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.text.FlxText;
@@ -435,6 +436,20 @@ class FunkinLua {
 		});
 
 		// gay ass tweens
+		Lua_helper.add_callback(lua, "windowTweenX", function(tag:String, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			PlayState.instance.modchartTweens.set(tag, FlxTween.tween(Application.current.window, {x:value}, duration, {ease: getFlxEaseByString(ease), onComplete: function(twn) {
+				PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+				PlayState.instance.modchartTweens.remove(tag);
+			}}));
+		});
+		Lua_helper.add_callback(lua, "windowTweenY", function(tag:String, value:Dynamic, duration:Float, ease:String) {
+			cancelTween(tag);
+			PlayState.instance.modchartTweens.set(tag, FlxTween.tween(Application.current.window, {y:value}, duration, {ease: getFlxEaseByString(ease), onComplete: function(twn) {
+				PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+				PlayState.instance.modchartTweens.remove(tag);
+			}}));
+		});
 		Lua_helper.add_callback(lua, "doTweenX", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String) {
 			var penisExam:Dynamic = tweenShit(tag, vars);
 			if(penisExam != null) {
