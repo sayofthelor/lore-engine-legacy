@@ -136,7 +136,7 @@ class EditorPlayState extends MusicBeatState
 			vocals2 = new FlxSound();
 
 		generateSong(PlayState.SONG.song);
-		#if LUA_ALLOWED
+		#if (LUA_ALLOWED && MODS_ALLOWED)
 		for (notetype in noteTypeMap.keys()) {
 			var luaToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.lua');
 			if(sys.FileSystem.exists(luaToLoad)) {

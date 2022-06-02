@@ -584,7 +584,7 @@ class TitleState extends MusicBeatState
 					addMoreText('presents');
 				// credTextShit.text += '\npresent...';
 				// credTextShit.addText();
-				case 4:
+				case 5:
 					deleteCoolText();
 				// credTextShit.visible = false;
 				// credTextShit.text = 'In association \nwith';
@@ -595,20 +595,20 @@ class TitleState extends MusicBeatState
 					addMoreText('newgrounds', -40);
 					ngSpr.visible = true;
 				// credTextShit.text += '\nNewgrounds';
-				case 8:
+				case 9:
 					deleteCoolText();
 					ngSpr.visible = false;
 				// credTextShit.visible = false;
 
 				// credTextShit.text = 'Shoutouts Tom Fulp';
 				// credTextShit.screenCenter();
-				case 9:
+				case 10:
 					createCoolText([curWacky[0]]);
 				// credTextShit.visible = true;
-				case 11:
+				case 12:
 					addMoreText(curWacky[1]);
 				// credTextShit.text += '\nlmao';
-				case 12:
+				case 13:
 					deleteCoolText();
 					addMoreText('Friday');
 				// credTextShit.visible = false;
@@ -623,7 +623,7 @@ class TitleState extends MusicBeatState
 				case 15:
 					addMoreText('Lore Engine'); // credTextShit.text += '\nFunkin';
 
-				case 16:
+				case 17:
 					skipIntro();
 			}
 		}

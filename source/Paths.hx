@@ -6,7 +6,8 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 import lime.utils.Assets;
-#if MODS_ALLOWED
+import flixel.FlxSprite;
+#if sys
 import sys.io.File;
 import sys.FileSystem;
 #end
@@ -379,9 +380,8 @@ class Paths
 		#else
 		{
 			var folder:String = '';
-			#if html5
 			if(path == 'songs') folder = 'songs:';
-			#end
+
 			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(folder + getPath('$path/$key.$SOUND_EXT', SOUND, library)));
 		}
 		#end
