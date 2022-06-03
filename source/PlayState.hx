@@ -3858,8 +3858,14 @@ class PlayState extends MusicBeatState
 	var comboSpr:FlxSprite;
 	var ratingTween:FlxTween;
 	var numGroup:FlxGroup = new FlxGroup();
+	var noteDiffGroup:FlxTypedGroup<FlxText> = new FlxTypedGroup<FlxText>();
+	var noteDiffTween:FlxTween = null;
+	var diffTween2:FlxTween = null;
 	private function popUpScore(note:Note = null):Void
 	{
+		noteDiffGroup.destroy();
+		noteDiffGroup = new FlxTypedGroup<FlxText>();
+		add(noteDiffGroup);
 		if (ClientPrefs.smJudges) lastRating.destroy();
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 		//trace(noteDiff, ' ' + Math.abs(note.strumTime - Conductor.songPosition));
@@ -3970,6 +3976,46 @@ class PlayState extends MusicBeatState
 			rating.velocity.x -= FlxG.random.int(0, 10); 
 		}
 
+		var noteDiffText:FlxText = new FlxText(0, 0, 0, Highscore.floorDecimal(noteDiff, 2) + " ms", 20);
+		noteDiffText.x = coolText.x + ClientPrefs.comboOffset[4];
+		noteDiffText.screenCenter(Y);
+		noteDiffText.y -= 30 + ClientPrefs.comboOffset[5];
+		noteDiffText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		noteDiffText.cameras = [camHUD];
+		noteDiffText.borderSize = 1.25;
+		switch(daRating) {
+			case "shit" | "bad":
+				noteDiffText.color = FlxColor.RED;
+			case "good":
+				noteDiffText.color = FlxColor.GREEN;
+			case "sick":
+				noteDiffText.color = FlxColor.CYAN;
+			case "marv":
+				noteDiffText.color = FlxColor.YELLOW;
+		}
+		noteDiffGroup.add(noteDiffText);
+		noteDiffText.y = noteDiffText.y - 10;
+		var nty = noteDiffText.y + 10;
+		if (noteDiffTween != null) noteDiffTween.cancel();
+		if (diffTween2 != null && diffTween2.active)
+			{
+				diffTween2.cancel();
+				diffTween2 = null;
+			}
+
+		noteDiffTween = FlxTween.tween(noteDiffText, {y: nty}, 0.2, {
+			onComplete: function(twn:FlxTween) {
+				if (noteDiffText.alive && noteDiffTween==twn) new FlxTimer().start(0.5, function(_) diffTween2 = FlxTween.tween(noteDiffText, {alpha: 0}, 0.2, {
+					ease: FlxEase.circOut,
+					onComplete: function(_) {
+						noteDiffText.destroy();
+						noteDiffTween = null;
+						diffTween2 = null;
+					}
+				}));
+			}
+		});
+		
 		comboSpr = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
 		comboSpr.cameras = [camHUD];
 		comboSpr.screenCenter();
