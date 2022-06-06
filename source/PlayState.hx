@@ -3993,7 +3993,6 @@ class PlayState extends MusicBeatState
 			case "marv":
 				noteDiffText.color = FlxColor.YELLOW;
 		}
-		noteDiffGroup.add(noteDiffText);
 		noteDiffText.y = noteDiffText.y - 10;
 		var nty = noteDiffText.y + 10;
 		if (noteDiffTween != null) noteDiffTween.cancel();
@@ -4090,6 +4089,7 @@ class PlayState extends MusicBeatState
 			numGroup = new FlxGroup();
 			add(numGroup);
 		}
+		noteDiffGroup.add(noteDiffText);
 		for (i in seperatedScore)
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));

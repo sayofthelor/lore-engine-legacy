@@ -116,11 +116,12 @@ class NoteOffsetState extends MusicBeatState
 		noteDiffText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.YELLOW, CENTER, OUTLINE, FlxColor.BLACK);
 		noteDiffText.cameras = [camHUD];
 		noteDiffText.borderSize = 1.25;
-		add(noteDiffText);
 
 		comboNums = new FlxSpriteGroup();
 		comboNums.cameras = [camHUD];
 		add(comboNums);
+
+		add(noteDiffText);
 
 		var seperatedScore:Array<Int> = [];
 		for (i in 0...3)
