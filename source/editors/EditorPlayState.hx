@@ -18,6 +18,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
 import flixel.util.FlxSort;
+import Conductor.Rating;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
@@ -40,6 +41,7 @@ class EditorPlayState extends MusicBeatState
 
 	public var notes:FlxTypedGroup<Note>;
 	public var unspawnNotes:Array<Note> = [];
+	public var totalNotesHit:Float = 0.0;
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'), 0.2, 0.2, true, true);
 	var generatedMusic:Bool = false;
 	var vocals:FlxSound;
@@ -67,6 +69,7 @@ class EditorPlayState extends MusicBeatState
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
 
+	public var ratingsData:Array<Rating> = [];
 	public static var instance:EditorPlayState;
 	public var laneunderlay:FlxSprite;
 
@@ -94,6 +97,30 @@ class EditorPlayState extends MusicBeatState
 			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_up')),
 			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_right'))
 		];
+
+		ratingsData.push(new Rating('marv')); //default rating
+
+		var rating:Rating = new Rating('sick');
+		rating.score = 350;
+		ratingsData.push(rating);
+
+		var rating:Rating = new Rating('good');
+		rating.ratingMod = 0.7;
+		rating.score = 200;
+		rating.noteSplash = false;
+		ratingsData.push(rating);
+
+		var rating:Rating = new Rating('bad');
+		rating.ratingMod = 0.4;
+		rating.score = 100;
+		rating.noteSplash = false;
+		ratingsData.push(rating);
+
+		var rating:Rating = new Rating('shit');
+		rating.ratingMod = 0;
+		rating.score = 50;
+		rating.noteSplash = false;
+		ratingsData.push(rating);
 		
 		strumLine = new FlxSprite(ClientPrefs.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X, 50).makeGraphic(FlxG.width, 10);
 		if(ClientPrefs.downScroll) strumLine.y = FlxG.height - 150;
@@ -807,8 +834,14 @@ class EditorPlayState extends MusicBeatState
 	var ratingTween:FlxTween;
 	var numGroup:FlxGroup = new FlxGroup();
 	var comboSpr:FlxSprite = new FlxSprite();
+	var noteDiffGroup:FlxTypedGroup<FlxText> = new FlxTypedGroup<FlxText>();
+	var noteDiffTween:Null<FlxTween> = null;
+	var diffTween2:Null<FlxTween> = null;
 	private function popUpScore(note:Note = null):Void
 		{
+			noteDiffGroup.destroy();
+			noteDiffGroup = new FlxTypedGroup<FlxText>();
+			add(noteDiffGroup);
 			if (ClientPrefs.smJudges) lastRating.destroy();
 			var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 			//trace(noteDiff, ' ' + Math.abs(note.strumTime - Conductor.songPosition));
@@ -824,31 +857,17 @@ class EditorPlayState extends MusicBeatState
 			//
 			
 			rating = new FlxSprite();
-			var score:Int = 350;
 	
 			//tryna do MS based judgment due to popular demand
-			var daRating:String = Conductor.judgeNote(note, noteDiff);
+			var daRating:Rating = Conductor.judgeNote(note, noteDiff);
+			var ratingNum:Int = 0;
 	
-			switch (daRating)
-			{
-				case "shit": // shit
-					note.ratingMod = 0;
-					score = 50;
-				case "bad": // bad
-					note.ratingMod = 0.5;
-					score = 100;
-				case "good": // good
-					note.ratingMod = 0.75;
-					score = 200;
-				case "sick": // sick
-					note.ratingMod = 1;
-				case "marv": // marv
-					note.ratingMod = 1;
-					score = 400;
-			}
-			note.rating = daRating;
+			totalNotesHit += daRating.ratingMod;
+			note.ratingMod = daRating.ratingMod;
+			if(!note.ratingDisabled) daRating.increase();
+			note.rating = daRating.name;
 	
-			if((daRating == 'sick' || daRating == 'marv') && !note.noteSplashDisabled)
+			if(daRating.noteSplash && !note.noteSplashDisabled)
 			{
 				spawnNoteSplashOnNote(note);
 			}
@@ -866,7 +885,7 @@ class EditorPlayState extends MusicBeatState
 			var pixelShitPart2:String = '';
 	
 	
-			rating.loadGraphic(Paths.image(pixelShitPart1 + daRating + pixelShitPart2));
+			rating.loadGraphic(Paths.image(pixelShitPart1 + daRating.name + pixelShitPart2));
 			rating.screenCenter();
 			rating.x = coolText.x - 40;
 			rating.y -= 60;
@@ -888,6 +907,44 @@ class EditorPlayState extends MusicBeatState
 			comboSpr.visible = (!ClientPrefs.hideHud);
 			comboSpr.x += ClientPrefs.comboOffset[0];
 			comboSpr.y -= ClientPrefs.comboOffset[1];
+
+			var noteDiffText:FlxText = new FlxText(0, 0, 0, Highscore.floorDecimal(noteDiff, 2) + " ms", 20);
+			noteDiffText.x = coolText.x + ClientPrefs.comboOffset[4];
+			noteDiffText.screenCenter(Y);
+			noteDiffText.y -= 30 + ClientPrefs.comboOffset[5];
+			noteDiffText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+			noteDiffText.borderSize = 1.25;
+			switch(daRating.name) {
+				case "shit" | "bad":
+					noteDiffText.color = FlxColor.RED;
+				case "good":
+					noteDiffText.color = FlxColor.GREEN;
+				case "sick":
+					noteDiffText.color = FlxColor.CYAN;
+				case "marv":
+					noteDiffText.color = FlxColor.YELLOW;
+			}
+			noteDiffText.y = noteDiffText.y - 10;
+			var nty = noteDiffText.y + 10;
+			if (noteDiffTween != null) noteDiffTween.cancel();
+			if (diffTween2 != null && diffTween2.active)
+				{
+					diffTween2.cancel();
+					diffTween2 = null;
+				}
+	
+			noteDiffTween = FlxTween.tween(noteDiffText, {y: nty}, 0.2, {
+				onComplete: function(twn:FlxTween) {
+					if (noteDiffText.alive && noteDiffTween==twn) new FlxTimer().start(0.5, function(_) diffTween2 = FlxTween.tween(noteDiffText, {alpha: 0}, 0.2, {
+						ease: FlxEase.circOut,
+						onComplete: function(_) {
+							noteDiffText.destroy();
+							noteDiffTween = null;
+							diffTween2 = null;
+						}
+					}));
+				}
+			});
 	
 	
 			comboSpr.velocity.x += FlxG.random.int(1, 10);
@@ -943,6 +1000,7 @@ class EditorPlayState extends MusicBeatState
 				numGroup = new FlxGroup();
 				add(numGroup);
 			}
+			noteDiffGroup.add(noteDiffText);
 			for (i in seperatedScore)
 			{
 				var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
