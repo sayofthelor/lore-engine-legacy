@@ -5,6 +5,8 @@ import openfl.text.TextFormat;
 import flixel.FlxG;
 import openfl.Lib;
 
+using StringTools;
+
 // Credits to OpenFL repository for the original code
 #if !openfl_debug
 @:fileXml('tags="haxe,release"')
@@ -55,7 +57,7 @@ class FPS extends TextField
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = currentFPS + " FPS" + (ClientPrefs.showLore ? "\nLore v" + MainMenuState.loreEngineVersion : "") #if debug + " (debug)" #end;
+			text = currentFPS + " FPS" + (ClientPrefs.showLore ? "\nLore v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) : "") #if debug + " (debug)" #end;
 			if (ClientPrefs.fpsPosition == "TOP LEFT") this.y = 3 else this.y = Lib.application.window.height - ((text.split("\n").length * 20) - (ClientPrefs.showLore ? 1 : -2));
 		}
 
