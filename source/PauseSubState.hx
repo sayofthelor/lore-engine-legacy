@@ -260,6 +260,9 @@ class PauseSubState extends MusicBeatSubstate
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
+					#if LUA_ALLOWED
+					PlayState.instance.callOnLuas('changeDiscordClientID', ["936072337219026954"]);
+					#end
 					if(PlayState.isStoryMode) {
 						MusicBeatState.switchState(new StoryMenuState());
 					} else {

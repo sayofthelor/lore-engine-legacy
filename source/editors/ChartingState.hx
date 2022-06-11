@@ -252,8 +252,8 @@ class ChartingState extends MusicBeatState
 		add(waveformSprite);
 
 		var eventIcon:FlxSprite = new FlxSprite(-GRID_SIZE - 5, -90).loadGraphic(Paths.image('eventArrow'));
-		leftIcon = new HealthIcon('bf');
-		rightIcon = new HealthIcon('dad');
+		leftIcon = new HealthIcon('bf', false, true);
+		rightIcon = new HealthIcon('dad', false, false);
 		eventIcon.scrollFactor.set(1, 1);
 		leftIcon.scrollFactor.set(1, 1);
 		rightIcon.scrollFactor.set(1, 1);
@@ -2450,24 +2450,24 @@ class ChartingState extends MusicBeatState
 
 	function updateHeads():Void
 	{
-		var healthIconP1:String = loadHealthIconFromCharacter(_song.player1);
-		var healthIconP2:String = loadHealthIconFromCharacter(_song.player2);
+		var healthIconP1:Array<Dynamic> = loadHealthIconFromCharacter(_song.player1);
+		var healthIconP2:Array<Dynamic> = loadHealthIconFromCharacter(_song.player2);
 
 		if (_song.notes[curSection].mustHitSection)
 		{
-			leftIcon.changeIcon(healthIconP1);
-			rightIcon.changeIcon(healthIconP2);
-			if (_song.notes[curSection].gfSection) leftIcon.changeIcon('gf');
+			leftIcon.changeIcon(healthIconP1[0], healthIconP1[1]);
+			rightIcon.changeIcon(healthIconP2[0], healthIconP2[1]);
+			if (_song.notes[curSection].gfSection) leftIcon.changeIcon('gf', false);
 		}
 		else
 		{
-			leftIcon.changeIcon(healthIconP2);
-			rightIcon.changeIcon(healthIconP1);
-			if (_song.notes[curSection].gfSection) leftIcon.changeIcon('gf');
+			leftIcon.changeIcon(healthIconP2[0], healthIconP2[1]);
+			rightIcon.changeIcon(healthIconP1[0], healthIconP1[1]);
+			if (_song.notes[curSection].gfSection) leftIcon.changeIcon('gf', false);
 		}
 	}
 
-	function loadHealthIconFromCharacter(char:String) {
+	function loadHealthIconFromCharacter(char:String):Array<Dynamic> {
 		var characterPath:String = 'characters/' + char + '.json';
 		#if MODS_ALLOWED
 		var path:String = Paths.modFolders(characterPath);
@@ -2491,7 +2491,7 @@ class ChartingState extends MusicBeatState
 		#end
 
 		var json:Character.CharacterFile = cast Json.parse(rawJson);
-		return json.healthicon;
+		return [json.healthicon, json.hasVictory];
 	}
 
 	function updateNoteUI():Void

@@ -1,5 +1,6 @@
 package;
 
+import haxe.Constraints.Function;
 import Sys.sleep;
 import discord_rpc.DiscordRpc;
 
@@ -93,9 +94,19 @@ class DiscordClient
 	}
 
 	#if LUA_ALLOWED
+	public static var changeable:Null<Function> = null;
 	public static function addLuaCallbacks(lua:State) {
 		Lua_helper.add_callback(lua, "changePresence", function(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float) {
 			changePresence(details, state, smallImageKey, hasStartTimestamp, endTimestamp);
+		});
+		Lua_helper.add_callback(lua, "changeDiscordClientID", function(id:String) {
+			DiscordRpc.shutdown();
+			DiscordRpc.start({
+				clientID: id,
+				onReady: onReady,
+				onError: onError,
+				onDisconnected: onDisconnected
+			});
 		});
 	}
 	#end

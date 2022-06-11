@@ -2236,6 +2236,8 @@ class FunkinLua {
 			return str.endsWith(end);
 		});
 
+		DiscordClient.addLuaCallbacks(lua);
+
 		call('onCreate', []);
 		#end
 	}

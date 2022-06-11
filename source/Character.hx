@@ -27,6 +27,7 @@ typedef CharacterFile = {
 	var sing_duration:Float;
 	var healthicon:String;
 	var noteSkin:String;
+	var hasVictory:Bool;
 	var position:Array<Float>;
 	var camera_position:Array<Float>;
 
@@ -58,6 +59,7 @@ class Character extends FlxSprite
 	public var specialAnim:Bool = false;
 	public var animationNotes:Array<Dynamic> = [];
 	public var noteSkin:String = "NOTE_assets";
+	public var hasVictory:Bool = false;
 	public var stunned:Bool = false;
 	public var singDuration:Float = 4; //Multiplier of how long a character holds the sing pose
 	public var idleSuffix:String = '';
@@ -180,6 +182,7 @@ class Character extends FlxSprite
 
 				healthIcon = json.healthicon;
 				noteSkin = json.noteSkin;
+				hasVictory = json.hasVictory;
 				singDuration = json.sing_duration;
 				flipX = !!json.flip_x;
 				if(json.no_antialiasing) {

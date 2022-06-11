@@ -401,12 +401,13 @@ class WeekEditorState extends MusicBeatState
 
 				for (i in 0...splittedText.length) {
 					if(i >= weekFile.songs.length) { //Add new song
-						weekFile.songs.push([splittedText[i], 'dad', [146, 113, 253]]);
+						weekFile.songs.push([splittedText[i], 'dad', [146, 113, 253], false]);
 					} else { //Edit song
 						weekFile.songs[i][0] = splittedText[i];
 						if(weekFile.songs[i][1] == null || weekFile.songs[i][1]) {
 							weekFile.songs[i][1] = 'dad';
 							weekFile.songs[i][2] = [146, 113, 253];
+							weekFile.songs[i][3] = false;
 						}
 					}
 				}
@@ -673,7 +674,7 @@ class WeekEditorFreeplayState extends MusicBeatState
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
 		if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
 			weekFile.songs[curSelected][1] = iconInputText.text;
-			iconArray[curSelected].changeIcon(iconInputText.text);
+			iconArray[curSelected].changeIcon(iconInputText.text, weekFile.songs[curSelected][3]);
 		} else if(id == FlxUINumericStepper.CHANGE_EVENT && (sender is FlxUINumericStepper)) {
 			if(sender == bgColorStepperR || sender == bgColorStepperG || sender == bgColorStepperB) {
 				updateBG();
@@ -726,9 +727,19 @@ class WeekEditorFreeplayState extends MusicBeatState
 		{
 			weekFile.hideFreeplay = hideFreeplayCheckbox.checked;
 		};
+
+		var victoryIconCheckbox:FlxUICheckBox = new FlxUICheckBox(pasteColor.x, iconInputText.y + 30, null, null,  "Has Victory Icon", 100);
+		victoryIconCheckbox.checked = weekFile.songs[curSelected][3];
+		victoryIconCheckbox.callback = function()
+		{
+			weekFile.songs[curSelected][3] = victoryIconCheckbox.checked;
+			iconArray[curSelected].changeIcon(weekFile.songs[curSelected][1], victoryIconCheckbox.checked);
+		};
+
 		
 		tab_group.add(new FlxText(10, bgColorStepperR.y - 18, 0, 'Selected background Color R/G/B:'));
 		tab_group.add(new FlxText(10, iconInputText.y - 18, 0, 'Selected icon:'));
+		tab_group.add(victoryIconCheckbox);
 		tab_group.add(bgColorStepperR);
 		tab_group.add(bgColorStepperG);
 		tab_group.add(bgColorStepperB);

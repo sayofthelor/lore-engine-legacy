@@ -22,6 +22,23 @@ class VisualsUISubState extends BaseOptionsMenu
 		#if debug option.description += "\nUses a lot of resources in debug mode, so it's recommended to lower the FPS cap."; #end
 		option.onChange = lore.Colorblind.updateFilter;
 		addOption(option);
+
+		var option:Option = new Option('Show Lore Engine Watermark',
+			"If unchecked, the Lore Engine watermark and version number will not be in the FPS counter.",
+			'showLore',
+			'bool',
+			true);
+		addOption(option);
+
+		var option:Option = new Option('Scroll Underlay Opacity', //Name
+			'Opacity of underlay of notes', //Description
+			'underlayAlpha', //Save data variable name
+			'int', //Variable type
+			0); //Default value
+		option.minValue = 0;
+		option.maxValue = 100;
+		addOption(option);
+
 		var option:Option = new Option('Note Splashes',
 			"If unchecked, hitting \"Sick!\" notes won't show particles.",
 			'noteSplashes',
