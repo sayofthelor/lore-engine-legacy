@@ -33,7 +33,7 @@ class HealthIcon extends FlxSprite
 		else changeIcon('bf');
 	}
 
-	private var actualDimensions:Int = [150, 150];
+	private var actualDimensions:Array<Int> = [150, 150];
 	public function changeIcon(char:String, ?hasVictory:Bool = false) {
 		if(this.char != char) {
 			var name:String = 'icons/' + char;
