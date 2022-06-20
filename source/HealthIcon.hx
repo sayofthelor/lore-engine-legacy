@@ -33,7 +33,7 @@ class HealthIcon extends FlxSprite
 		else changeIcon('bf');
 	}
 
-	private var iconOffsets:Array<Float> = [0, 0];
+	private var actualDimensions:Int = [150, 150];
 	public function changeIcon(char:String, ?hasVictory:Bool = false) {
 		if(this.char != char) {
 			var name:String = 'icons/' + char;
@@ -43,8 +43,12 @@ class HealthIcon extends FlxSprite
 
 			loadGraphic(file); //Load stupidly first for getting the file size
 			loadGraphic(file, true, Math.floor(hasVictory ? width / 3 : width / 2), Math.floor(height)); //Then load it fr
-			iconOffsets[0] = (width - 150) / 2;
-			iconOffsets[1] = (width - 150) / 2;
+
+			var existingScale = [scale.x, scale.y];
+			scale.set(1,1);
+			actualDimensions = [Math.floor(width), Math.floor(height)];
+			scale.set(existingScale[0], existingScale[1]);
+
 			updateHitbox();
 
 			animation.add(char, (hasVictory ? [0, 1, 2] : [0, 1]), 0, false, isPlayer);
@@ -61,8 +65,8 @@ class HealthIcon extends FlxSprite
 	override function updateHitbox()
 	{
 		super.updateHitbox();
-		offset.x = iconOffsets[0];
-		offset.y = iconOffsets[1];
+		offset.x = (width - actualDimensions[0]) / 2;
+		offset.y = (height - actualDimensions[1]) / 2;
 	}
 
 	public function getCharacter():String {
