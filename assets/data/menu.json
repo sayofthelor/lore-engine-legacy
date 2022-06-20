@@ -1,0 +1,12 @@
+{
+	"WARNING":"DOES NOT WORK PROPERLY YET",
+    "menuItemX":"center",
+    "menuColor":"-1", 
+    "menuFlashColor":"-1",
+    "checkerColor":"-1",
+    "showChecker":true,
+    "showVersionText":true,
+    "overrideVersionText":false,
+    "customVersionText":"",
+    "comments":"All custom colors are -1 for default color, 0xFFFFFFFF syntax for custom color."
+}
