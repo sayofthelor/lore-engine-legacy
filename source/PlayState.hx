@@ -2971,7 +2971,7 @@ class PlayState extends MusicBeatState
 		} else if(ratingName == '?') {
 			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: 0% [' + ratingName + ']';
 		} else {
-			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + ' [' + ratingName + ' | ' ratingFC + ']';//peeps wanted no integer rating
+			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + ' [' + ratingName + ' | ' + ratingFC + ']';//peeps wanted no integer rating
 		}
 
 
