@@ -275,6 +275,8 @@ class PlayState extends MusicBeatState
 	public var skipCountdown:Bool = false;
 	var songLength:Float = 0;
 
+	public var headsBop:Bool = true;
+
 	public var boyfriendCameraOffset:Array<Float> = null;
 	public var opponentCameraOffset:Array<Float> = null;
 	public var girlfriendCameraOffset:Array<Float> = null;
@@ -4571,6 +4573,7 @@ class PlayState extends MusicBeatState
 
 	function opponentNoteHit(note:Note):Void
 	{
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE") iconP1.scale.set(iconSize * 1.2, iconSize * 1.2);
 		if(note.noteType == 'Hey!' && dad.animOffsets.exists('hey')) {
 			dad.playAnim('hey', true);
 			dad.specialAnim = true;
@@ -4622,6 +4625,7 @@ class PlayState extends MusicBeatState
 
 	function goodNoteHit(note:Note):Void
 	{
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE") iconP2.scale.set(iconSize * 1.2, iconSize * 1.2);
 		if (!note.wasGoodHit)
 		{
 			if(cpuControlled && (note.ignoreNote || note.hitCausesMiss)) return;
@@ -5046,13 +5050,13 @@ class PlayState extends MusicBeatState
 			camHUD.zoom += 0.03 * camZoomingMult;
 		}
 		var ret:Dynamic = callOnLuas('onHeadBop', []);
-		if(ret != FunkinLua.Function_Stop && !ClientPrefs.optimization) switch (ClientPrefs.bopStyle) {
+		if(ret != FunkinLua.Function_Stop && !ClientPrefs.optimization && headsBop) switch (ClientPrefs.bopStyle) {
 			case "LORE":
-				if (curBeat % 2 != 0) iconP1.scale.set(iconBigGo, iconBigGo) else iconP1.scale.set(iconSmallGo, iconSmallGo);
-				if (curBeat % 2 != 0) iconP2.scale.set(iconBigGo, iconBigGo) else iconP2.scale.set(iconSmallGo, iconSmallGo);
+				if (curBeat % 2 != 0) iconP1.scale.set(iconSize * 1.2, iconSize * 1.2) else iconP1.scale.set(iconSize * 0.8, iconSize * 0.8);
+				if (curBeat % 2 != 0) iconP2.scale.set(iconSize * 1.2, iconSize * 1.2) else iconP2.scale.set(iconSize * 0.8, iconSize * 0.8);
 			case "PSYCH":
-				iconP1.scale.set(iconBigGo, iconBigGo);
-				iconP2.scale.set(iconBigGo, iconBigGo);
+				iconP1.scale.set(iconSize * 1.2, iconSize * 1.2);
+				iconP2.scale.set(iconSize * 1.2, iconSize * 1.2);
 		}
 
 		iconP1.updateHitbox();

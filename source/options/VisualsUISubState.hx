@@ -80,6 +80,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'string',
 			'LORE', ['LORE',
 			'PSYCH',
+			'REACTIVE',
 			'DISABLED'
 		]);
 		addOption(option);
