@@ -4573,7 +4573,7 @@ class PlayState extends MusicBeatState
 
 	function opponentNoteHit(note:Note):Void
 	{
-		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE") iconP1.scale.set(iconSize * 1.2, iconSize * 1.2);
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP2.scale.set(iconSize * 1.2, iconSize * 1.2);
 		if(note.noteType == 'Hey!' && dad.animOffsets.exists('hey')) {
 			dad.playAnim('hey', true);
 			dad.specialAnim = true;
@@ -4625,7 +4625,7 @@ class PlayState extends MusicBeatState
 
 	function goodNoteHit(note:Note):Void
 	{
-		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE") iconP2.scale.set(iconSize * 1.2, iconSize * 1.2);
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP1.scale.set(iconSize * 1.2, iconSize * 1.2);
 		if (!note.wasGoodHit)
 		{
 			if(cpuControlled && (note.ignoreNote || note.hitCausesMiss)) return;
