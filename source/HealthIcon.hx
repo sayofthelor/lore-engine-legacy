@@ -72,7 +72,7 @@ class HealthIcon extends FlxSprite
 
 	public function runScaleUpdate(elapsed:Float):Void {
 		var multx:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		var multy:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.y, CoolUtil.boundTO(1 - (elapsed * 9), 0, 1));
+		var multy:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.y, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		scale.set(multx, multy);
 		updateHitbox();
 	}
