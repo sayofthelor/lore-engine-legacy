@@ -3005,6 +3005,7 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
+		/*
 		var mult:Float = FlxMath.lerp(iconSize, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		var mult2:Float = FlxMath.lerp(iconSize, iconP1.scale.y, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		iconP1.scale.set(mult, mult2);
@@ -3014,6 +3015,12 @@ class PlayState extends MusicBeatState
 		var mult2:Float = FlxMath.lerp(iconSize, iconP2.scale.y, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
 		iconP2.scale.set(mult, mult2);
 		iconP2.updateHitbox();
+		*/
+
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle != "DISABLED") {
+			iconP1.runScaleUpdate(elapsed);
+			iconP2.runScaleUpdate(elapsed);
+		}
 
 		var iconOffset:Int = 26;
 
@@ -4573,7 +4580,7 @@ class PlayState extends MusicBeatState
 
 	function opponentNoteHit(note:Note):Void
 	{
-		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP2.scale.set(iconSize * 1.2, iconSize * 1.2);
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP2.bopIcon();
 		if(note.noteType == 'Hey!' && dad.animOffsets.exists('hey')) {
 			dad.playAnim('hey', true);
 			dad.specialAnim = true;
@@ -4625,7 +4632,7 @@ class PlayState extends MusicBeatState
 
 	function goodNoteHit(note:Note):Void
 	{
-		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP1.scale.set(iconSize * 1.2, iconSize * 1.2);
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP1.bopIcon();
 		if (!note.wasGoodHit)
 		{
 			if(cpuControlled && (note.ignoreNote || note.hitCausesMiss)) return;
@@ -5049,6 +5056,7 @@ class PlayState extends MusicBeatState
 			FlxG.camera.zoom += 0.015 * camZoomingMult;
 			camHUD.zoom += 0.03 * camZoomingMult;
 		}
+		/*
 		var ret:Dynamic = callOnLuas('onHeadBop', []);
 		if(ret != FunkinLua.Function_Stop && !ClientPrefs.optimization && headsBop) switch (ClientPrefs.bopStyle) {
 			case "LORE":
@@ -5062,6 +5070,12 @@ class PlayState extends MusicBeatState
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
 
+		*/
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle != "DISABLED") {
+			iconP1.bopIcon(curBeat % 2 == 0);
+			iconP2.bopIcon(curBeat % 2 == 0);
+		}
+		
 		if (gf != null && curBeat % Math.round(gfSpeed * gf.danceEveryNumBeats) == 0 && gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)
 		{
 			gf.dance();
