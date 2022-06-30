@@ -5071,7 +5071,7 @@ class PlayState extends MusicBeatState
 		iconP2.updateHitbox();
 
 		*/
-		if (!ClientPrefs.optimization && ClientPrefs.bopStyle != "DISABLED") {
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle != "DISABLED" && ClientPrefs.bopStyle != "REACTIVE") {
 			iconP1.bopIcon(curBeat % 2 == 0);
 			iconP2.bopIcon(curBeat % 2 == 0);
 		}
