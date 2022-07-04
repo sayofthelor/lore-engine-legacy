@@ -39,3 +39,9 @@ See [wiki page](https://github.com/sayofthelor/lore-engine/wiki/How-to-compile-L
 * Keoiki - PE Note Splash Animations
 * Yoshubs - PE Input System
 * bbpanzu - Misc PE Contributions
+
+If you get an error about StatePointer when using Lua, run `haxelib remove linc_luajit` into Command Prompt/PowerShell, then re-install linc_luajit.
+
+If you want video support on your mod, simply do `haxelib install hxCodec` on a Command prompt/PowerShell
+
+otherwise, you can delete the "VIDEOS_ALLOWED" Line on Project.xml
