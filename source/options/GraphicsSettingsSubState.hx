@@ -13,6 +13,13 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		title = 'Graphics';
 		rpcTitle = 'Graphics Settings Menu'; //for Discord Rich Presence
 
+		var option:Option = new Option('Persistent Caching',
+			'If checked, graphics will continue to be cached in memory after they are loaded, making reload times basically instant.\nWARNING: This uses a lot of memory!',
+			'persistentCaching',
+			'bool',
+			false);
+		addOption(option);	
+
 		//I'd suggest using "Low Quality" as an example for making your own option since it is the simplest here
 		var option:Option = new Option('Low Quality', //Name
 			'If checked, disables some background details,\ndecreases loading times and improves performance.', //Description

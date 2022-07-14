@@ -864,7 +864,6 @@ class EditorPlayState extends MusicBeatState
 		{
 			noteDiffGroup.destroy();
 			noteDiffGroup = new FlxTypedGroup<FlxText>();
-			add(noteDiffGroup);
 			if (ClientPrefs.smJudges) lastRating.destroy();
 			var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 			//trace(noteDiff, ' ' + Math.abs(note.strumTime - Conductor.songPosition));
@@ -978,6 +977,8 @@ class EditorPlayState extends MusicBeatState
 			rating.antialiasing = ClientPrefs.globalAntialiasing;
 			comboSpr.setGraphicSize(Std.int(comboSpr.width * 0.7));
 			comboSpr.antialiasing = ClientPrefs.globalAntialiasing;
+
+			rating.scale.set(rating.scale.x * ClientPrefs.ratingScale, rating.scale.y * ClientPrefs.ratingScale);
 	
 			comboSpr.updateHitbox();
 			rating.updateHitbox();
@@ -994,7 +995,7 @@ class EditorPlayState extends MusicBeatState
 				lastRating = rating;
 				var scaleX = rating.scale.x;
 				var scaleY = rating.scale.y;
-				rating.scale.scale(1.2);
+				rating.scale.scale(1.2 * ClientPrefs.ratingScale);
 				if(ratingTween!=null && ratingTween.active){
 					ratingTween.cancel();
 				}
@@ -1028,7 +1029,7 @@ class EditorPlayState extends MusicBeatState
 			{
 				var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
 				numScore.screenCenter();
-				numScore.x = coolText.x + (43 * daLoop) - 90;
+				numScore.x = coolText.x + (43 * daLoop * ClientPrefs.ratingScale) - 90;
 				numScore.y += 80;
 	
 				numScore.x += ClientPrefs.comboOffset[2];
@@ -1036,6 +1037,7 @@ class EditorPlayState extends MusicBeatState
 	
 				numScore.antialiasing = ClientPrefs.globalAntialiasing;
 				numScore.setGraphicSize(Std.int(numScore.width * 0.5));
+				numScore.scale.set(numScore.scale.x * ClientPrefs.ratingScale, numScore.scale.y * ClientPrefs.ratingScale);
 
 				numScore.updateHitbox();
 	
@@ -1063,6 +1065,7 @@ class EditorPlayState extends MusicBeatState
 	
 				daLoop++;
 			}
+			add(noteDiffGroup);
 			/* 
 				trace(combo);
 				trace(seperatedScore);

@@ -325,7 +325,10 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-		Paths.clearStoredMemory();
+		if(!ClientPrefs.persistentCaching) {
+			Paths.clearStoredMemory();
+			Paths.clearUnusedMemory();
+		}
 
 		// for lua
 		instance = this;
@@ -1391,7 +1394,6 @@ class PlayState extends MusicBeatState
 		
 		super.create();
 
-		Paths.clearUnusedMemory();
 
 		for (key => type in precacheList)
 		{
@@ -4090,7 +4092,6 @@ class PlayState extends MusicBeatState
 	{
 		noteDiffGroup.destroy();
 		noteDiffGroup = new FlxTypedGroup<FlxText>();
-		add(noteDiffGroup);
 		if (ClientPrefs.smJudges) lastRating.destroy();
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.ratingOffset);
 		//trace(noteDiff, ' ' + Math.abs(note.strumTime - Conductor.songPosition));
@@ -4161,6 +4162,8 @@ class PlayState extends MusicBeatState
 		noteDiffText.screenCenter(Y);
 		noteDiffText.y -= 30 + ClientPrefs.comboOffset[5];
 		noteDiffText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
+		noteDiffText.scale.set(ClientPrefs.ratingScale, ClientPrefs.ratingScale);
+		noteDiffText.updateHitbox();
 		noteDiffText.cameras = [camHUD];
 		noteDiffText.borderSize = 1.25;
 		switch(daRating.name) {
@@ -4224,6 +4227,7 @@ class PlayState extends MusicBeatState
 			comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.85));
 		}
 
+		rating.scale.set(rating.scale.x * ClientPrefs.ratingScale, rating.scale.y * ClientPrefs.ratingScale);
 		comboSpr.updateHitbox();
 		rating.updateHitbox();
 
@@ -4239,7 +4243,7 @@ class PlayState extends MusicBeatState
 			lastRating = rating;
 			var scaleX = rating.scale.x;
 			var scaleY = rating.scale.y;
-			rating.scale.scale(1.2);
+			rating.scale.scale(1.2 * ClientPrefs.ratingScale);
 			if(ratingTween!=null && ratingTween.active){
 				ratingTween.cancel();
 			}
@@ -4274,7 +4278,7 @@ class PlayState extends MusicBeatState
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
 			numScore.cameras = [camHUD];
 			numScore.screenCenter();
-			numScore.x = coolText.x + (43 * daLoop) - 90;
+			numScore.x = coolText.x + (43 * daLoop * ClientPrefs.ratingScale) - 90;
 			numScore.y += 80;
 
 			numScore.x += ClientPrefs.comboOffset[2];
@@ -4289,6 +4293,7 @@ class PlayState extends MusicBeatState
 			{
 				numScore.setGraphicSize(Std.int(numScore.width * daPixelZoom));
 			}
+			numScore.scale.set(numScore.scale.x * ClientPrefs.ratingScale, numScore.scale.y * ClientPrefs.ratingScale);
 			numScore.updateHitbox();
 
 			if (!ClientPrefs.smJudges) {
@@ -4302,7 +4307,7 @@ class PlayState extends MusicBeatState
 				if (ClientPrefs.smJudges) numGroup.add(numScore) else add(numScore);
 			var oldy:Float = numScore.y;
 				if (ClientPrefs.smJudges) {
-					numScore.y -= new FlxRandom().int(20,30);
+					numScore.y -= (new FlxRandom().int(20,30) * ClientPrefs.ratingScale);
 					FlxTween.tween(numScore, {y: oldy}, 0.2, {ease:FlxEase.circOut});
 				}
 			FlxTween.tween(numScore, {alpha: 0}, 0.2, {
@@ -4315,6 +4320,7 @@ class PlayState extends MusicBeatState
 
 			daLoop++;
 		}
+		add(noteDiffGroup);
 		/*
 			trace(combo);
 			trace(seperatedScore);

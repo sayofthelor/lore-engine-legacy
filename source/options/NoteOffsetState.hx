@@ -107,6 +107,7 @@ class NoteOffsetState extends MusicBeatState
 		rating = new FlxSprite().loadGraphic(Paths.image('sick'));
 		rating.cameras = [camHUD];
 		rating.setGraphicSize(Std.int(rating.width * 0.7));
+		rating.scale.set(rating.scale.x * ClientPrefs.ratingScale, rating.scale.y * ClientPrefs.ratingScale);
 		rating.updateHitbox();
 		rating.antialiasing = ClientPrefs.globalAntialiasing;
 		
@@ -114,6 +115,8 @@ class NoteOffsetState extends MusicBeatState
 
 		noteDiffText = new FlxText(0, 0, 0, "XXX.XX ms", 20);
 		noteDiffText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.YELLOW, CENTER, OUTLINE, FlxColor.BLACK);
+		noteDiffText.scale.set(ClientPrefs.ratingScale, ClientPrefs.ratingScale);
+		noteDiffText.updateHitbox();
 		noteDiffText.cameras = [camHUD];
 		noteDiffText.borderSize = 1.25;
 
@@ -132,9 +135,10 @@ class NoteOffsetState extends MusicBeatState
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
 		{
-			var numScore:FlxSprite = new FlxSprite(43 * daLoop).loadGraphic(Paths.image('num' + i));
+			var numScore:FlxSprite = new FlxSprite((43 * ClientPrefs.ratingScale) * daLoop).loadGraphic(Paths.image('num' + i));
 			numScore.cameras = [camHUD];
 			numScore.setGraphicSize(Std.int(numScore.width * 0.5));
+			numScore.scale.set(numScore.scale.x * ClientPrefs.ratingScale, numScore.scale.y * ClientPrefs.ratingScale);
 			numScore.updateHitbox();
 			numScore.antialiasing = ClientPrefs.globalAntialiasing;
 			comboNums.add(numScore);

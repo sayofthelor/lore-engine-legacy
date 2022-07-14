@@ -8,6 +8,9 @@ import Controls;
 class ClientPrefs {
 	public static var downScroll:Bool = false;
 	public static var showLore:Bool = true;
+	public static var showMem:Bool = true;
+	public static var persistentCaching:Bool = false;
+	public static var ratingScale:Float = 1;
 	public static var middleScroll:Bool = false;
 	public static var opponentStrums:Bool = true;
 	public static var showFPS:Bool = true;
@@ -112,6 +115,9 @@ class ClientPrefs {
 		FlxG.save.data.middleScroll = middleScroll;
 		FlxG.save.data.opponentStrums = opponentStrums;
 		FlxG.save.data.showFPS = showFPS;
+		FlxG.save.data.showMem = showMem;
+		FlxG.save.data.persistentCaching = persistentCaching;
+		FlxG.save.data.ratingScale = ratingScale;
 		FlxG.save.data.flashing = flashing;
 		FlxG.save.data.globalAntialiasing = globalAntialiasing;
 		FlxG.save.data.noteSplashes = noteSplashes;
@@ -168,6 +174,15 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.showLore != null) {
 			showLore = FlxG.save.data.showLore;
+		}
+		if(FlxG.save.data.showMem != null) {
+			showMem = FlxG.save.data.showMem;
+		}
+		if(FlxG.save.data.persistentCaching != null) {
+			persistentCaching = FlxG.save.data.persistentCaching;
+		}
+		if(FlxG.save.data.ratingScale != null) {
+			ratingScale = FlxG.save.data.ratingScale;
 		}
 		if(FlxG.save.data.bopStyle != null) {
 			bopStyle = FlxG.save.data.bopStyle;

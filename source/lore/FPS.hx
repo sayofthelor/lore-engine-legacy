@@ -4,6 +4,8 @@ import openfl.text.TextField;
 import openfl.text.TextFormat;
 import flixel.FlxG;
 import openfl.Lib;
+import openfl.system.System;
+import flixel.math.FlxMath;
 
 using StringTools;
 
@@ -54,10 +56,16 @@ class FPS extends TextField
 
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
+		if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate;
+		var memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
-			text = currentFPS + " FPS" + (ClientPrefs.showLore ? "\nLore v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) : "") #if debug + " (debug)" #end;
+			text =
+			currentFPS + " FPS" +
+			(ClientPrefs.showMem ? "\nMemory: " + memoryMegas + " MB" : "") +
+			(ClientPrefs.showLore ? "\nLore v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) : "")
+			#if debug + " (debug)" #end;
 			if (ClientPrefs.fpsPosition == "TOP LEFT") this.y = 3 else this.y = Lib.application.window.height - ((text.split("\n").length * 20) - (ClientPrefs.showLore ? 1 : -2));
 		}
 
