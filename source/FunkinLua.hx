@@ -27,13 +27,13 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.system.FlxAssets.FlxShader;
 #if sys
 import sys.FileSystem;
+import sys.io.File;
 #end
 import Type.ValueType;
 import DialogueBoxPsych;
 #if hscript
 import hscript.Parser;
 import hscript.Interp;
-import sys.io.File;
 #end
 import openfl.utils.Assets;
 
@@ -2302,6 +2302,7 @@ class FunkinLua {
 			return Assets.exists(Paths.getPath('assets/$filename', TEXT));
 			#end
 		});
+		#if sys
 		Lua_helper.add_callback(lua, "saveFile", function(path:String, content:String, ?absolute:Bool = false)
 		{
 			try {
@@ -2345,6 +2346,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
 			return Paths.getTextFromFile(path, ignoreModFolders);
 		});
+		#end
 
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
 		Lua_helper.add_callback(lua, "objectPlayAnimation", function(obj:String, name:String, forced:Bool = false, ?startFrame:Int = 0) {
@@ -2491,6 +2493,64 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "stringEndsWith", function(str:String, end:String) {
 			return str.endsWith(end);
+		});
+
+
+		Lua_helper.add_callback(lua, "setIconFrames", function(icon:String, frameImage:String, spriteType:String = "sparrow") {
+			if (icon == "player") loadFrames(PlayState.instance.iconP1, frameImage, spriteType);
+			else if (icon == "opponent") loadFrames(PlayState.instance.iconP2, frameImage, spriteType);
+		});
+		Lua_helper.add_callback(lua, "setIconOffsets", function(char:String, x:Float, y:Float) {
+			if (char == "player") {
+				PlayState.instance.iconP1.offsets.set(x, y);
+			}
+			else if (char == "opponent") {
+				PlayState.instance.iconP2.offsets.set(x, y);
+			}
+		});
+		Lua_helper.add_callback(lua, "addIconAnimationByPrefix", function(char:String, name:String, prefix:String, framerate:Int = 24, loop:Bool = true) {
+			if (char == "player") {
+				PlayState.instance.iconP1.animation.addByPrefix(name, prefix, framerate, loop, PlayState.instance.iconP1.isPlayer);
+			}
+			else if (char == "opponent") {
+				PlayState.instance.iconP2.animation.addByPrefix(name, prefix, framerate, loop, PlayState.instance.iconP2.isPlayer);
+			}
+			else {
+				luaTrace("addIconAnimationByPrefix: Unknown character: " + char);
+			}
+		});
+		Lua_helper.add_callback(lua, "addIconAnimationByIndices", function(char:String, name:String, prefix:String, indices:String, framerate:Int = 24, loop:Bool = true) {
+			var strIndices:Array<String> = indices.trim().split(',');
+			var die:Array<Int> = [];
+			for (i in 0...strIndices.length) {
+				die.push(Std.parseInt(strIndices[i]));
+			}
+			if (char == "player") {
+				PlayState.instance.iconP1.animation.addByIndices(name, prefix, die, '', framerate, loop, PlayState.instance.iconP1.isPlayer);
+			}
+			else if (char == "opponent") {
+				PlayState.instance.iconP2.animation.addByIndices(name, prefix, die, '', framerate, loop, PlayState.instance.iconP2.isPlayer);
+			}
+			else {
+				luaTrace("addIconAnimationByName: Unknown character: " + char);
+			}
+		});
+		Lua_helper.add_callback(lua, "playIconAnim", function(char:String, anim:String) {
+			if (char == "player") {
+				if (PlayState.instance.iconP1.animation.getNameList().contains(anim))
+					PlayState.instance.iconP1.animation.play(anim);
+				else
+					luaTrace("playIconAnim: Animation " + anim + " doesn't exist for player");
+			}
+			else if (char == "opponent") {
+				if (PlayState.instance.iconP2.animation.getNameList().contains(anim))
+					PlayState.instance.iconP2.animation.play(anim);
+				else
+					luaTrace("playIconAnim: Animation " + anim + " doesn't exist for opponent");
+			}
+			else {
+				luaTrace("playIconAnim: Unknown character: " + char);
+			}
 		});
 
 		DiscordClient.addLuaCallbacks(lua);

@@ -23,20 +23,6 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.onChange = lore.Colorblind.updateFilter;
 		addOption(option);
 
-		var option:Option = new Option('Show Lore Engine Watermark',
-			"If checked, the Lore Engine watermark and version number will be in the FPS counter.",
-			'showLore',
-			'bool',
-			true);
-		addOption(option);
-
-		var option:Option = new Option('Show Memory Usage',
-			"If checked, current memory usage in MB will be in the FPS counter.",
-			'showMem',
-			'bool',
-			true);
-		addOption(option);
-
 		var option:Option = new Option('Scroll Underlay Opacity', //Name
 			'Opacity of underlay of notes', //Description
 			'underlayAlpha', //Save data variable name
@@ -119,6 +105,13 @@ class VisualsUISubState extends BaseOptionsMenu
 			['SN and Time Left', 'SN and Time Elapsed', 'Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
 		addOption(option);
 
+		var option:Option = new Option('New Time Bar',
+			"Toggles between the old and new time bar.",
+			'newTimeBar',
+			'bool',
+			true);
+		addOption(option);
+
 		var option:Option = new Option('Flashing Lights',
 			"Uncheck this if you're sensitive to flashing lights!",
 			'flashing',
@@ -172,6 +165,20 @@ class VisualsUISubState extends BaseOptionsMenu
 			'fpsPosition',
 			'string',
 			'BOTTOM LEFT', ['TOP LEFT', 'BOTTOM LEFT']);
+		addOption(option);
+		
+		var option:Option = new Option('Show Lore Engine Watermark',
+			"If checked, the Lore Engine watermark and version number will be in the FPS counter.",
+			'showLore',
+			'bool',
+			true);
+		addOption(option);
+
+		var option:Option = new Option('Show Memory Usage',
+			"If checked, current memory usage in MB will be in the FPS counter.",
+			'showMem',
+			'bool',
+			true);
 		addOption(option);
 		#end
 		

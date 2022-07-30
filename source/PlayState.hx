@@ -224,7 +224,7 @@ class PlayState extends MusicBeatState
 
 	var dadbattleBlack:BGSprite;
 	var dadbattleLight:BGSprite;
-	var dadbattleSmokes:FlxSpriteGroup;
+	var dadbattleSmokes:FlxSpriteGroup = new FlxSpriteGroup();
 
 	var halloweenBG:BGSprite;
 	var halloweenWhite:BGSprite;
@@ -927,6 +927,36 @@ class PlayState extends MusicBeatState
 
 		if(doPush)
 			luaArray.push(new FunkinLua(luaFile));
+
+		doPush = false;
+		luaFile = 'icons/' + SONG.player1 + '.lua';
+		if(FileSystem.exists(Paths.modFolders(luaFile))) {
+			luaFile = Paths.modFolders(luaFile);
+			doPush = true;
+		} else {
+			luaFile = Paths.getPreloadPath(luaFile);
+			if(FileSystem.exists(luaFile)) {
+				doPush = true;
+			}
+		}
+
+		if(doPush)
+			luaArray.push(new FunkinLua(luaFile));
+
+		doPush = false;
+		luaFile = 'icons/' + SONG.player2 + '.lua';
+		if(FileSystem.exists(Paths.modFolders(luaFile))) {
+			luaFile = Paths.modFolders(luaFile);
+			doPush = true;
+		} else {
+			luaFile = Paths.getPreloadPath(luaFile);
+			if(FileSystem.exists(luaFile)) {
+				doPush = true;
+			}
+		}
+
+		if(doPush)
+			luaArray.push(new FunkinLua(luaFile));
 		#end
 
 		var gfVersion:String = SONG.gfVersion;
@@ -1083,6 +1113,8 @@ class PlayState extends MusicBeatState
 		add(timeBar);
 		add(timeTxt);
 		timeBarBG.sprTracker = timeBar;
+
+		if(ClientPrefs.downScroll) timeTxt.y = ClientPrefs.newTimeBar ? timeBarBG.y - timeTxt.height - 3 : FlxG.height - 44 else timeTxt.y = ClientPrefs.newTimeBar ? timeBarBG.y + timeBarBG.height + 3 : 19;
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		add(strumLineNotes);
@@ -1444,6 +1476,12 @@ class PlayState extends MusicBeatState
 			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2]));
 
 		healthBar.updateBar();
+
+		if (ClientPrefs.newTimeBar) {
+			timeBar.createGradientBar([0x000000], [FlxColor.fromRGB(dad.healthColorArray[0], dad.healthColorArray[1], dad.healthColorArray[2]),
+			FlxColor.fromRGB(boyfriend.healthColorArray[0], boyfriend.healthColorArray[1], boyfriend.healthColorArray[2])]);
+			timeBar.updateBar();
+		}
 	}
 
 	public function addCharacterToList(newCharacter:String, type:Int) {
@@ -2565,7 +2603,7 @@ class PlayState extends MusicBeatState
 				dadbattleLight.alpha = 0.375;
 				dadbattleLight.blend = ADD;
 				dadbattleLight.visible = false;
-
+				
 				dadbattleSmokes.alpha = 0.7;
 				dadbattleSmokes.blend = ADD;
 				dadbattleSmokes.visible = false;
@@ -3043,20 +3081,25 @@ class PlayState extends MusicBeatState
 
 		if (health > 2)
 			health = 2;
+		var ret:Dynamic = callOnLuas('onIconUpdate', ["player"]);
+		if (ret != FunkinLua.Function_Stop) {
+			if (healthBar.percent < 20)
+				iconP1.animation.curAnim.curFrame = 1;
+			else if (healthBar.percent > 80 && boyfriend.hasVictory)
+				iconP1.animation.curAnim.curFrame = 2;
+			else
+				iconP1.animation.curAnim.curFrame = 0;
+		}
 
-		if (healthBar.percent < 20)
-			iconP1.animation.curAnim.curFrame = 1;
-		else if (healthBar.percent > 80 && boyfriend.hasVictory)
-			iconP1.animation.curAnim.curFrame = 2;
-		else
-			iconP1.animation.curAnim.curFrame = 0;
-
-		if (healthBar.percent > 80)
-			iconP2.animation.curAnim.curFrame = 1;
-		else if (healthBar.percent < 20 && dad.hasVictory)
-			iconP2.animation.curAnim.curFrame = 2;
-		else
-			iconP2.animation.curAnim.curFrame = 0;
+		var ret:Dynamic = callOnLuas('onIconUpdate', ["opponent"]);
+		if (ret != FunkinLua.Function_Stop) {
+			if (healthBar.percent > 80)
+				iconP2.animation.curAnim.curFrame = 1;
+			else if (healthBar.percent < 20 && dad.hasVictory)
+				iconP2.animation.curAnim.curFrame = 2;
+			else
+				iconP2.animation.curAnim.curFrame = 0;
+		}
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene) {
 			persistentUpdate = false;

@@ -44,6 +44,7 @@ class ClientPrefs {
 	public static var healthBarAlpha:Float = 1;
 	public static var controllerMode:Bool = false;
 	public static var pauseMusic:String = 'Tea Time';
+	public static var newTimeBar:Bool = true;
 	public static var checkForUpdates:Bool = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
@@ -135,6 +136,7 @@ class ClientPrefs {
 		FlxG.save.data.camZooms = camZooms;
 		FlxG.save.data.noteOffset = noteOffset;
 		FlxG.save.data.hideHud = hideHud;
+		FlxG.save.data.newTimeBar = newTimeBar;
 		FlxG.save.data.arrowHSV = arrowHSV;
 		FlxG.save.data.imagesPersist = imagesPersist;
 		FlxG.save.data.ghostTapping = ghostTapping;
@@ -189,6 +191,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.showNoteTimeHitbox != null) {
 			showNoteTimeHitbox = FlxG.save.data.showNoteTimeHitbox;
+		}
+		if(FlxG.save.data.newTimeBar != null) {
+			newTimeBar = FlxG.save.data.newTimeBar;
 		}
 		if(FlxG.save.data.colorblindFilter != null) {
 			colorblindFilter = FlxG.save.data.colorblindFilter;

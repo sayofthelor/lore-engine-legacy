@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxPoint;
 import flixel.FlxSprite;
 import flixel.math.FlxMath;
 
@@ -9,7 +10,8 @@ class HealthIcon extends FlxSprite
 {
 	public var sprTracker:FlxSprite;
 	private var isOldIcon:Bool = false;
-	private var isPlayer:Bool = false;
+	public var isPlayer:Bool = false;
+	public var offsets:FlxPoint = new FlxPoint();
 	private var char:String = '';
 
 	public function new(char:String = 'bf', isPlayer:Bool = false, ?hasVictory:Bool = false)
@@ -64,8 +66,8 @@ class HealthIcon extends FlxSprite
 	override function updateHitbox()
 	{
 		super.updateHitbox();
-		offset.x = iconOffsets[0];
-		offset.y = iconOffsets[1];
+		offset.x = iconOffsets[0] + offsets.x;
+		offset.y = iconOffsets[1] + offsets.y;
 	}
 
 	public function runScaleUpdate(elapsed:Float):Void {

@@ -195,7 +195,8 @@
 	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER" />
 	<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER" />
 
-	<section if="release">
+	<!-- use `-Dbuildcrash` to build the crash handler -->
+	<section if="buildcrash">
 		<postbuild cmd="build-crash-dialog.bat" if="windows" />
 		<postbuild cmd="./build-crash-dialog.sh" if="linux" />
 		<postbuild cmd="./build-crash-dialog-mac.sh" if="mac" />

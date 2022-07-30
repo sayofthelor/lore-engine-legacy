@@ -46,8 +46,6 @@ class LoadingState extends MusicBeatState
 		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, 0xffcaff4d);
 		add(bg);
 		funkay = new FlxSprite(0, 0).loadGraphic(Paths.getPath('images/funkay.png', IMAGE));
-		funkay.setGraphicSize(0, FlxG.height);
-		funkay.updateHitbox();
 		funkay.antialiasing = ClientPrefs.globalAntialiasing;
 		add(funkay);
 		funkay.scrollFactor.set();
@@ -112,11 +110,13 @@ class LoadingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		funkay.setGraphicSize(Std.int(0.88 * FlxG.width + 0.9 * (funkay.width - 0.88 * FlxG.width)));
+		var t = FlxMath.lerp(1, funkay.scale.x, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+		var h = FlxMath.lerp(1, funkay.scale.x, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
+		funkay.scale.set(t, h);
 		funkay.updateHitbox();
 		if(controls.ACCEPT)
 		{
-			funkay.setGraphicSize(Std.int(funkay.width + 60));
+			funkay.scale.set(1.03, 1.03);
 			funkay.updateHitbox();
 		}
 

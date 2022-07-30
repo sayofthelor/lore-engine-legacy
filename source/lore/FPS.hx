@@ -66,7 +66,11 @@ class FPS extends TextField
 			(ClientPrefs.showMem ? "\nMemory: " + memoryMegas + " MB" : "") +
 			(ClientPrefs.showLore ? "\nLore v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) : "")
 			#if debug + " (debug)" #end;
-			if (ClientPrefs.fpsPosition == "TOP LEFT") this.y = 3 else this.y = Lib.application.window.height - ((text.split("\n").length * 20) - (ClientPrefs.showLore ? 1 : -2));
+			var mod:Int = (text.split("\n").length == 2) ? 39 : (text.split("\n").length == 3) ? 53 : 22;
+			if (ClientPrefs.fpsPosition == "TOP LEFT") 
+				this.y = 3 
+			else 
+				this.y = Lib.application.window.height - mod;
 		}
 
 		cacheCount = currentCount;
