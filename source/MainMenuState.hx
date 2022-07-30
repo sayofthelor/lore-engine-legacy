@@ -150,7 +150,7 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, (ClientPrefs.showLore ? "Lore Engine v" + (loreEngineVersion.endsWith(".0") ? loreEngineVersion.replace(".0", "") + " \\ " : loreEngineVersion) : "") + "Friday Night Funkin' v" + Application.current.meta.get('version')#if debug + " (debug)"#end, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, (ClientPrefs.showLore ? "Lore Engine v" + (loreEngineVersion.endsWith(".0") ? loreEngineVersion.replace(".0", "") + " \\ " : loreEngineVersion + " \\ ") : "") + "Friday Night Funkin' v" + Application.current.meta.get('version')#if debug + " (debug)"#end, 12);
 		versionShit.scrollFactor.set();
 		if (menuJson.overrideVersionText && menuJson.customVersionText != "") versionShit.text = menuJson.customVersionText;
 		versionShit.screenCenter(X);
