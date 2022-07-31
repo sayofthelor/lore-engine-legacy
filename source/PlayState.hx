@@ -2443,8 +2443,10 @@ class PlayState extends MusicBeatState
 
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
-		iconP1.bopIcon(ClientPrefs.bopStyle == "LORE");
-		iconP2.bopIcon(ClientPrefs.bopStyle == "LORE");
+		if (ClientPrefs.bopStyle != "DISABLED" && ClientPrefs.bopStyle != "REACTIVE") {
+			iconP1.bopIcon(ClientPrefs.bopStyle == "LORE");
+			iconP2.bopIcon(ClientPrefs.bopStyle == "LORE");
+		}
 		if (camZooming) {
 			FlxG.camera.zoom += 0.015 * camZoomingMult;
 			camHUD.zoom += 0.03 * camZoomingMult;

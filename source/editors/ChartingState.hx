@@ -1939,6 +1939,10 @@ class ChartingState extends MusicBeatState
 						vocals.pause();
 						vocals.time = FlxG.sound.music.time;
 					}
+					if(vocals2 != null) {
+						vocals2.pause();
+						vocals2.time = FlxG.sound.music.time;
+					}
 
 					var dastrum = 0;
 
