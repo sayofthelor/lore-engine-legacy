@@ -36,6 +36,7 @@ jobs:
           haxelib install openfl
           haxelib --never install flixel
           haxelib run lime setup flixel
+          haxelib git flixel-shadertoy-shader https://github.com/jobf/flixel-shadertoy-shader/
           haxelib run lime setup
           haxelib install flixel-tools
           haxelib install flixel-ui
@@ -101,6 +102,7 @@ jobs:
           haxelib install hscript
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib git flixel-shadertoy-shader https://github.com/jobf/flixel-shadertoy-shader/
           haxelib install hxcpp-debug-server
           haxelib install haxeui-core
           haxelib install haxeui-openfl
@@ -108,7 +110,7 @@ jobs:
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
-        run: haxelib run lime build Project.xml linux --app-version="4.0.0-${{ github.run_id}}"
+        run: haxelib run lime build Project.xml linux -Dbuildcrash --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
@@ -135,6 +137,7 @@ jobs:
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
+          haxelib git flixel-shadertoy-shader https://github.com/jobf/flixel-shadertoy-shader/
           haxelib install flixel-ui
           haxelib install flixel-addons
           haxelib install tjson
@@ -152,7 +155,7 @@ jobs:
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
-        run: haxelib run lime build windows --app-version="4.0.0-${{ github.run_id}}"
+        run: haxelib run lime build windows -Dbuildcrash --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
@@ -186,6 +189,7 @@ jobs:
           haxelib install hxCodec
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib install hscript
+          haxelib git flixel-shadertoy-shader https://github.com/jobf/flixel-shadertoy-shader/
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
