@@ -36,7 +36,7 @@ jobs:
           haxelib install openfl
           haxelib --never install flixel
           haxelib run lime setup flixel
-          haxelib git flixel-shadertoy-shader https://github.com/jobf/flixel-shadertoy-shader/
+          haxelib git flixel-shadertoy-shader-lr https://github.com/sayofthelor/flixel-shadertoy-shader-lr
           haxelib run lime setup
           haxelib install flixel-tools
           haxelib install flixel-ui
@@ -102,7 +102,7 @@ jobs:
           haxelib install hscript
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib git flixel-shadertoy-shader https://github.com/jobf/flixel-shadertoy-shader/
+          haxelib git flixel-shadertoy-shader-lr https://github.com/sayofthelor/flixel-shadertoy-shader-lr
           haxelib install hxcpp-debug-server
           haxelib install haxeui-core
           haxelib install haxeui-openfl
@@ -137,7 +137,7 @@ jobs:
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
-          haxelib git flixel-shadertoy-shader https://github.com/jobf/flixel-shadertoy-shader/
+          haxelib git flixel-shadertoy-shader-lr https://github.com/sayofthelor/flixel-shadertoy-shader-lr
           haxelib install flixel-ui
           haxelib install flixel-addons
           haxelib install tjson
@@ -189,7 +189,7 @@ jobs:
           haxelib install hxCodec
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib install hscript
-          haxelib git flixel-shadertoy-shader https://github.com/jobf/flixel-shadertoy-shader/
+          haxelib git flixel-shadertoy-shader-lr https://github.com/sayofthelor/flixel-shadertoy-shader-lr/
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
