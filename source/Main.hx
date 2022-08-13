@@ -38,6 +38,7 @@ class Main extends Sprite
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var fpsVar:lore.FPS;
 	public static var instance:Main;
+	public var game:FlxGame;
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
@@ -86,7 +87,9 @@ class Main extends Sprite
 		}
 	
 		ClientPrefs.loadDefaultKeys();
-		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
+		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		game.focusLostFramerate = 60;
+		addChild(game);
 
 		#if !mobile
 		fpsVar = new lore.FPS(3,#if debug FlxG.height-52#else FlxG.height - 39#end, 0xFFFFFF);

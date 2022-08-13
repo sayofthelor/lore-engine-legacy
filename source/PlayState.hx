@@ -1118,7 +1118,6 @@ class PlayState extends MusicBeatState
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
 		add(timeBar);
-		add(timeTxt);
 		timeBarBG.sprTracker = timeBar;
 
 		if(ClientPrefs.downScroll) timeTxt.y = ClientPrefs.newTimeBar ? timeBarBG.y - timeTxt.height - 3 : FlxG.height - 44 else timeTxt.y = ClientPrefs.newTimeBar ? timeBarBG.y + timeBarBG.height + 3 : 19;
@@ -2151,6 +2150,7 @@ class PlayState extends MusicBeatState
 
 			generateStaticArrows(0);
 			generateStaticArrows(1);
+			add(timeTxt);
 			laneunderlay.x = playerStrums.members[0].x - 25;
 			laneunderlay.alpha = ClientPrefs.underlayAlpha / 100;
 			laneunderlay.screenCenter(Y);
@@ -3562,6 +3562,8 @@ class PlayState extends MusicBeatState
 
 	public function triggerEventNote(eventName:String, value1:String, value2:String) {
 		switch(eventName) {
+			case 'Blammed Lights':
+				trace("Blammed Lights are deprecated. Use 'Philly Glow' instead.");
 			case 'Dadbattle Spotlight':
 				var val:Null<Int> = Std.parseInt(value1);
 				if(val == null) val = 0;
