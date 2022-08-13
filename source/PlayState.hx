@@ -1,8 +1,10 @@
 package;
 
+import shadertoy.FlxShaderToyRuntimeShader;
 import flixel.group.FlxGroup;
 import flixel.math.FlxRandom;
 import flixel.graphics.FlxGraphic;
+import flixel.input.mouse.FlxMouse;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -115,6 +117,7 @@ class PlayState extends MusicBeatState
 	public var modchartTexts:Map<String, ModchartText> = new Map<String, ModchartText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
 	public var shaderUpdates:Array<Float->Void> = [];
+	public var shaderFixThing:Map<String, FlxShaderToyRuntimeShader> = new Map<String, FlxShaderToyRuntimeShader>();
 	public var modchartObjects:Map<String, FlxSprite> = new Map<String, FlxSprite>();
 
 	//event variables
@@ -3460,6 +3463,9 @@ class PlayState extends MusicBeatState
 		callOnLuas('onUpdatePost', [elapsed]);
 		for (i in shaderUpdates){
 			i(elapsed);
+		}
+		for (i in shaderFixThing.keys()){
+			shaderFixThing[i].update(elapsed, null);
 		}
 	}
 
