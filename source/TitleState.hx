@@ -91,10 +91,8 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{
-		if(!ClientPrefs.persistentCaching) {
-			Paths.clearStoredMemory();
-			Paths.clearUnusedMemory();
-		}
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 
 		#if LUA_ALLOWED
 		Paths.pushGlobalMods();

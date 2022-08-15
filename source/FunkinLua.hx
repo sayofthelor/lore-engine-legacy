@@ -928,6 +928,7 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "getProperty", function(variable:String) {
+			@:privateAccess
 			var result:Dynamic = null;
 			var killMe:Array<String> = variable.split('.');
 			if(killMe.length > 1)
@@ -939,6 +940,7 @@ class FunkinLua {
 			return result;
 		});
 		Lua_helper.add_callback(lua, "setProperty", function(variable:String, value:Dynamic) {
+			@:privateAccess
 			var killMe:Array<String> = variable.split('.');
 			if(killMe.length > 1) {
 				setVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1], value);
@@ -948,6 +950,7 @@ class FunkinLua {
 			return true;
 		});
 		Lua_helper.add_callback(lua, "getPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic) {
+			@:privateAccess
 			var shitMyPants:Array<String> = obj.split('.');
 			var realObject:Dynamic = Reflect.getProperty(getInstance(), obj);
 			if(shitMyPants.length>1)
@@ -977,6 +980,7 @@ class FunkinLua {
 			Lua.pushnil(lua);
 			return null;
 		});
+		@:privateAccess
 		Lua_helper.add_callback(lua, "setPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic, value:Dynamic) {
 			var shitMyPants:Array<String> = obj.split('.');
 			var realObject:Dynamic = Reflect.getProperty(getInstance(), obj);
@@ -3196,10 +3200,6 @@ class FunkinLua {
 			if(lua == null) return Function_Continue;
 
 			Lua.getglobal(lua, func);
-			var type:Int = Lua.type(lua, -1);
-			if (type != Lua.LUA_TFUNCTION) {
-				return Function_Continue;
-			}
 			
 			for(arg in args) {
 				Convert.toLua(lua, arg);

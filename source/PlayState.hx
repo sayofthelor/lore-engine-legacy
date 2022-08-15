@@ -336,10 +336,8 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-		if(!ClientPrefs.persistentCaching) {
-			Paths.clearStoredMemory();
-			Paths.clearUnusedMemory();
-		}
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 
 		// for lua
 		instance = this;
@@ -3575,8 +3573,6 @@ class PlayState extends MusicBeatState
 
 	public function triggerEventNote(eventName:String, value1:String, value2:String) {
 		switch(eventName) {
-			case 'Blammed Lights':
-				trace("Blammed Lights are deprecated. Use 'Philly Glow' instead.");
 			case 'Dadbattle Spotlight':
 				var val:Null<Int> = Std.parseInt(value1);
 				if(val == null) val = 0;

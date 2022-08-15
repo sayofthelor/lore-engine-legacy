@@ -51,10 +51,8 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-		if(!ClientPrefs.persistentCaching) {
-			Paths.clearStoredMemory();
-			Paths.clearUnusedMemory();
-		}
+		Paths.clearStoredMemory();
+		Paths.clearUnusedMemory();
 
 		PlayState.isStoryMode = true;
 		WeekData.reloadWeekFiles(true);
