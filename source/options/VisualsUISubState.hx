@@ -72,6 +72,13 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.decimals = 2;
 		addOption(option);
 
+		var option:Option = new Option('Show Timing Counter',
+			'If checked, the timing (in ms) counter will be shown.',
+			'showMS',
+			'bool',
+			true);
+		addOption(option);
+
 		var option:Option = new Option('Smaller Icons', //Name
 			'If checked, the health icons will be smaler on the health bar.', //Description
 			'tinyIcons', //Save data variable name

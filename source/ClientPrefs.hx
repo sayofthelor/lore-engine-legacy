@@ -45,6 +45,7 @@ class ClientPrefs {
 	public static var controllerMode:Bool = false;
 	public static var pauseMusic:String = 'Tea Time';
 	public static var newTimeBar:Bool = true;
+	public static var showMS:Bool = true;
 	public static var checkForUpdates:Bool = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
@@ -110,6 +111,7 @@ class ClientPrefs {
 
 	public static function saveSettings() {
 		FlxG.save.data.downScroll = downScroll;
+		FlxG.save.data.showMS = showMS;
 		FlxG.save.data.showLore = showLore;
 		FlxG.save.data.bopStyle = bopStyle;
 		FlxG.save.data.colorblindFilter = colorblindFilter;
@@ -176,6 +178,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.showLore != null) {
 			showLore = FlxG.save.data.showLore;
+		}
+		if(FlxG.save.data.showMS != null) {
+			showMS = FlxG.save.data.showMS;
 		}
 		if(FlxG.save.data.showMem != null) {
 			showMem = FlxG.save.data.showMem;

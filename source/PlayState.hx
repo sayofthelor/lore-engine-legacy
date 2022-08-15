@@ -336,9 +336,10 @@ class PlayState extends MusicBeatState
 
 	override public function create()
 	{
-		Paths.clearStoredMemory();
-		Paths.clearUnusedMemory();
-
+		if (!ClientPrefs.persistentCaching) {
+			Paths.clearStoredMemory();
+			Paths.clearUnusedMemory();
+		}
 		// for lua
 		instance = this;
 
@@ -4448,7 +4449,7 @@ class PlayState extends MusicBeatState
 			numGroup = new FlxGroup();
 			add(numGroup);
 		}
-		noteDiffGroup.add(noteDiffText);
+		if (ClientPrefs.showMS) noteDiffGroup.add(noteDiffText);
 		for (i in seperatedScore)
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
