@@ -57,13 +57,15 @@ class FPS extends TextField
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
 		if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate;
-		var memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
+		var memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2));
+		var gigaFlag:Bool = memoryMegas > 1000;
+		if (memoryMegas > 1000) memoryMegas = FlxMath.roundDecimal(memoryMegas / 1000, 2);
 
 		if (currentCount != cacheCount /*&& visible*/)
 		{
 			text =
 			currentFPS + " FPS" +
-			(ClientPrefs.showMem ? "\nMemory: " + memoryMegas + " MB" : "") +
+			(ClientPrefs.showMem ? "\nMemory: " + memoryMegas + (gigaFlag ? " GB" : " MB") : "") +
 			(ClientPrefs.showLore ? "\nLore v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) : "")
 			#if debug + " (debug)" #end;
 			var mod:Int = (text.split("\n").length == 2) ? 39 : (text.split("\n").length == 3) ? 53 : 22;
