@@ -3757,7 +3757,7 @@ class PlayState extends MusicBeatState
 					if(Math.isNaN(camZoom)) camZoom = 0.015;
 					if(Math.isNaN(hudZoom)) hudZoom = 0.03;
 
-					FlxG.camera.zoom += camZoom;
+					FlxG.camera.zoom += (defaultCamZoom * camZoom);
 					camHUD.zoom += hudZoom;
 				}
 
@@ -5387,7 +5387,7 @@ class PlayState extends MusicBeatState
 
 			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms)
 			{
-				FlxG.camera.zoom += 0.015 * camZoomingMult;
+				FlxG.camera.zoom += (0.015 * defaultCamZoom) * camZoomingMult;
 				camHUD.zoom += 0.03 * camZoomingMult;
 			}
 
