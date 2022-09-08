@@ -47,6 +47,7 @@ class ClientPrefs {
 	public static var newTimeBar:Bool = true;
 	public static var showMS:Bool = true;
 	public static var checkForUpdates:Bool = true;
+	public static var comboStacking = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 
@@ -162,6 +163,7 @@ class ClientPrefs {
 		FlxG.save.data.smJudges = smJudges;
 		FlxG.save.data.showNoteTimeHitbox = showNoteTimeHitbox;
 		FlxG.save.data.checkForUpdates = checkForUpdates;
+		FlxG.save.data.comboStacking = comboStacking;
 	
 		FlxG.save.flush();
 
@@ -347,6 +349,8 @@ class ClientPrefs {
 		{
 			checkForUpdates = FlxG.save.data.checkForUpdates;
 		}
+		if (FlxG.save.data.comboStacking != null)
+			comboStacking = FlxG.save.data.comboStacking;
 
 		var save:FlxSave = new FlxSave();
 		save.bind('controls_v2', 'ninjamuffin99');
