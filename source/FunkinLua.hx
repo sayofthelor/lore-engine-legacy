@@ -2984,7 +2984,7 @@ class FunkinLua {
 		{
 			luaTrace('Shader $name was already initialized!');
 			return true;
-		}
+		};
 
 		var foldersToCheck:Array<String> = [Paths.mods('shaders/')];
 		if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
