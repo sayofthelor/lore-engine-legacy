@@ -5276,11 +5276,11 @@ class PlayState extends MusicBeatState
 		{
 			moveCameraSection();
 		}
-		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % topTimeSignature == 0 && !ClientPrefs.optimization)
-		{
-			FlxG.camera.zoom += 0.015 * camZoomingMult;
-			camHUD.zoom += 0.03 * camZoomingMult;
-		}
+		// if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && curBeat % topTimeSignature == 0 && !ClientPrefs.optimization)
+		// {
+		// 	FlxG.camera.zoom += 0.015 * camZoomingMult;
+		// 	camHUD.zoom += 0.03 * camZoomingMult;
+		// }
 		/*
 		var ret:Dynamic = callOnLuas('onHeadBop', []);
 		if(ret != FunkinLua.Function_Stop && !ClientPrefs.optimization && headsBop) switch (ClientPrefs.bopStyle) {
