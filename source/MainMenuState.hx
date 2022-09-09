@@ -38,7 +38,8 @@ typedef MenuJSONData = {
 class MainMenuState extends MusicBeatState
 {
 	var menuJson:MenuJSONData = Json.parse(Paths.getTextFromFile("data/menu.json"));
-	public static var loreEngineVersion:String = '0.6.0';
+	public static var loreEngineVersion:String = '0.7.0';
+	public static var versionSuffix:String = ' alpha'; // just so i can add a suffix without breaking any version checks
 	public static var psychEngineVersion:String = '0.6.2'; // to maximize compatibility
 	public static var curSelected:Int = 0;
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'), 0.2, 0.2, true, true);
@@ -150,7 +151,7 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, (ClientPrefs.showLore ? "Lore Engine v" + (loreEngineVersion.endsWith(".0") ? loreEngineVersion.replace(".0", "") + " \\ " : loreEngineVersion + " \\ ") : "") + "Friday Night Funkin' v" + Application.current.meta.get('version')#if debug + " (debug)"#end, 12);
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, (ClientPrefs.showLore ? "Lore Engine v" + (loreEngineVersion.endsWith(".0") ? loreEngineVersion.replace(".0", "") + versionSuffix + " \\ " : loreEngineVersion + versionSuffix + " \\ ") : "") + "Friday Night Funkin' v" + Application.current.meta.get('version')#if debug + " (debug)"#end, 12);
 		versionShit.scrollFactor.set();
 		if (menuJson.overrideVersionText && menuJson.customVersionText != "") versionShit.text = menuJson.customVersionText;
 		versionShit.screenCenter(X);

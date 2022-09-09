@@ -58,7 +58,7 @@ class FPS extends TextField
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
 		if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate;
 		var memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2));
-		var gigaFlag:Bool = memoryMegas > 1000;
+		var gigaFlag:Bool = memoryMegas >= 1000;
 		if (memoryMegas > 1000) memoryMegas = FlxMath.roundDecimal(memoryMegas / 1000, 2);
 
 		if (currentCount != cacheCount /*&& visible*/)
@@ -67,6 +67,7 @@ class FPS extends TextField
 			currentFPS + " FPS" +
 			(ClientPrefs.showMem ? "\nMemory: " + memoryMegas + (gigaFlag ? " GB" : " MB") : "") +
 			(ClientPrefs.showLore ? "\nLore v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) : "")
+			+ MainMenuState.versionSuffix
 			#if debug + " (debug)" #end;
 			var mod:Int = (text.split("\n").length == 2) ? 39 : (text.split("\n").length == 3) ? 53 : 22;
 			if (ClientPrefs.fpsPosition == "TOP LEFT") 

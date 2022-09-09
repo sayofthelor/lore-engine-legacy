@@ -2387,6 +2387,8 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public var scoreColTween:FlxTween = null;
+
 	public function updateScore(miss:Bool = false)
 	{
 		scoreTxt.text = 'Score: ' + songScore
@@ -2404,6 +2406,26 @@ class PlayState extends MusicBeatState
 			scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
 				onComplete: function(twn:FlxTween) {
 					scoreTxtTween = null;
+				}
+			});
+		} else if (ClientPrefs.scoreZoom && miss && !cpuControlled) {
+			if(scoreTxtTween != null) {
+				scoreTxtTween.cancel();
+			}
+			if (scoreColTween != null) {
+				scoreColTween.cancel();
+			}
+			scoreTxt.scale.x = 0.925;
+			scoreTxt.scale.y = 0.925;
+			scoreTxtTween = FlxTween.tween(scoreTxt.scale, {x: 1, y: 1}, 0.2, {
+				onComplete: function(twn:FlxTween) {
+					scoreTxtTween = null;
+				}
+			});
+			scoreTxt.color = 0xFFFF0000;
+			scoreColTween = FlxTween.tween(scoreTxt, {color: 0xFFFFFFFF}, 0.2, {
+				onComplete: function(twn:FlxTween) {
+					scoreColTween = null;
 				}
 			});
 		}
