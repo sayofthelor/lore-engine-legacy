@@ -2423,7 +2423,7 @@ class PlayState extends MusicBeatState
 				}
 			});
 			scoreTxt.color = 0xFFFF0000;
-			scoreColTween = FlxTween.tween(scoreTxt, {color: 0xFFFFFFFF}, 0.2, {
+			scoreColTween = FlxTween.color(scoreTxt, 0.2, 0xFFFF0000, 0xFFFFFFFF, {
 				onComplete: function(twn:FlxTween) {
 					scoreColTween = null;
 				}
