@@ -94,6 +94,13 @@ class CreditsState extends MusicBeatState
 			[''],
 			['Special Thanks'],
 			[
+				'MasterEric',
+				'mastereric',
+				'FlxRuntimeShader',
+				'https://twitter.com/EliteMasterEric',
+				'FFBD40'
+			],
+			[
 				'vidyagirl',
 				'vg',
 				'Note Parent/Child System',
