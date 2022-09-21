@@ -82,15 +82,14 @@ class CreditsState extends MusicBeatState
 		}
 		#end
 
-		var pisspoop:Array<Array<String>> = [
-			// Name - Icon name - Description - Link - BG Color
-			['Lore Engine Team'],
+		var credsArray:Array<Array<String>> = [
+			['Lore Engine Team'], // header
 			[
-				'sayofthelor',
-				'bean',
-				'Creator, Main Programmer of Lore Engine',
-				'https://twitter.com/sayofthelor',
-				'663399'
+				'sayofthelor', // name
+				'bean', // icon name
+				'Creator, Main Programmer of Lore Engine', // description
+				'https://twitter.com/sayofthelor', // url
+				'663399' // bg color
 			],
 			[''],
 			['Special Thanks'],
@@ -216,7 +215,7 @@ class CreditsState extends MusicBeatState
 			]
 		];
 
-		for (i in pisspoop)
+		for (i in credsArray)
 		{
 			creditsStuff.push(i);
 		}
