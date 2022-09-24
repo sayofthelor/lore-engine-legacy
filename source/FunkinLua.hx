@@ -893,6 +893,35 @@ class FunkinLua {
 			return retVal;
 		});
 
+		Lua_helper.add_callback(lua, "addHaxeFunction", function(tag:String) {
+			#if hscript
+			initHaxeModule();
+			try {
+				if (hscript.interp.variables.exists(tag)) {
+					Lua_helper.add_callback(lua, tag, function() {
+						var func:Dynamic = hscript.interp.variables.get(tag);
+						if (Reflect.isFunction(hscript.interp.variables.get(tag))) {
+							func();
+						}
+					});
+				} else {
+					luaTrace("addHaxeFunction: Function '" + tag + "' doesn't exist!", false, false, FlxColor.RED);
+				}
+			}
+			catch (e:Dynamic) {
+				luaTrace("There was an error adding the function '" + tag + "'!", false, false, FlxColor.RED);
+			}
+			#else
+			luaTrace("HScript isn't supported on this platform!", false, false, FlxColor.RED);
+			#end
+		});
+
+		Lua_helper.add_callback(lua, "removeHaxeFunction", function(tag:String) {
+			#if hscript
+			Lua_helper.remove_callback(lua, tag);
+			#end
+		});
+
 		Lua_helper.add_callback(lua, "addHaxeLibrary", function(libName:String, ?libPackage:String = '') {
 			#if hscript
 			initHaxeModule();
