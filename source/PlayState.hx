@@ -312,6 +312,7 @@ class PlayState extends MusicBeatState
 	// Lua shit
 	public static var instance:PlayState;
 	public var luaArray:Array<FunkinLua> = [];
+	public var haxeArray:Array<lore.FunkinHX> = [];
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 	public var introSoundsSuffix:String = '';
 
@@ -916,6 +917,12 @@ class PlayState extends MusicBeatState
 						luaArray.push(new FunkinLua(folder + file));
 						filesPushed.push(file);
 					}
+
+					if(file.endsWith('.hx') && !filesPushed.contains(file))
+						{
+							haxeArray.push(new lore.FunkinHX(folder + file));
+							filesPushed.push(file);
+						}
 				}
 			}
 		}
@@ -939,35 +946,23 @@ class PlayState extends MusicBeatState
 		if(doPush)
 			luaArray.push(new FunkinLua(luaFile));
 
+		#end
+
+		#if (MODS_ALLOWED && hscript)
 		doPush = false;
-		luaFile = 'icons/' + SONG.player1 + '.lua';
-		if(FileSystem.exists(Paths.modFolders(luaFile))) {
-			luaFile = Paths.modFolders(luaFile);
+		var hxFile:String = 'stages/' + curStage + '.hx';
+		if(FileSystem.exists(Paths.modFolders(hxFile))) {
+			luaFile = Paths.modFolders(hxFile);
 			doPush = true;
 		} else {
-			luaFile = Paths.getPreloadPath(luaFile);
-			if(FileSystem.exists(luaFile)) {
+			hxFile = Paths.getPreloadPath(hxFile);
+			if(FileSystem.exists(hxFile)) {
 				doPush = true;
 			}
 		}
 
 		if(doPush)
-			luaArray.push(new FunkinLua(luaFile));
-
-		doPush = false;
-		luaFile = 'icons/' + SONG.player2 + '.lua';
-		if(FileSystem.exists(Paths.modFolders(luaFile))) {
-			luaFile = Paths.modFolders(luaFile);
-			doPush = true;
-		} else {
-			luaFile = Paths.getPreloadPath(luaFile);
-			if(FileSystem.exists(luaFile)) {
-				doPush = true;
-			}
-		}
-
-		if(doPush)
-			luaArray.push(new FunkinLua(luaFile));
+			haxeArray.push(new lore.FunkinHX(hxFile));
 		#end
 
 		var gfVersion:String = SONG.gfVersion;
@@ -1196,6 +1191,56 @@ class PlayState extends MusicBeatState
 			#end
 		}
 		#end
+		#if hscript
+		for (notetype in noteTypeMap.keys())
+		{
+			#if MODS_ALLOWED
+			var hscriptToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.hx');
+			if(FileSystem.exists(hscriptToLoad))
+			{
+				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+			}
+			else
+			{
+				hscriptToLoad = Paths.getPreloadPath('custom_notetypes/' + notetype + '.hx');
+				if(FileSystem.exists(hscriptToLoad))
+				{
+					haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+				}
+			}
+			#elseif sys
+			var hscriptToLoad:String = Paths.getPreloadPath('custom_notetypes/' + notetype + '.hx');
+			if(OpenFlAssets.exists(hscriptToLoad))
+			{
+				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+			}
+			#end
+		}
+		for (event in eventPushedMap.keys())
+		{
+			#if MODS_ALLOWED
+			var hscriptToLoad:String = Paths.modFolders('custom_events/' + event + '.hx');
+			if(FileSystem.exists(hscriptToLoad))
+			{
+				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+			}
+			else
+			{
+				hscriptToLoad = Paths.getPreloadPath('custom_events/' + event + '.hx');
+				if(FileSystem.exists(hscriptToLoad))
+				{
+					haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+				}
+			}
+			#elseif sys
+			var hscriptToLoad:String = Paths.getPreloadPath('custom_events/' + event + '.hx');
+			if(OpenFlAssets.exists(hscriptToLoad))
+			{
+				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+			}
+			#end
+		}
+		#end
 		noteTypeMap.clear();
 		noteTypeMap = null;
 		eventPushedMap.clear();
@@ -1316,6 +1361,11 @@ class PlayState extends MusicBeatState
 						luaArray.push(new FunkinLua(folder + file));
 						filesPushed.push(file);
 					}
+					if(file.endsWith('.hx') && !filesPushed.contains(file))
+						{
+							haxeArray.push(new lore.FunkinHX(folder + file));
+							filesPushed.push(file);
+						}
 				}
 			}
 		}
@@ -1427,6 +1477,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
 		callOnLuas('onCreatePost', []);
+		callOnHaxes('createPost', []);
 
 		#if debug
 		var notFinalTxt:FlxText = new FlxText(0, 20, FlxG.width, "NOT REPRESENTATIVE OF FINAL VERSION");
@@ -1635,6 +1686,36 @@ class PlayState extends MusicBeatState
 				if(script.scriptName == luaFile) return;
 			}
 			luaArray.push(new FunkinLua(luaFile));
+		}
+		#end
+
+		#if hscript
+		var doPush:Bool = false;
+		var hscriptFile:String = 'characters/' + name + '.hx';
+		#if MODS_ALLOWED
+		if(FileSystem.exists(Paths.modFolders(hscriptFile))) {
+			hscriptFile = Paths.modFolders(hscriptFile);
+			doPush = true;
+		} else {
+			hscriptFile = Paths.getPreloadPath(hscriptFile);
+			if(FileSystem.exists(hscriptFile)) {
+				doPush = true;
+			}
+		}
+		#else
+		hscriptFile = Paths.getPreloadPath(hscriptFile);
+		if(Assets.exists(hscriptFile)) {
+			doPush = true;
+		}
+		#end
+
+		if(doPush)
+		{
+			for (script in haxeArray)
+			{
+				if(script.scriptName == hscriptFile) return;
+			}
+			haxeArray.push(new lore.FunkinHX(hscriptFile));
 		}
 		#end
 	}
@@ -2145,12 +2226,13 @@ class PlayState extends MusicBeatState
 	{
 		if(startedCountdown) {
 			callOnLuas('onStartCountdown', []);
+			callOnHaxes('startCountdown',[]);
 			return;
 		}
 
 		inCutscene = false;
-		var ret:Dynamic = callOnLuas('onStartCountdown', [], false);
-		if(ret != FunkinLua.Function_Stop) {
+		var ret:Dynamic = [callOnLuas('onStartCountdown', [], false), callOnHaxes('startCountdown', [], false)];
+		if(!ret.contains(FunkinLua.Function_Stop)) {
 			if (skipCountdown || startOnTime > 0) skipArrowStartTween = true;
 
 			generateStaticArrows(0);
@@ -2174,6 +2256,7 @@ class PlayState extends MusicBeatState
 			Conductor.songPosition -= Conductor.crochet * 5;
 			setOnLuas('startedCountdown', true);
 			callOnLuas('onCountdownStarted', []);
+			callOnHaxes('onCountdownStarted', []);
 
 			var swagCounter:Int = 0;
 
@@ -2332,6 +2415,7 @@ class PlayState extends MusicBeatState
 					}
 				});
 				callOnLuas('onCountdownTick', [swagCounter]);
+				callOnHaxes('onCountdownTick', [swagCounter]);
 
 				swagCounter += 1;
 				// generateSong('fresh');
@@ -2430,6 +2514,7 @@ class PlayState extends MusicBeatState
 			});
 		}
 		callOnLuas('onUpdateScore', [miss]);
+		callOnHaxes('onUpdateScore', [miss]);
 	}
 
 	public function setSongTime(time:Float)
@@ -2454,10 +2539,12 @@ class PlayState extends MusicBeatState
 	function startNextDialogue() {
 		dialogueCount++;
 		callOnLuas('onNextDialogue', [dialogueCount]);
+		callOnHaxes('onNextDialogue', [dialogueCount]);
 	}
 
 	function skipDialogue() {
 		callOnLuas('onSkipDialogue', [dialogueCount]);
+		callOnHaxes('onSkipDialogue', [dialogueCount]);
 	}
 
 	var previousFrameTime:Int = 0;
@@ -2518,6 +2605,7 @@ class PlayState extends MusicBeatState
 		#end
 		setOnLuas('songLength', songLength);
 		callOnLuas('onSongStart', []);
+		callOnHaxes('onSongStart', []);
 	}
 
 	var debugNum:Int = 0;
@@ -2786,8 +2874,8 @@ class PlayState extends MusicBeatState
 	}
 
 	function eventNoteEarlyTrigger(event:EventNote):Float {
-		var returnedValue:Float = callOnLuas('eventEarlyTrigger', [event.event]);
-		if(returnedValue != 0) {
+		var returnedValue:Dynamic = [callOnLuas('eventEarlyTrigger', [event.event]), callOnHaxes('eventEarlyTrigger', [event.event])];
+		if(!returnedValue.contains(0)) {
 			return returnedValue;
 		}
 
@@ -2933,6 +3021,7 @@ class PlayState extends MusicBeatState
 			}
 			paused = false;
 			callOnLuas('onResume', []);
+			callOnHaxes('onResume', []);
 
 			#if desktop
 			if (startTimer != null && startTimer.finished)
@@ -3015,6 +3104,7 @@ class PlayState extends MusicBeatState
 			laneunderlay.x = playerStrums.members[0].x - 25;
 		}
 		callOnLuas('onUpdate', [elapsed]);
+		callOnHaxes('update', [elapsed]);
 
 		if (!ClientPrefs.optimization) switch (curStage)
 		{
@@ -3174,8 +3264,8 @@ class PlayState extends MusicBeatState
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
-			var ret:Dynamic = callOnLuas('onPause', [], false);
-			if(ret != FunkinLua.Function_Stop) {
+			var ret:Dynamic = [callOnLuas('onPause', [], false), callOnHaxes('onPause', [], false)];
+			if(!ret.contains(FunkinLua.Function_Stop)) {
 				openPauseMenu();
 			}
 		}
@@ -3212,8 +3302,8 @@ class PlayState extends MusicBeatState
 
 		if (health > 2)
 			health = 2;
-		var ret:Dynamic = callOnLuas('onIconUpdate', ["player"]);
-		if (ret != FunkinLua.Function_Stop) {
+		var ret:Dynamic = [callOnLuas('onIconUpdate', ["player"]), callOnHaxes('onIconUpdate', ["player"])];
+		if (!ret.contains(FunkinLua.Function_Stop)) {
 			if (healthBar.percent < 20)
 				iconP1.animation.curAnim.curFrame = 1;
 			else if (healthBar.percent > 80 && boyfriend.hasVictory)
@@ -3222,8 +3312,8 @@ class PlayState extends MusicBeatState
 				iconP1.animation.curAnim.curFrame = 0;
 		}
 
-		var ret:Dynamic = callOnLuas('onIconUpdate', ["opponent"]);
-		if (ret != FunkinLua.Function_Stop) {
+		var ret:Dynamic = [callOnLuas('onIconUpdate', ["opponent"]), callOnHaxes('onIconUpdate', ["opponent"])];
+		if (!ret.contains(FunkinLua.Function_Stop)) {
 			if (healthBar.percent > 80)
 				iconP2.animation.curAnim.curFrame = 1;
 			else if (healthBar.percent < 20 && dad.hasVictory)
@@ -3317,6 +3407,7 @@ class PlayState extends MusicBeatState
 				notes.insert(0, dunceNote);
 				dunceNote.spawned=true;
 				callOnLuas('onSpawnNote', [notes.members.indexOf(dunceNote), dunceNote.noteData, dunceNote.noteType, dunceNote.isSustainNote]);
+				callOnHaxes('onSpawnNote', [notes.members.indexOf(dunceNote), dunceNote.noteData, dunceNote.noteType, dunceNote.isSustainNote]);
 
 				var index:Int = unspawnNotes.indexOf(dunceNote);
 				unspawnNotes.splice(index, 1);
@@ -3478,6 +3569,7 @@ class PlayState extends MusicBeatState
 		setOnLuas('cameraY', camFollowPos.y);
 		setOnLuas('botPlay', cpuControlled);
 		callOnLuas('onUpdatePost', [elapsed]);
+		callOnHaxes('updatePost', [elapsed]);
 		for (i in shaderUpdates){
 			i(elapsed);
 		}
@@ -3530,8 +3622,8 @@ class PlayState extends MusicBeatState
 	function doDeathCheck(?skipHealthCheck:Bool = false) {
 		if (((skipHealthCheck && instakillOnMiss) || health <= 0) && !practiceMode && !isDead)
 		{
-			var ret:Dynamic = callOnLuas('onGameOver', [], false);
-			if(ret != FunkinLua.Function_Stop) {
+			var ret:Dynamic = [callOnLuas('onGameOver', [], false), callOnHaxes('onGameOver', [], false)];
+			if(!ret.contains(FunkinLua.Function_Stop)) {
 				boyfriend.stunned = true;
 				deathCounter++;
 
@@ -3968,6 +4060,7 @@ class PlayState extends MusicBeatState
 				}
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
+		callOnHaxes('onEvent', [eventName, value1, value2]);
 	}
 
 	function moveCameraSection():Void {
@@ -3980,6 +4073,7 @@ class PlayState extends MusicBeatState
 			camFollow.y += gf.cameraPosition[1] + girlfriendCameraOffset[1];
 			tweenCamIn();
 			callOnLuas('onMoveCamera', ['gf']);
+			callOnHaxes('onMoveCamera', ['gf']);
 			return;
 		}
 
@@ -3987,11 +4081,13 @@ class PlayState extends MusicBeatState
 		{
 			moveCamera(true);
 			callOnLuas('onMoveCamera', ['dad']);
+			callOnHaxes('onMoveCamera', ['dad']);
 		}
 		else
 		{
 			moveCamera(false);
 			callOnLuas('onMoveCamera', ['boyfriend']);
+			callOnHaxes('onMoveCamera', ['boyfriend']);
 		}
 	}
 
@@ -4111,8 +4207,8 @@ class PlayState extends MusicBeatState
 		callOnLuas('changeDiscordClientID', ["936072337219026954"]);
 		#end
 		
-		var ret:Dynamic = callOnLuas('onEndSong', [], false);
-		if(ret != FunkinLua.Function_Stop && !transitioning) {
+		var ret:Dynamic = [callOnLuas('onEndSong', [], false), callOnHaxes('onEndSong', [], false)];
+		if(!ret.contains(FunkinLua.Function_Stop) && !transitioning) {
 			if (SONG.validScore)
 			{
 				#if !switch
@@ -4597,6 +4693,7 @@ class PlayState extends MusicBeatState
 				}
 				else{
 					callOnLuas('onGhostTap', [key]);
+					callOnHaxes('onGhostTap', [key]);
 					if (canMiss) {
 						noteMissPress(key);
 					}
@@ -4620,6 +4717,7 @@ class PlayState extends MusicBeatState
 				spr.resetAnim = 0;
 			}
 			callOnLuas('onKeyPress', [key]);
+			callOnHaxes('onKeyPress', [key]);
 		}
 		//trace('pressed: ' + controlArray);
 	}
@@ -4647,6 +4745,7 @@ class PlayState extends MusicBeatState
 				spr.resetAnim = 0;
 			}
 			callOnLuas('onKeyRelease', [key]);
+			callOnHaxes('onKeyRelease', [key]);
 		}
 		//trace('released: ' + controlArray);
 	}
@@ -4781,6 +4880,7 @@ class PlayState extends MusicBeatState
 		}
 
 		callOnLuas('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
+		callOnHaxes('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
 	}
 
 	function noteMissPress(direction:Int = 1):Void //You pressed a key when there was no notes to press for this key
@@ -4827,6 +4927,7 @@ class PlayState extends MusicBeatState
 			if (SONG.needsVoices2) vocals2.volume = 0 else vocals.volume = 0;
 		}
 		callOnLuas('noteMissPress', [direction]);
+		callOnHaxes('noteMissPress', [direction]);
 	}
 
 	function opponentNoteHit(note:Note):Void
@@ -4870,6 +4971,7 @@ class PlayState extends MusicBeatState
 		note.hitByOpponent = true;
 
 		callOnLuas('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
+		callOnHaxes('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
 
 		if (!note.isSustainNote)
 		{
@@ -4989,6 +5091,7 @@ class PlayState extends MusicBeatState
 			var leData:Int = Math.round(Math.abs(note.noteData));
 			var leType:String = note.noteType;
 			callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
+			callOnLuas('noteHit', [notes.members.indexOf(note), leData, leType, isSus]);
 
 			if (!note.isSustainNote)
 			{
@@ -5252,6 +5355,7 @@ class PlayState extends MusicBeatState
 		lastStepHit = curStep;
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
+		callOnLuas('onStepHit', []);
 	}
 
 	var lightningStrikeBeat:Int = 0;
@@ -5391,6 +5495,7 @@ class PlayState extends MusicBeatState
 
 		setOnLuas('curBeat', curBeat); //DAWGG?????
 		callOnLuas('onBeatHit', []);
+		callOnHaxes('beatHit', []);
 	}
 
 	override function sectionHit()
@@ -5424,6 +5529,7 @@ class PlayState extends MusicBeatState
 		
 		setOnLuas('curSection', curSection);
 		callOnLuas('onSectionHit', []);
+		callOnHaxes('sectionHit', []);
 	}
 
 	public function callOnLuas(event:String, args:Array<Dynamic>, ignoreStops = true, exclusions:Array<String> = null):Dynamic {
@@ -5435,6 +5541,29 @@ class PlayState extends MusicBeatState
 				continue;
 
 			var ret:Dynamic = script.call(event, args);
+			if(ret == FunkinLua.Function_StopLua && !ignoreStops)
+				break;
+			
+			// had to do this because there is a bug in haxe where Stop != Continue doesnt work
+			var bool:Bool = ret == FunkinLua.Function_Continue;
+			if(!bool) {
+				returnVal = cast ret;
+			}
+		}
+		#end
+		//trace(event, returnVal);
+		return returnVal;
+	}
+
+	public function callOnHaxes(event:String, args:Array<Dynamic>, ignoreStops = true, exclusions:Array<String> = null):Dynamic {
+		var returnVal:Dynamic = FunkinLua.Function_Continue;
+		#if hscript
+		if(exclusions == null) exclusions = [];
+		for (script in haxeArray) {
+			if(exclusions.contains(script.scriptName))
+				continue;
+
+			var ret:Dynamic = script.runFunc(event, args);
 			if(ret == FunkinLua.Function_StopLua && !ignoreStops)
 				break;
 			
@@ -5479,8 +5608,8 @@ class PlayState extends MusicBeatState
 		setOnLuas('misses', songMisses);
 		setOnLuas('hits', songHits);
 
-		var ret:Dynamic = callOnLuas('onRecalculateRating', [], false);
-		if(ret != FunkinLua.Function_Stop)
+		var ret:Dynamic = [callOnLuas('onRecalculateRating', [], false), callOnHaxes('onRecalculateRating', [], false)];
+		if(!ret.contains(FunkinLua.Function_Stop))
 		{
 			if(totalPlayed < 1) //Prevent divide by 0
 				ratingName = '?';
