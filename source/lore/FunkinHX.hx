@@ -1,14 +1,28 @@
 package lore;
 
+import shadertoy.FlxShaderToyRuntimeShader;
 import hscript.Parser;
 import hscript.Interp;
 import hscript.Expr;
 
 using StringTools;
 
+/**
+ * This is where all of the hscript stuff that isn't for FunkinLua is.
+ * 
+ * You can find all of that stuff in FunkinLua.HScript.
+ * 
+ * FunkinLua.HScript is used here to steal a bunch of variable setting I don't wanna do again.
+ * 
+ * getExprFromString and the import code (as well as the inspiration for this file in general) is owed to YoshiCrafter29.
+ * 
+ * Feel free to add any lua callbacks I forgot, and merge them as PRs, if you wish.
+ * 
+ * @see http://github.com/YoshiCrafter29/YoshiCrafterEngine
+ */
+
 class FunkinHX  {
     public var interp:Interp;
-    public var parser:Parser = new Parser();
     public var scriptName:String = "unknown";
     public var loaded:Bool = false;
 
@@ -20,7 +34,7 @@ class FunkinHX  {
     public function new(f:String):Void {
         scriptName = f;
         var ttr = sys.io.File.getContent(f);
-        interp = new FunkinLua.HScript().interp;
+        interp = new Interp();
         interp.variables.set("import", function(className:String)
             {
                 var splitClassName = [for (e in className.split(".")) e.trim()];
@@ -50,9 +64,53 @@ class FunkinHX  {
                     }
                 }
             });
+            interp.variables.set('FlxG', flixel.FlxG);
+            interp.variables.set('FlxSprite', flixel.FlxSprite);
+            interp.variables.set('FlxCamera', flixel.FlxCamera);
+            interp.variables.set('FlxTimer', flixel.util.FlxTimer);
+            interp.variables.set('FlxTween', flixel.tweens.FlxTween);
+            interp.variables.set('FlxEase', flixel.tweens.FlxEase);
+            interp.variables.set('PlayState', PlayState);
+            interp.variables.set('game', PlayState.instance);
+            interp.variables.set('Paths', Paths);
+            interp.variables.set('Conductor', Conductor);
+            interp.variables.set('ClientPrefs', ClientPrefs);
+            interp.variables.set('Character', Character);
+            interp.variables.set('Alphabet', Alphabet);
+            #if !flash
+            interp.variables.set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
+            interp.variables.set('FlxShaderToyRuntimeShader', FlxShaderToyRuntimeShader);
+            interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
+            #end
+            interp.variables.set('StringTools', StringTools);
+    
+            interp.variables.set('setVar', function(name:String, value:Dynamic)
+            {
+                PlayState.instance.variables.set(name, value);
+            });
+            interp.variables.set('getVar', function(name:String)
+            {
+                var result:Dynamic = null;
+                if(PlayState.instance.variables.exists(name)) result = PlayState.instance.variables.get(name);
+                return result;
+            });
+            interp.variables.set('removeVar', function(name:String)
+            {
+                if(PlayState.instance.variables.exists(name))
+                {
+                    PlayState.instance.variables.remove(name);
+                    return true;
+                }
+                return false;
+            });
+            interp.variables.set("Sys", Sys);
             interp.variables.set("add", PlayState.instance.add);
+            interp.variables.set("addBehindDad", PlayState.instance.addBehindDad);
+            interp.variables.set("addBehindGF", PlayState.instance.addBehindGF);
+            interp.variables.set("addBehindBF", PlayState.instance.addBehindBF);
             interp.variables.set("remove", PlayState.instance.remove);
             interp.variables.set("insert", PlayState.instance.insert);
+            interp.variables.set("indexOf", PlayState.instance.members.indexOf);
             interp.variables.set("create", function() {});
             interp.variables.set("createPost", function() {});
             interp.variables.set("update", function(elapsed:Float) {});
@@ -85,14 +143,15 @@ class FunkinHX  {
             interp.variables.set("onRecalculateRating", function() {});
             interp.variables.set("Function_Stop", FunkinLua.Function_Stop);
             interp.variables.set("onIconUpdate", function(p:String) {});
-            interp.variables.set("onHeadBop", function() {});
-
+            interp.variables.set("onHeadBop", function(name:String) {});
+            interp.variables.set("Std", Std);
             interp.variables.set("script", this);
 
-            interp.execute(getExprFromString(ttr));
-
-            runFunc("create");
-            loaded = true;
+            try {
+                interp.execute(getExprFromString(ttr, true));
+                trace("haxe file loaded successfully: " + f);
+                loaded = true;
+            } catch (e:Dynamic) traace('$e');
     }
 
     public static function getExprFromString(code:String, critical:Bool = false, ?path:String):Expr

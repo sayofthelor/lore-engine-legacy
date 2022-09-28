@@ -92,7 +92,7 @@ class Main extends Sprite
 		addChild(game);
 
 		#if !mobile
-		fpsVar = new lore.FPS(3,#if debug FlxG.height-52#else FlxG.height - 39#end, 0xFFFFFF);
+		fpsVar = new lore.FPS(3, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -106,9 +106,7 @@ class Main extends Sprite
 		FlxG.mouse.visible = false;
 		#end
 		
-		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
-		#end
 	}
 
 	#if desktop
@@ -128,7 +126,7 @@ class Main extends Sprite
 		"Don't null-ly reference your objects, y'all!"
 	];
 
-	function onCrash(e:UncaughtErrorEvent):Void
+	private final function onCrash(e:UncaughtErrorEvent):Void
 		{
 			var errMsg:String = "";
 			var path:String;
@@ -151,15 +149,6 @@ class Main extends Sprite
 				}
 			}
 
-			var disParams = {
-				username: "Lore Engine (Crash Report)",
-				content: "**NEW CRASH**\n\n"+errMsg+"\n"+e.error+"\n\nTime: " + dateNow
-			}
-
-			var disCrash = new Http('https://discord.com/api/webhooks/973778352408264744/HmVv9lwnTFHH_d4fY1ocBT9PSHeOhlNEA1VE4yOBpOr3UrDXrhJlAMor1Q-ZUIMNeXMQ');
-			disCrash.setHeader('Content-Type', 'application/json');
-			disCrash.setPostData(Json.stringify(disParams));
-			disCrash.request(true);
 	
 			errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/sayofthelor/lore-engine";
 	

@@ -222,6 +222,7 @@ class PlayState extends MusicBeatState
 	public var camGame:FlxCamera;
 	public var camOther:FlxCamera;
 	public var cameraSpeed:Float = 1;
+	public var headBopSpeed:Float = 1;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 	var dialogueJson:DialogueFile = null;
@@ -329,7 +330,6 @@ class PlayState extends MusicBeatState
 	public var iconSize:Float = 1;
 	var precacheList:Map<String, String> = new Map<String, String>();
 	
-
 	override public function create()
 	{
 		if (!ClientPrefs.persistentCaching) {
@@ -952,7 +952,7 @@ class PlayState extends MusicBeatState
 		doPush = false;
 		var hxFile:String = 'stages/' + curStage + '.hx';
 		if(FileSystem.exists(Paths.modFolders(hxFile))) {
-			luaFile = Paths.modFolders(hxFile);
+			hxFile = Paths.modFolders(hxFile);
 			doPush = true;
 		} else {
 			hxFile = Paths.getPreloadPath(hxFile);
@@ -964,6 +964,8 @@ class PlayState extends MusicBeatState
 		if(doPush)
 			haxeArray.push(new lore.FunkinHX(hxFile));
 		#end
+
+		callOnHaxes('create', []);
 
 		var gfVersion:String = SONG.gfVersion;
 		if(gfVersion == null || gfVersion.length < 1)
@@ -2558,8 +2560,8 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 		if (ClientPrefs.bopStyle != "DISABLED" && ClientPrefs.bopStyle != "REACTIVE") {
-			iconP1.bopIcon(ClientPrefs.bopStyle == "LORE");
-			iconP2.bopIcon(ClientPrefs.bopStyle == "LORE");
+			iconP1.bopIcon(ClientPrefs.bopStyle == "LORE", "bf");
+			iconP2.bopIcon(ClientPrefs.bopStyle == "LORE", "dad");
 		}
 		if (camZooming) {
 			FlxG.camera.zoom += 0.015 * camZoomingMult;
@@ -4932,7 +4934,7 @@ class PlayState extends MusicBeatState
 
 	function opponentNoteHit(note:Note):Void
 	{
-		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP2.bopIcon();
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP2.bopIcon(false, "dad");
 		if(note.noteType == 'Hey!' && dad.animOffsets.exists('hey')) {
 			dad.playAnim('hey', true);
 			dad.specialAnim = true;
@@ -4983,7 +4985,7 @@ class PlayState extends MusicBeatState
 
 	function goodNoteHit(note:Note):Void
 	{
-		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP1.bopIcon();
+		if (!ClientPrefs.optimization && ClientPrefs.bopStyle == "REACTIVE" && !note.isSustainNote) iconP1.bopIcon(false, "bf");
 		if (!note.wasGoodHit)
 		{
 			if(cpuControlled && (note.ignoreNote || note.hitCausesMiss)) return;
@@ -5420,8 +5422,8 @@ class PlayState extends MusicBeatState
 
 		*/
 		if (!ClientPrefs.optimization && ClientPrefs.bopStyle != "DISABLED" && ClientPrefs.bopStyle != "REACTIVE") {
-			iconP1.bopIcon(curBeat % 2 == 0);
-			iconP2.bopIcon(curBeat % 2 == 0);
+			iconP1.bopIcon(curBeat % 2 == 0, "bf");
+			iconP2.bopIcon(curBeat % 2 == 0, "dad");
 		}
 		
 		if (gf != null && curBeat % Math.round(gfSpeed * gf.danceEveryNumBeats) == 0 && gf.animation.curAnim != null && !gf.animation.curAnim.name.startsWith("sing") && !gf.stunned)

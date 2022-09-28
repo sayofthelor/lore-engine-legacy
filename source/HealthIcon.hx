@@ -71,14 +71,14 @@ class HealthIcon extends FlxSprite
 	}
 
 	public function runScaleUpdate(elapsed:Float):Void {
-		var multx:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		var multy:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.y, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
+		var multx:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.x, CoolUtil.boundTo(1 - (elapsed * (9 * PlayState.instance.headBopSpeed)), 0, 1));
+		var multy:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.y, CoolUtil.boundTo(1 - (elapsed * (9 * PlayState.instance.headBopSpeed)), 0, 1));
 		scale.set(multx, multy);
 		updateHitbox();
 	}
 
-	public function bopIcon(?beatMod:Bool = false /* to be safe lol */):Void {
-		var ret:Dynamic = [PlayState.instance.callOnLuas('onHeadBop', []), PlayState.instance.callOnHaxes('onHeadBop', [])];
+	public function bopIcon(?beatMod:Bool = false, cname:String):Void {
+		var ret:Dynamic = [PlayState.instance.callOnLuas('onHeadBop', [cname]), PlayState.instance.callOnHaxes('onHeadBop', [cname])];
 		if (!ret.contains(FunkinLua.Function_Stop) && !ClientPrefs.optimization && PlayState.instance.headsBop) switch (ClientPrefs.bopStyle) {
 			case "LORE":
 				if(!beatMod) scale.set(PlayState.instance.iconSize * 1.2, PlayState.instance.iconSize * 1.2) else scale.set(PlayState.instance.iconSize * 0.8, PlayState.instance.iconSize * 0.8);

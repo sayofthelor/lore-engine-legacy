@@ -3547,6 +3547,7 @@ class HScript
 		interp.variables.set('CustomSubstate', CustomSubstate);
 		#if !flash
 		interp.variables.set('FlxRuntimeShader', FlxRuntimeShader);
+		interp.variables.set('FlxShaderToyRuntimeShader', shadertoy.FlxShaderToyRuntimeShader);
 		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 		#end
 		interp.variables.set('StringTools', StringTools);
