@@ -15,6 +15,7 @@ class ClientPrefs {
 	public static var opponentStrums:Bool = true;
 	public static var showFPS:Bool = true;
 	public static var flashing:Bool = true;
+	public static var hitsoundVolume:Float = 1;
 	public static var globalAntialiasing:Bool = true;
 	public static var noteSplashes:Bool = true;
 	public static var lowQuality:Bool = false;
@@ -129,6 +130,7 @@ class ClientPrefs {
 		FlxG.save.data.shaders = shaders;
 		FlxG.save.data.framerate = framerate;
 		FlxG.save.data.hitSounds = hitSounds;
+		FlxG.save.data.hitsoundVolume = hitsoundVolume;
 		FlxG.save.data.optimization = optimization;
 		FlxG.save.data.showScoreBar = showScoreBar;
 		FlxG.save.data.ignoreSkin = ignoreSkin;
@@ -199,6 +201,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.newTimeBar != null) {
 			newTimeBar = FlxG.save.data.newTimeBar;
+		}
+		if(FlxG.save.data.hitsoundVolume != null) {
+			hitsoundVolume = FlxG.save.data.hitsoundVolume;
 		}
 		if(FlxG.save.data.colorblindFilter != null) {
 			colorblindFilter = FlxG.save.data.colorblindFilter;

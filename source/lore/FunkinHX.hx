@@ -22,13 +22,22 @@ using StringTools;
  */
 
 class FunkinHX  {
-    public var interp:Interp;
+    private var interp:Interp;
     public var scriptName:String = "unknown";
     public var loaded:Bool = false;
 
     public function traace(text:String):Void {
         var posInfo = interp.posInfos();
         Sys.println("[interp:" + scriptName + ":" + posInfo.lineNumber + "]: " + text);
+    }
+
+    public function setInterpVariable(k:String, v:Dynamic):Void {
+        if (interp != null) interp.variables.set(k, v);
+    }
+
+    public function getInterpVariable(k:String):Dynamic {
+        if (interp != null) return interp.variables.get(k);
+        return null;
     }
 
     public function new(f:String):Void {

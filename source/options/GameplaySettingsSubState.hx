@@ -1,10 +1,14 @@
 package options;
 
+import flixel.FlxG;
 
 using StringTools;
 
 class GameplaySettingsSubState extends BaseOptionsMenu
 {
+	public function playHitsound():Void {
+		if(ClientPrefs.hitSounds != "OFF") FlxG.sound.play(Paths.sound("hitsounds/" + ClientPrefs.hitSounds.toLowerCase()), ClientPrefs.hitsoundVolume);
+	}
 	public function new()
 	{
 		title = 'Gameplay Settings';
@@ -19,6 +23,15 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'CAMELLIA',
 			'OSU!MANIA'
 		]);
+		option.onChange = playHitsound;
+		addOption(option);
+		var option:Option = new Option('Hitsound Volume: ',
+			"The volume of your hitsounds.", 
+			"hitsoundVolume",
+			"percent",
+			1
+		);
+		option.onChange = playHitsound;
 		addOption(option);
 		var option:Option = new Option('Optimization',
 			"Remove unnecessary graphics from the game.",

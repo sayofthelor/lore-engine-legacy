@@ -2477,10 +2477,13 @@ class PlayState extends MusicBeatState
 
 	public function updateScore(miss:Bool = false)
 	{
-		scoreTxt.text = 'Score: ' + songScore
-		+ ' | Misses: ' + songMisses
-		+ ' | Rating: ' + ratingName
-		+ (ratingName != '?' ? ' (${Highscore.floorDecimal(ratingPercent * 100, 2)}%) - $ratingFC' : '');
+		if (cpuControlled) {
+			scoreTxt.text = "Botplay Enabled \\ Score Not Counted";
+		} else if(ratingName == '?') {
+			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: 0% [' + ratingName + ']';
+		} else {
+			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + ' [' + ratingName + ' | ' + ratingFC + ']';//peeps wanted no integer rating
+		}
 
 		if(ClientPrefs.scoreZoom && !miss && !cpuControlled)
 		{
@@ -3253,13 +3256,6 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		if (cpuControlled) {
-			scoreTxt.text = "Botplay Enabled \\ Score Not Counted";
-		} else if(ratingName == '?') {
-			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: 0% [' + ratingName + ']';
-		} else {
-			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + ' [' + ratingName + ' | ' + ratingFC + ']';//peeps wanted no integer rating
-		}
 		setOnLuas('curDecStep', curDecStep);
 		setOnLuas('curDecBeat', curDecBeat);
 
@@ -5019,7 +5015,7 @@ class PlayState extends MusicBeatState
 			if (!note.isSustainNote)
 			{
 				if (!cpuControlled) {
-					if(ClientPrefs.hitSounds != "OFF") FlxG.sound.play(Paths.sound("hitsounds/" + ClientPrefs.hitSounds.toLowerCase()));
+					if(ClientPrefs.hitSounds != "OFF") FlxG.sound.play(Paths.sound("hitsounds/" + ClientPrefs.hitSounds.toLowerCase()), ClientPrefs.hitsoundVolume);
 				}
 				if (ClientPrefs.showNoteTimeHitbox && !cpuControlled)
 					{
