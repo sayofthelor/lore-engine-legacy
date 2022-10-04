@@ -1,5 +1,6 @@
 package lore;
 
+import lime.app.Application;
 import shadertoy.FlxShaderToyRuntimeShader;
 import hscript.Parser;
 import hscript.Interp;
@@ -199,15 +200,17 @@ class FunkinHX  {
 
         public function runFunc(f:String, ?args:Array<Dynamic>):Any {
             if (!loaded) return null;
-            if (interp.variables.exists(f)) {
-                if (Reflect.isFunction(interp.variables[f])) {
-                    var f = interp.variables[f];
-                    if (args.length < 1) return f();
-                    else return Reflect.callMethod(null, f, args);
+            try {
+                if (interp.variables.exists(f)) {
+                    if (Reflect.isFunction(interp.variables[f])) {
+                        var f = interp.variables[f];
+                        if (args.length < 1) return f();
+                        else return Reflect.callMethod(null, f, args);
+                    }
+                    trace('$f exists, but is not a function!');
+                    return null;
                 }
-                trace('$f exists, but is not a function!');
-                return null;
-            }
+            } catch (e:Dynamic) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e, 'Haxe script error');
             trace('$f does not exist!');
             return null;
         }

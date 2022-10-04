@@ -1111,7 +1111,6 @@ class PlayState extends MusicBeatState
 		timeBarBG.color = FlxColor.BLACK;
 		timeBarBG.xAdd = -4;
 		timeBarBG.yAdd = -4;
-		add(timeBarBG);
 
 		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
 			'songPercent', 0, 1);
@@ -1120,7 +1119,6 @@ class PlayState extends MusicBeatState
 		timeBar.numDivisions = 800; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
-		add(timeBar);
 		timeBarBG.sprTracker = timeBar;
 
 		if(ClientPrefs.downScroll) timeTxt.y = ClientPrefs.newTimeBar ? timeBarBG.y - timeTxt.height - 3 : FlxG.height - 44 else timeTxt.y = ClientPrefs.newTimeBar ? timeBarBG.y + timeBarBG.height + 3 : 19;
@@ -1603,6 +1601,7 @@ class PlayState extends MusicBeatState
 		if(generatedMusic)
 		{
 			if(vocals != null) vocals.pitch = value;
+			if(vocals2 != null) vocals2.pitch = value;
 			FlxG.sound.music.pitch = value;
 		}
 		playbackRate = value;
@@ -2254,6 +2253,8 @@ class PlayState extends MusicBeatState
 
 			generateStaticArrows(0);
 			generateStaticArrows(1);
+			add(timeBarBG);
+			add(timeBar);
 			add(timeTxt);
 			laneunderlay.x = playerStrums.members[0].x - 25;
 			laneunderlay.alpha = ClientPrefs.underlayAlpha / 100;
@@ -2541,6 +2542,7 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.music.pause();
 		vocals.pause();
+		vocals2.pause();
 
 		FlxG.sound.music.time = time;
 		FlxG.sound.music.pitch = playbackRate;
@@ -2551,7 +2553,13 @@ class PlayState extends MusicBeatState
 			vocals.time = time;
 			vocals.pitch = playbackRate;
 		}
+		if (Conductor.songPosition <= vocals2.length)
+			{
+				vocals2.time = time;
+				vocals2.pitch = playbackRate;
+			}
 		vocals.play();
+		vocals2.play();
 		Conductor.songPosition = time;
 		songTime = time;
 	}
@@ -2660,6 +2668,7 @@ class PlayState extends MusicBeatState
 			vocals2 = new FlxSound();
 
 		vocals.pitch = playbackRate;
+		vocals2.pitch = playbackRate;
 		FlxG.sound.list.add(vocals);
 		FlxG.sound.list.add(vocals2);
 		FlxG.sound.list.add(new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song)));
@@ -5364,7 +5373,8 @@ class PlayState extends MusicBeatState
 	{
 		super.stepHit();
 		if (Math.abs(FlxG.sound.music.time - (Conductor.songPosition - Conductor.offset)) > (20 * playbackRate)
-			|| (SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > (20 * playbackRate)))
+			|| (SONG.needsVoices && Math.abs(vocals.time - (Conductor.songPosition - Conductor.offset)) > (20 * playbackRate)) 
+			|| (SONG.needsVoices2 && Math.abs(vocals2.time - (Conductor.songPosition - Conductor.offset)) > (20 * playbackRate)))
 		{
 			resyncVocals();
 		}
