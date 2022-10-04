@@ -1,5 +1,6 @@
 package options;
 
+import flixel.util.FlxTimer;
 import flixel.FlxG;
 
 using StringTools;
@@ -172,6 +173,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'fpsPosition',
 			'string',
 			'BOTTOM LEFT', ['TOP LEFT', 'BOTTOM LEFT']);
+		option.onChange = doThingUpdate;
 		addOption(option);
 		
 		var option:Option = new Option('Show Lore Engine Watermark',
@@ -179,6 +181,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'showLore',
 			'bool',
 			true);
+		option.onChange = doThingUpdate;
 		addOption(option);
 
 		var option:Option = new Option('Show Memory Usage',
@@ -186,6 +189,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'showMem',
 			'bool',
 			true);
+		option.onChange = doThingUpdate;
 		addOption(option);
 		#end
 		
@@ -210,6 +214,10 @@ class VisualsUISubState extends BaseOptionsMenu
 		super();
 	}
 
+	function doThingUpdate():Void {
+		Main.fpsVar.updatePos();
+		new FlxTimer().start(0.05, function(t) Main.fpsVar.updatePos());
+	}
 	var changedMusic:Bool = false;
 	function onChangePauseMusic()
 	{
