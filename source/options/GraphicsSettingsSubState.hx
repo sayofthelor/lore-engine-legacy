@@ -13,6 +13,17 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		title = 'Graphics';
 		rpcTitle = 'Graphics Settings Menu'; //for Discord Rich Presence
 
+		var option:Option = new Option('Pause on Focus Lost',
+			'If checked, the game will pause when the window loses focus.',
+			'pauseOnFocusLost',
+			'bool',
+			true);
+		option.onChange = function():Void
+		{
+			FlxG.autoPause = ClientPrefs.pauseOnFocusLost;
+		}
+		addOption(option);	
+
 		var option:Option = new Option('Persistent Caching',
 			'If checked, graphics will continue to be cached in memory after they are loaded, making reload times basically instant.\nWARNING: This uses a lot of memory!',
 			'persistentCaching',
