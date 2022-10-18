@@ -174,7 +174,8 @@ class Character extends FlxSprite
 
 				if(json.scale != 1) {
 					jsonScale = json.scale;
-					setGraphicSize(Std.int(width * jsonScale));
+					// setGraphicSize(Std.int(width * jsonScale));
+					scale.scale(jsonScale); // i love psych engine
 					updateHitbox();
 				}
 
