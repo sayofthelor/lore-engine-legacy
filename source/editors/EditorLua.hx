@@ -112,7 +112,7 @@ class EditorLua {
 			return Reflect.setProperty(EditorPlayState.instance, variable, value);
 		});
 		Lua_helper.add_callback(lua, "getPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic) {
-			if(Std.isOfType(Reflect.getProperty(EditorPlayState.instance, obj), FlxTypedGroup)) {
+			if(Reflect.getProperty(EditorPlayState.instance, obj) is FlxTypedGroup) {
 				return Reflect.getProperty(Reflect.getProperty(EditorPlayState.instance, obj).members[index], variable);
 			}
 
@@ -126,7 +126,7 @@ class EditorLua {
 			return null;
 		});
 		Lua_helper.add_callback(lua, "setPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic, value:Dynamic) {
-			if(Std.isOfType(Reflect.getProperty(EditorPlayState.instance, obj), FlxTypedGroup)) {
+			if(Reflect.getProperty(EditorPlayState.instance, obj) is FlxTypedGroup) {
 				return Reflect.setProperty(Reflect.getProperty(EditorPlayState.instance, obj).members[index], variable, value);
 			}
 
@@ -139,7 +139,7 @@ class EditorLua {
 			}
 		});
 		Lua_helper.add_callback(lua, "removeFromGroup", function(obj:String, index:Int, dontDestroy:Bool = false) {
-			if(Std.isOfType(Reflect.getProperty(EditorPlayState.instance, obj), FlxTypedGroup)) {
+			if(Reflect.getProperty(EditorPlayState.instance, obj) is FlxTypedGroup) {
 				var sex = Reflect.getProperty(EditorPlayState.instance, obj).members[index];
 				if(!dontDestroy)
 					sex.kill();

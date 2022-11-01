@@ -1036,7 +1036,7 @@ class FunkinLua {
 				realObject = getPropertyLoopThingWhatever(shitMyPants, true, false);
 
 
-			if(Std.isOfType(realObject, FlxTypedGroup))
+			if(realObject is FlxTypedGroup)
 			{
 				var result:Dynamic = getGroupStuff(realObject.members[index], variable);
 				if(result == null) Lua.pushnil(lua);
@@ -1066,7 +1066,7 @@ class FunkinLua {
 			if(shitMyPants.length>1)
 				realObject = getPropertyLoopThingWhatever(shitMyPants, true, false);
 
-			if(Std.isOfType(realObject, FlxTypedGroup)) {
+			if(realObject is FlxTypedGroup) {
 				setGroupStuff(realObject.members[index], variable, value);
 				return;
 			}
@@ -1081,7 +1081,7 @@ class FunkinLua {
 			}
 		});
 		Lua_helper.add_callback(lua, "removeFromGroup", function(obj:String, index:Int, dontDestroy:Bool = false) {
-			if(Std.isOfType(Reflect.getProperty(getInstance(), obj), FlxTypedGroup)) {
+			if(Reflect.getProperty(getInstance(), obj) is FlxTypedGroup) {
 				var sex = Reflect.getProperty(getInstance(), obj).members[index];
 				if(!dontDestroy)
 					sex.kill();
@@ -1914,7 +1914,7 @@ class FunkinLua {
 				if(luaObj.animation.getByName(name) != null)
 				{
 					luaObj.animation.play(name, forced, reverse, startFrame);
-					if(Std.isOfType(luaObj, ModchartSprite))
+					if (luaObj is ModchartSprite)
 					{
 						//convert luaObj to ModchartSprite
 						var obj:Dynamic = luaObj;
@@ -1934,7 +1934,7 @@ class FunkinLua {
 			if(spr != null) {
 				if(spr.animation.getByName(name) != null)
 				{
-					if(Std.isOfType(spr, Character))
+					if(spr is Character)
 					{
 						//convert spr to Character
 						var obj:Dynamic = spr;
@@ -2060,7 +2060,7 @@ class FunkinLua {
 			luaTrace('updateHitbox: Couldnt find object: ' + obj, false, false, FlxColor.RED);
 		});
 		Lua_helper.add_callback(lua, "updateHitboxFromGroup", function(group:String, index:Int) {
-			if(Std.isOfType(Reflect.getProperty(getInstance(), group), FlxTypedGroup)) {
+			if(Reflect.getProperty(getInstance(), group) is FlxTypedGroup) {
 				Reflect.getProperty(getInstance(), group).members[index].updateHitbox();
 				return;
 			}
@@ -2905,13 +2905,13 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "playIconAnim", function(char:String, anim:String) {
 			if (char == "player") {
-				if (PlayState.instance.iconP1.animation.getNameList().contains(anim))
+				if (PlayState.instance.iconP1.animation.getByName(anim) != null)
 					PlayState.instance.iconP1.animation.play(anim);
 				else
 					luaTrace("playIconAnim: Animation " + anim + " doesn't exist for player");
 			}
 			else if (char == "opponent") {
-				if (PlayState.instance.iconP2.animation.getNameList().contains(anim))
+				if (PlayState.instance.iconP2.animation.getByName(anim) != null)
 					PlayState.instance.iconP2.animation.play(anim);
 				else
 					luaTrace("playIconAnim: Animation " + anim + " doesn't exist for opponent");
@@ -2931,7 +2931,7 @@ class FunkinLua {
 	{
 		for (type in types)
 		{
-			if(Std.isOfType(value, type)) return true;
+			if (Std.isOfType(value, type)) return true;
 		}
 		return false;
 	}

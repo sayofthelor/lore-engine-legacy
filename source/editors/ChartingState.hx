@@ -1389,11 +1389,11 @@ class ChartingState extends MusicBeatState
 		var file2:Dynamic = Paths.voices2(currentSongName);
 		vocals = new FlxSound();
 		vocals2 = new FlxSound();
-		if (Std.isOfType(file, Sound) || OpenFlAssets.exists(file)) {
+		if (file is Sound || OpenFlAssets.exists(file)) {
 			vocals.loadEmbedded(file);
 			FlxG.sound.list.add(vocals);
 		}
-		if (Std.isOfType(file2, Sound) || OpenFlAssets.exists(file2)) {
+		if (file2 is Sound || OpenFlAssets.exists(file2)) {
 			vocals2.loadEmbedded(file2);
 			FlxG.sound.list.add(vocals2);
 		}
@@ -2747,7 +2747,7 @@ class ChartingState extends MusicBeatState
 
 		var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, null, true);
 		if(daSus != null) { //Common note
-			if(!Std.isOfType(i[3], String)) //Convert old note type to new note type format
+			if(!(i[3] is String)) //Convert old note type to new note type format
 			{
 				i[3] = noteTypeIntMap.get(i[3]);
 			}
