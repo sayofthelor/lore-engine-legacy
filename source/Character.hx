@@ -41,6 +41,7 @@ typedef AnimArray = {
 	var name:String;
 	var fps:Int;
 	var loop:Bool;
+	var hookToSongSpeed:Bool;
 	var indices:Array<Int>;
 	var offsets:Array<Int>;
 }
@@ -173,7 +174,8 @@ class Character extends FlxSprite
 
 				if(json.scale != 1) {
 					jsonScale = json.scale;
-					setGraphicSize(Std.int(width * jsonScale));
+					// setGraphicSize(Std.int(width * jsonScale));
+					scale.scale(jsonScale); // i love psych engine
 					updateHitbox();
 				}
 
@@ -202,6 +204,7 @@ class Character extends FlxSprite
 						var animAnim:String = '' + anim.anim;
 						var animName:String = '' + anim.name;
 						var animFps:Int = anim.fps;
+						animFps = (anim.hookToSongSpeed ? Std.int(animFps * PlayState.instance.playbackRate) : animFps);
 						var animLoop:Bool = !!anim.loop; //Bruh
 						var animIndices:Array<Int> = anim.indices;
 						if(animIndices != null && animIndices.length > 0) {

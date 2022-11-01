@@ -139,6 +139,8 @@ class TitleState extends MusicBeatState
 
 		ClientPrefs.loadPrefs();
 
+		FlxG.autoPause = ClientPrefs.pauseOnFocusLost;
+
 		#if CHECK_FOR_UPDATES
 		if(ClientPrefs.checkForUpdates && !closedState) {
 			trace('checking for update');
