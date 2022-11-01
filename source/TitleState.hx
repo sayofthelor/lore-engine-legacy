@@ -88,6 +88,7 @@ class TitleState extends MusicBeatState
 	var titleJSON:TitleData;
 
 	public static var updateVersion:String = '';
+	public static var texts:Array<String> = [];
 
 	override public function create():Void
 	{
@@ -203,6 +204,8 @@ class TitleState extends MusicBeatState
 		}
 
 		FlxG.mouse.visible = false;
+		Locale.init();
+		texts = [Locale.get("introText1"), Locale.get("introText2"), Locale.get("introText3"), Locale.get("introText4")];
 		#if FREEPLAY
 		MusicBeatState.switchState(new FreeplayState());
 		#elseif CHARTING
@@ -642,10 +645,10 @@ class TitleState extends MusicBeatState
 			switch (curBeat)
 			{
 				case 1:
-					createCoolText(['sayofthelor']);
+					createCoolText([texts[0]]);
 				// credTextShit.visible = true;
 				case 3:
-					addMoreText('presents');
+					addMoreText(texts[1]);
 				// credTextShit.text += '\npresent...';
 				// credTextShit.addText();
 				case 4:
@@ -654,9 +657,9 @@ class TitleState extends MusicBeatState
 				// credTextShit.text = 'In association \nwith';
 				// credTextShit.screenCenter();
 				case 5:
-					createCoolText(['lmao'], -40);
+					createCoolText([texts[2]], -40);
 				case 7:
-					addMoreText('newgrounds', -40);
+					addMoreText(texts[3], -40);
 					ngSpr.visible = true;
 				// credTextShit.text += '\nNewgrounds';
 				case 8:

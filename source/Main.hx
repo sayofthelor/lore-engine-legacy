@@ -50,6 +50,7 @@ class Main extends Sprite
 	{
 		instance = this;
 		super();
+		@:privateAccess Lib.application.window.onResize.add(function(w, h) Main.fpsVar.updatePos());
 		if (stage != null)
 		{
 			init();

@@ -40,6 +40,7 @@ class ClientPrefs {
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var ghostTapping:Bool = true;
 	public static var timeBarType:String = 'Time Left';
+	public static var locale:String = "en-US";
 	public static var scoreZoom:Bool = true;
 	public static var noReset:Bool = false;
 	public static var healthBarAlpha:Float = 1;
@@ -111,6 +112,7 @@ class ClientPrefs {
 	}
 
 	public static function saveSettings() {
+		FlxG.save.data.locale = locale;
 		FlxG.save.data.downScroll = downScroll;
 		FlxG.save.data.showMS = showMS;
 		FlxG.save.data.showLore = showLore;
@@ -201,6 +203,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.newTimeBar != null) {
 			newTimeBar = FlxG.save.data.newTimeBar;
+		}
+		if(FlxG.save.data.locale != null) {
+			locale = FlxG.save.data.locale;
 		}
 		if(FlxG.save.data.hitsoundVolume != null) {
 			hitsoundVolume = FlxG.save.data.hitsoundVolume;

@@ -33,32 +33,43 @@ class OptionsState extends MusicBeatState
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'), 0.2, 0.2, true, true);
 	public static var checkerX:Float = 0;
 	public static var checkerY:Float = 0;
-	var options:Array<String> = ['Note Colors', 'Controls', 'Adjust Delay and Combo', 'Graphics', 'Visuals and UI', 'Gameplay'];
+	static var options:Array<String>;
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private static var curSelected:Int = 0;
 	public static var menuBG:FlxSprite;
+	public static var things:Map<String, Void->Void>;
 
 	function openSelectedSubstate(label:String) {
-		switch(label) {
-			case 'Note Colors':
-				openSubState(new options.NotesSubState());
-			case 'Controls':
-				openSubState(new options.ControlsSubState());
-			case 'Graphics':
-				openSubState(new options.GraphicsSettingsSubState());
-			case 'Visuals and UI':
-				openSubState(new options.VisualsUISubState());
-			case 'Gameplay':
-				openSubState(new options.GameplaySettingsSubState());
-			case 'Adjust Delay and Combo':
-				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
-		}
+		// switch(label) {
+		// 	case options[0]:
+		// 		openSubState(new options.NotesSubState());
+		// 	case options[1]:
+		// 		openSubState(new options.ControlsSubState());
+		// 	case options[2]:
+		// 		LoadingState.loadAndSwitchState(new options.NoteOffsetState());
+		// 	case options[3]:
+		// 		openSubState(new options.GraphicsSettingsSubState());
+		// 	case options[4]:
+		// 		openSubState(new options.VisualsUISubState());
+		// 	case options[5]:
+		// 		openSubState(new options.GameplaySettingsSubState());
+		// }
+		things.get(label)();
 	}
 
 	var selectorLeft:Alphabet;
 	var selectorRight:Alphabet;
 
 	override function create() {
+		options = [Locale.get("noteColorsOption"), Locale.get("controlsOption"), Locale.get("delayOption"), Locale.get("graphicsOption"), Locale.get("visualsUIOption"), Locale.get("gameplayOption")];
+		things = [
+			options[0] => function() openSubState(new options.NotesSubState()),
+			options[1] => function() openSubState(new options.ControlsSubState()),
+			options[2] => function() LoadingState.loadAndSwitchState(new options.NoteOffsetState()),
+			options[3] => function() openSubState(new options.GraphicsSettingsSubState()),
+			options[4] => function() openSubState(new options.VisualsUISubState()),
+			options[5] => function() openSubState(new options.GameplaySettingsSubState())
+		];
 		#if desktop
 		DiscordClient.changePresence("Options Menu", null);
 		#end

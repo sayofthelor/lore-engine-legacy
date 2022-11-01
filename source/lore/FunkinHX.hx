@@ -1,6 +1,9 @@
 package lore;
 
 import lime.app.Application;
+import lime.*;
+import openfl.*;
+import flixel.*;
 import shadertoy.FlxShaderToyRuntimeShader;
 import hscript.Parser;
 import hscript.Interp;
@@ -21,6 +24,7 @@ using StringTools;
  * 
  * @see http://github.com/YoshiCrafter29/YoshiCrafterEngine
  */
+ 
 
 class FunkinHX  {
     private var interp:Interp;
@@ -32,6 +36,12 @@ class FunkinHX  {
         Sys.println("[interp:" + scriptName + ":" + posInfo.lineNumber + "]: " + text);
     }
 
+    public function interpVarExists(k:String):Bool {
+        if (interp != null) {
+            return interp.variables.exists(k);
+        }
+        return false;
+    }
     public function setInterpVariable(k:String, v:Dynamic):Void {
         if (interp != null) interp.variables.set(k, v);
     }
@@ -41,9 +51,14 @@ class FunkinHX  {
         return null;
     }
 
-    public function new(f:String):Void {
+    public function new(f:String, ?type:FunkinHXType = FILE):Void {
         scriptName = f;
-        var ttr = sys.io.File.getContent(f);
+        var ttr:String = null;
+        if (type == FILE) {
+            ttr = sys.io.File.getContent(f);
+        } else if (type == STRING) {
+            ttr = f;
+        }
         interp = new Interp();
         interp.variables.set("import", function(className:String)
             {
@@ -87,6 +102,8 @@ class FunkinHX  {
             interp.variables.set('ClientPrefs', ClientPrefs);
             interp.variables.set('Character', Character);
             interp.variables.set('Alphabet', Alphabet);
+            interp.variables.set('Http', sys.Http);
+            interp.variables.set('Json', haxe.Json);
             #if !flash
             interp.variables.set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
             interp.variables.set('FlxShaderToyRuntimeShader', FlxShaderToyRuntimeShader);
@@ -155,9 +172,10 @@ class FunkinHX  {
             interp.variables.set("onIconUpdate", function(p:String) {});
             interp.variables.set("onHeadBop", function(name:String) {});
             interp.variables.set("Std", Std);
+            interp.variables.set("WinAPI", WinAPI);
             interp.variables.set("script", this);
 
-            try {
+            if (ttr != null) try {
                 interp.execute(getExprFromString(ttr, true));
                 trace("haxe file loaded successfully: " + f);
                 loaded = true;
@@ -214,5 +232,19 @@ class FunkinHX  {
             trace('$f does not exist!');
             return null;
         }
+
+        public function execute(code:String):Any {
+            if (!loaded) return null;
+            try {
+                return interp.execute(getExprFromString(code, true));
+            } catch (e:Dynamic) trace('$e');
+            return null;
+        }
     
+}
+
+@:enum abstract FunkinHXType(Int) from Int to Int {
+    var FILE = 0;
+    var STRING = 1;
+    var NOEXEC = 2;
 }
