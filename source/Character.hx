@@ -41,7 +41,7 @@ typedef AnimArray = {
 	var name:String;
 	var fps:Int;
 	var loop:Bool;
-	var hookToSongSpeed:Bool;
+	@:optional var hookToSongSpeed:Null<Bool>;
 	var indices:Array<Int>;
 	var offsets:Array<Int>;
 }
@@ -204,6 +204,9 @@ class Character extends FlxSprite
 						var animAnim:String = '' + anim.anim;
 						var animName:String = '' + anim.name;
 						var animFps:Int = anim.fps;
+						if (anim.hookToSongSpeed == null) {
+							anim.hookToSongSpeed = false;
+						}
 						animFps = (anim.hookToSongSpeed ? Std.int(animFps * PlayState.instance.playbackRate) : animFps);
 						var animLoop:Bool = !!anim.loop; //Bruh
 						var animIndices:Array<Int> = anim.indices;

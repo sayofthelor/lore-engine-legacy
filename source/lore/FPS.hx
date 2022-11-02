@@ -23,6 +23,19 @@ class FPS extends TextField
 	@:noCompletion private var cacheCount:Int;
 	@:noCompletion private var currentTime:Float;
 	@:noCompletion private var times:Array<Float>;
+	public var visibility(default, set):Bool = true;
+	public function set_visibility(value:Bool):Bool {
+		visible = value;
+		bor1.visible = value;
+		bor2.visible = value;
+		bor3.visible = value;
+		bor4.visible = value;
+		bor5.visible = value;
+		bor6.visible = value;
+		bor7.visible = value;
+		bor8.visible = value;
+		return value;
+	}
 	private var bor1:TextField;
 	private var bor2:TextField;
 	private var bor3:TextField;
@@ -147,9 +160,9 @@ class FPS extends TextField
 		if (currentCount != cacheCount /*&& visible*/)
 		{
 			text =
-			currentFPS + " FPS" +
-			(ClientPrefs.showMem ? "\nMemory: " + memoryMegas + (gigaFlag ? " GB" : " MB") : "") +
-			(ClientPrefs.showLore ? "\nLore v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) + MainMenuState.versionSuffix : "")
+			(ClientPrefs.showFPSNum ? (currentFPS + (!ClientPrefs.compactFPS ? " FPS" : "") + (ClientPrefs.showMem || ClientPrefs.showLore ? "\n" : "")) : "") +
+			(ClientPrefs.showMem ? (!ClientPrefs.compactFPS ? "Memory: " : "") + memoryMegas + (gigaFlag ? " GB" : " MB") + (ClientPrefs.showLore ? "\n" : "") : "") +
+			(ClientPrefs.showLore ? (!ClientPrefs.compactFPS ? "Lore " : "") + "v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) + MainMenuState.versionSuffix : "")
 			#if debug + " (debug)" #end;
 
 			bor1.text = text;

@@ -41,7 +41,7 @@ class MainMenuState extends MusicBeatState
 	public static inline final loreEngineVersion:String = '0.7.0';
 	public static inline final versionSuffix:String = '-pre2'; // just so i can add a suffix without breaking any version checks
 	public static inline final isNotFinal:Bool = true;
-	public static var psychEngineVersion:String = '0.6.3'; // to maximize compatibility
+	public static inline final psychEngineVersion:String = '0.6.3'; // to maximize compatibility
 	public static var curSelected:Int = 0;
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'), 0.2, 0.2, true, true);
 	var menuItems:FlxTypedGroup<FlxSprite>;

@@ -98,8 +98,9 @@ class Main extends Sprite
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		if(fpsVar != null) {
-			fpsVar.visible = ClientPrefs.showFPS;
+			fpsVar.set_visibility(ClientPrefs.showFPS);
 		}
+		fpsVar.updatePos();
 		#end
 		#if desktop Assets.getImage("assets/images/coconut.jpg"); #end
 		#if html5

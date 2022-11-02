@@ -50,6 +50,8 @@ class ClientPrefs {
 	public static var newTimeBar:Bool = true;
 	public static var showMS:Bool = true;
 	public static var checkForUpdates:Bool = true;
+	public static var compactFPS:Bool = false;
+	public static var showFPSNum:Bool = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 
@@ -130,6 +132,8 @@ class ClientPrefs {
 		FlxG.save.data.noteSplashes = noteSplashes;
 		FlxG.save.data.tinyIcons = tinyIcons;
 		FlxG.save.data.lowQuality = lowQuality;
+		FlxG.save.data.compactFPS = compactFPS;
+		FlxG.save.data.showFPSNum = showFPSNum;
 		FlxG.save.data.shaders = shaders;
 		FlxG.save.data.framerate = framerate;
 		FlxG.save.data.hitSounds = hitSounds;
@@ -197,6 +201,12 @@ class ClientPrefs {
 		if(FlxG.save.data.ratingScale != null) {
 			ratingScale = FlxG.save.data.ratingScale;
 		}
+		if(FlxG.save.data.compactFPS != null) {
+			compactFPS = FlxG.save.data.compactFPS;
+		}
+		if(FlxG.save.data.showFPSNum != null) {
+			showFPSNum = FlxG.save.data.showFPSNum;
+		}
 		if(FlxG.save.data.bopStyle != null) {
 			bopStyle = FlxG.save.data.bopStyle;
 		}
@@ -245,7 +255,7 @@ class ClientPrefs {
 		if(FlxG.save.data.showFPS != null) {
 			showFPS = FlxG.save.data.showFPS;
 			if(Main.fpsVar != null) {
-				Main.fpsVar.visible = showFPS;
+				Main.fpsVar.set_visibility(showFPS);
 			}
 		}
 		if(FlxG.save.data.flashing != null) {

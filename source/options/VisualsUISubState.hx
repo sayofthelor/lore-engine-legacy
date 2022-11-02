@@ -161,34 +161,50 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		
 		#if !mobile
-		var option:Option = new Option('FPS Counter',
-			'If unchecked, hides FPS Counter.',
+		var option:Option = new Option('Info Display',
+			'If unchecked, hides Info Display.',
 			'showFPS',
 			'bool',
 			true);
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
-		var option:Option = new Option('FPS Counter Pos: ',
-			"The position the FPS counter is in.",
+
+		var option:Option = new Option('Compact Info Display',
+			'If checked, makes the Info Display more compact.',
+			'compactFPS',
+			'bool',
+			true);
+		addOption(option);
+
+		var option:Option = new Option('Info Display Pos: ',
+			"The position the Info Display is in.",
 			'fpsPosition',
 			'string',
 			'BOTTOM LEFT', ['TOP LEFT', 'BOTTOM LEFT']);
 		option.onChange = doThingUpdate;
 		addOption(option);
+
+		var option:Option = new Option('Show Framerate',
+		"If checked, the framerate will be in the Info Display.",
+		'showFPSNum',
+		'bool',
+		true);
+		option.onChange = doThingUpdate;
+		addOption(option);
 		
-		var option:Option = new Option('Show Lore Engine Watermark',
-			"If checked, the Lore Engine watermark and version number will be in the FPS counter.",
-			'showLore',
+		var option:Option = new Option('Show Memory Usage',
+			"If checked, current memory usage in MB will be in the Info Display.",
+			'showMem',
 			'bool',
 			true);
 		option.onChange = doThingUpdate;
 		addOption(option);
 
-		var option:Option = new Option('Show Memory Usage',
-			"If checked, current memory usage in MB will be in the FPS counter.",
-			'showMem',
-			'bool',
-			true);
+		var option:Option = new Option('Show Lore Engine Watermark',
+		"If checked, the Lore Engine watermark and version number will be in the Info Display.",
+		'showLore',
+		'bool',
+		true);
 		option.onChange = doThingUpdate;
 		addOption(option);
 		#end
@@ -217,6 +233,7 @@ class VisualsUISubState extends BaseOptionsMenu
 	function doThingUpdate():Void {
 		Main.fpsVar.updatePos();
 		new FlxTimer().start(0.05, function(t) Main.fpsVar.updatePos());
+		new FlxTimer().start(0.1, function(t) Main.fpsVar.updatePos());
 	}
 	var changedMusic:Bool = false;
 	function onChangePauseMusic()
@@ -238,8 +255,10 @@ class VisualsUISubState extends BaseOptionsMenu
 	#if !mobile
 	function onChangeFPSCounter()
 	{
-		if(Main.fpsVar != null)
-			Main.fpsVar.visible = ClientPrefs.showFPS;
+		if(Main.fpsVar != null) {
+			Main.fpsVar.set_visibility(ClientPrefs.showFPS);
+			Main.fpsVar.updatePos();
+		}
 	}
 	#end
 }
