@@ -142,6 +142,23 @@
 	<!--<haxelib name="polymod"/> -->
 	<haxelib name="discord_rpc" if="desktop"/>
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
+	
+	<haxeflag name="-dce" value="no" />
+	<haxeflag name="--macro" value="include('sys')" />
+	<!-- <haxeflag name="macro" value="include('openfl')" /> -->
+	<haxeflag name="--macro" value="include('flixel.animation')" />
+	<haxeflag name="--macro" value="include('flixel.effects')" />
+	<haxeflag name="--macro" value="include('flixel.graphics')" />
+	<haxeflag name="--macro" value="include('flixel.group')" />
+	<haxeflag name="--macro" value="include('flixel.input')" />
+	<haxeflag name="--macro" value="include('flixel.math')" />
+	<haxeflag name="--macro" value="include('flixel.path')" />
+	<haxeflag name="--macro" value="include('flixel.system')" />
+	<haxeflag name="--macro" value="include('flixel.text')" />
+	<haxeflag name="--macro" value="include('flixel.tile')" />
+	<haxeflag name="--macro" value="include('flixel.tweens')" />
+	<haxeflag name="--macro" value="include('flixel.ui')" />
+	<haxeflag name="--macro" value="include('flixel.util')" />
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
