@@ -176,7 +176,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			true);
 		addOption(option);
 
-		var option:Option = new Option('Info Display Pos: ',
+		var option:Option = new Option('Info Display Position: ',
 			"The position the Info Display is in.",
 			'fpsPosition',
 			'string',

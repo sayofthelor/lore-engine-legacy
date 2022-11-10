@@ -1607,8 +1607,8 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.pitch = value;
 		}
 		playbackRate = value;
-		FlxAnimationController.globalSpeed = value;
-		trace('Anim speed: ' + FlxAnimationController.globalSpeed);
+		// FlxAnimationController.globalSpeed = value;
+		// no
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000 * value;
 		setOnLuas('playbackRate', playbackRate);
 		return value;
@@ -3427,7 +3427,7 @@ class PlayState extends MusicBeatState
 				notes.insert(0, dunceNote);
 				dunceNote.spawned=true;
 				callOnLuas('onSpawnNote', [notes.members.indexOf(dunceNote), dunceNote.noteData, dunceNote.noteType, dunceNote.isSustainNote]);
-				callOnHaxes('onSpawnNote', [notes.members.indexOf(dunceNote), dunceNote.noteData, dunceNote.noteType, dunceNote.isSustainNote]);
+				callOnHaxes('onSpawnNote', [dunceNote]);
 
 				var index:Int = unspawnNotes.indexOf(dunceNote);
 				unspawnNotes.splice(index, 1);
@@ -4902,7 +4902,7 @@ class PlayState extends MusicBeatState
 		}
 
 		callOnLuas('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
-		callOnHaxes('noteMiss', [notes.members.indexOf(daNote), daNote.noteData, daNote.noteType, daNote.isSustainNote]);
+		callOnHaxes('noteMiss', [daNote]);
 	}
 
 	function noteMissPress(direction:Int = 1):Void //You pressed a key when there was no notes to press for this key
@@ -4993,7 +4993,7 @@ class PlayState extends MusicBeatState
 		note.hitByOpponent = true;
 
 		callOnLuas('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
-		callOnHaxes('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
+		callOnHaxes('opponentNoteHit', [note]);
 
 		if (!note.isSustainNote)
 		{
@@ -5114,6 +5114,8 @@ class PlayState extends MusicBeatState
 			var leType:String = note.noteType;
 			callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
 			callOnLuas('noteHit', [notes.members.indexOf(note), leData, leType, isSus]);
+			callOnHaxes('goodNoteHit', [note]);
+			callOnHaxes('noteHit', [note]);
 
 			if (!note.isSustainNote)
 			{
@@ -5339,7 +5341,12 @@ class PlayState extends MusicBeatState
 			lua.call('onDestroy', []);
 			lua.stop();
 		}
+		for (hx in haxeArray) {
+			hx.runFunc('destroy', []);
+			hx.destroy();
+		} 
 		luaArray = [];
+		haxeArray = [];
 
 		#if hscript
 		if(FunkinLua.hscript != null) FunkinLua.hscript = null;
@@ -5605,8 +5612,18 @@ class PlayState extends MusicBeatState
 
 	public function setOnLuas(variable:String, arg:Dynamic) {
 		#if LUA_ALLOWED
-		for (i in 0...luaArray.length) {
-			luaArray[i].set(variable, arg);
+		for (i in luaArray) {
+			i.set(variable, arg);
+		}
+		#end
+		#if hscript
+		setOnHaxes(variable, arg);
+		#end
+	}
+	public function setOnHaxes(variable:String, arg:Dynamic) {
+		#if hscript
+		for (i in haxeArray) {
+			i.setInterpVariable(variable, arg);
 		}
 		#end
 	}

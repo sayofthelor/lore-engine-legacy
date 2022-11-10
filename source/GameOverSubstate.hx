@@ -35,6 +35,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	{
 		instance = this;
 		PlayState.instance.callOnLuas('onGameOverStart', []);
+		PlayState.instance.callOnHaxes('onGameOverStart', []);
 
 		super.create();
 	}
@@ -74,6 +75,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		super.update(elapsed);
 
 		PlayState.instance.callOnLuas('onUpdate', [elapsed]);
+		PlayState.instance.callOnHaxes('update', [elapsed]);
 		if(updateCamera) {
 			var lerpVal:Float = CoolUtil.boundTo(elapsed * 0.6, 0, 1);
 			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
@@ -99,6 +101,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			PlayState.instance.callOnLuas('onGameOverConfirm', [false]);
+			PlayState.instance.callOnHaxes('onGameOverConfirm', [false]);
 		}
 
 		if (boyfriend.animation.curAnim != null && boyfriend.animation.curAnim.name == 'firstDeath')
@@ -140,6 +143,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			Conductor.songPosition = FlxG.sound.music.time;
 		}
 		PlayState.instance.callOnLuas('onUpdatePost', [elapsed]);
+		PlayState.instance.callOnHaxes('updatePost', [elapsed]);
 	}
 
 	override function beatHit()
