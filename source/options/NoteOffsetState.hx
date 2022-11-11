@@ -154,7 +154,7 @@ class NoteOffsetState extends MusicBeatState
 
 		// Note delay stuff
 		
-		beatText = new Alphabet(0, 0, 'Beat Hit!', true);
+		beatText = new Alphabet(0, 0, Locale.get("beatHitDACText"), true);
 		beatText.scaleX = 0.6;
 		beatText.scaleY = 0.6;
 		beatText.x += 260;
@@ -479,11 +479,11 @@ class NoteOffsetState extends MusicBeatState
 		{
 			switch(i)
 			{
-				case 0: dumbTexts.members[i].text = 'Rating Offset:';
+				case 0: dumbTexts.members[i].text = Locale.get("ratingOffsetDACText");
 				case 1: dumbTexts.members[i].text = '[' + ClientPrefs.comboOffset[0] + ', ' + ClientPrefs.comboOffset[1] + ']';
-				case 2: dumbTexts.members[i].text = 'Numbers Offset:';
+				case 2: dumbTexts.members[i].text = Locale.get("numbersOffsetDACText");
 				case 3: dumbTexts.members[i].text = '[' + ClientPrefs.comboOffset[2] + ', ' + ClientPrefs.comboOffset[3] + ']';
-				case 4: dumbTexts.members[i].text = 'Judgement (ms) Offset:';
+				case 4: dumbTexts.members[i].text = Locale.get("judgementOffsetDACText");
 				case 5: dumbTexts.members[i].text = '[' + ClientPrefs.comboOffset[4] + ', ' + ClientPrefs.comboOffset[5] + ']';
 			}
 		}
@@ -492,7 +492,7 @@ class NoteOffsetState extends MusicBeatState
 	function updateNoteDelay()
 	{
 		ClientPrefs.noteOffset = Math.round(barPercent);
-		timeTxt.text = 'Current offset: ' + Math.floor(barPercent) + ' ms';
+		timeTxt.text = Locale.get("currentOffsetDACText") + Math.floor(barPercent) + ' ms';
 	}
 
 	function updateMode()
@@ -508,9 +508,9 @@ class NoteOffsetState extends MusicBeatState
 		beatText.visible = !onComboMenu;
 
 		if(onComboMenu)
-			changeModeText.text = '< Combo Offset (Press Accept to Switch) >';
+			changeModeText.text = '< ${Locale.get("comboOffsetDACText")} (${Locale.get("acceptToSwitchDACText")}) >';
 		else
-			changeModeText.text = '< Note/Beat Delay (Press Accept to Switch) >';
+			changeModeText.text = '< ${Locale.get("noteBeatDelayDACText")} (${Locale.get("acceptToSwitchDACText")}) >';
 
 		changeModeText.text = changeModeText.text.toUpperCase();
 		FlxG.mouse.visible = onComboMenu;

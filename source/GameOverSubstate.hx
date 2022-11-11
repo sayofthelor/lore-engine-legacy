@@ -176,6 +176,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				});
 			});
 			PlayState.instance.callOnLuas('onGameOverConfirm', [true]);
+			PlayState.instance.callOnHaxes('onGameOverConfirm', [true]);
 		}
 	}
 }
