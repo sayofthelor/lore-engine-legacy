@@ -152,7 +152,7 @@ class FPS extends TextField
 
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
-		if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate;
+		#if !html5 if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate; #end
 		var memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 2));
 		var gigaFlag:Bool = memoryMegas >= 1000;
 		if (memoryMegas > 1000) memoryMegas = FlxMath.roundDecimal(memoryMegas / 1000, 2);
