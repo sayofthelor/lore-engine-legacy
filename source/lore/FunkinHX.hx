@@ -9,6 +9,7 @@ import hscript.Parser;
 import hscript.Interp;
 import hscript.Expr;
 import flixel.util.FlxDestroyUtil.IFlxDestroyable;
+import #if html5 lime.utils.Assets; #else sys.io.File; #end
 
 using StringTools;
 
@@ -31,6 +32,7 @@ class FunkinHX implements IFlxDestroyable {
     private var interp:Interp;
     public var scriptName:String = "unknown";
     public var loaded:Bool = false;
+    public var ignoreErrors:Bool = false;
 
     public function destroy():Void {
         interp = null;
@@ -40,7 +42,7 @@ class FunkinHX implements IFlxDestroyable {
 
     public function traace(text:String):Void {
         var posInfo = interp.posInfos();
-        Sys.println("[interp:" + scriptName + ":" + posInfo.lineNumber + "]: " + text);
+        #if sys Sys.println #else js.Browser.console.log #end (scriptName + ":" + posInfo.lineNumber + ": " + text);
     }
 
     public function interpVarExists(k:String):Bool {
@@ -62,7 +64,7 @@ class FunkinHX implements IFlxDestroyable {
         scriptName = f;
         var ttr:String = null;
         if (type == FILE) {
-            ttr = sys.io.File.getContent(f);
+            ttr = #if sys File.getContent #else Assets.getText #end (f);
         } else if (type == STRING) {
             ttr = f;
         }
@@ -109,7 +111,6 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set('ClientPrefs', ClientPrefs);
             interp.variables.set('Character', Character);
             interp.variables.set('Alphabet', Alphabet);
-            interp.variables.set('Http', sys.Http);
             interp.variables.set('Json', haxe.Json);
             #if !flash
             interp.variables.set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
@@ -179,11 +180,14 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set("Function_Stop", FunkinLua.Function_Stop);
             interp.variables.set("onIconUpdate", function(p:String) {});
             interp.variables.set("onHeadBop", function(name:String) {});
+            interp.variables.set("onGameOverStart", function() {});
+            interp.variables.set("onGameOverConfirm", function() {});
             interp.variables.set("Std", Std);
             interp.variables.set("WinAPI", WinAPI);
             interp.variables.set("script", this);
             interp.variables.set("destroy", function() {});
             interp.variables.set("Note", Note);
+            interp.variables.set("trace", traace);
 
             if (ttr != null) try {
                 interp.execute(getExprFromString(ttr, true));
@@ -239,7 +243,7 @@ class FunkinHX implements IFlxDestroyable {
                     trace('$f exists, but is not a function!');
                     return null;
                 }
-            } catch (e:Dynamic) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e, 'Haxe script error');
+            } catch (e:Dynamic) if (!ignoreErrors) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e, 'Haxe script error');
             trace('$f does not exist!');
             return null;
         }

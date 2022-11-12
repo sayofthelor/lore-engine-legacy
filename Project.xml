@@ -107,7 +107,7 @@
 	<assets path="assets/week6"         library="week6"         exclude="*.mp3" unless="web"/>
 	<assets path="assets/week7"         library="week7"         exclude="*.ogg" if="web"/>
 	<assets path="assets/week7"         library="week7"         exclude="*.mp3" unless="web"/>
-	<assets path="assets/locale" embed="false" />
+	<assets path="assets/locale"/>
 	
 	<section if="MODS_ALLOWED">
 		<assets path='example_mods' rename='mods' embed='false'/>
@@ -144,7 +144,7 @@
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 	
 	<haxeflag name="-dce" value="no" />
-	<haxeflag name="--macro" value="include('sys')" />
+	<haxeflag name="--macro" value="include('sys')" unless="html5"/>
 	<!-- <haxeflag name="macro" value="include('openfl')" /> -->
 	<haxeflag name="--macro" value="include('flixel.animation')" />
 	<haxeflag name="--macro" value="include('flixel.effects')" />
@@ -153,7 +153,7 @@
 	<haxeflag name="--macro" value="include('flixel.input')" />
 	<haxeflag name="--macro" value="include('flixel.math')" />
 	<haxeflag name="--macro" value="include('flixel.path')" />
-	<haxeflag name="--macro" value="include('flixel.system')" />
+	<haxeflag name="--macro" value="include('flixel.system')" unless="html5" />
 	<haxeflag name="--macro" value="include('flixel.text')" />
 	<haxeflag name="--macro" value="include('flixel.tile')" />
 	<haxeflag name="--macro" value="include('flixel.tweens')" />

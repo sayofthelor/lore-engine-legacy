@@ -188,6 +188,7 @@
                 Note that if you pass this argument, only the specified paths will be used for inclusion.
          @param strict If true and given package wasn't found in any of class paths, fail with an error.
      **/
+     #if macro
      public static function include(pack:String, ?rec = true, ?ignore:Array<String>, ?classPaths:Array<String>, strict = false) {
          var ignoreWildcard:Array<String> = [];
          var ignoreString:Array<String> = [];
@@ -378,6 +379,7 @@
              }
          } catch (e:haxe.io.Eof) {}
      }
+     #end
  
      /**
          Marks types or packages to be kept by DCE.
@@ -464,7 +466,7 @@
                  if (Context.getLocalModule() == "")
                      Context.error("Cannot use inline mode when includeFile is called by `--macro`", Context.currentPos());
  
-                 var f = try sys.io.File.getContent(Context.resolvePath(file)) catch (e:Dynamic) Context.error(Std.string(e), Context.currentPos());
+                 var f = try #if macro sys.io.File.getContent #else lime.utils.Assets.getText #end (Context.resolvePath(file)) catch (e:Dynamic) Context.error(Std.string(e), Context.currentPos());
                  var p = Context.currentPos();
                  if(Context.defined("js")) {
                      macro @:pos(p) js.Syntax.plainCode($v{f});

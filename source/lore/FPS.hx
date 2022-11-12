@@ -196,4 +196,30 @@ class FPS extends TextField
 		bor8.y = this.y + borderSize;
 
 	}
+
+	public function setPos(x:Null<Float> = null, y:Null<Float> = null):Void {
+		if (x != null) {
+			this.x = x;
+			bor1.x = x - borderSize;
+			bor2.x = x + borderSize;
+			bor3.x = x + borderSize;
+			bor4.x = x - borderSize;
+			bor5.x = x + borderSize;
+			bor6.x = x - borderSize;
+			bor7.x = x;
+			bor8.x = x + borderSize;
+		}
+
+		if (y != null) {
+			this.y = y;
+			bor1.y = y - borderSize;
+			bor2.y = y - borderSize;
+			bor3.y = y - borderSize;
+			bor4.y = y;
+			bor5.y = y;
+			bor6.y = y + borderSize;
+			bor7.y = y + borderSize;
+			bor8.y = y + borderSize;
+		}
+	}
 }

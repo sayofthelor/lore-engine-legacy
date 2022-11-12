@@ -2251,7 +2251,7 @@ class PlayState extends MusicBeatState
 		}
 
 		inCutscene = false;
-		var ret:Dynamic = [callOnLuas('onStartCountdown', [], false), callOnHaxes('startCountdown', [], false)];
+		var ret:Array<Dynamic> = [callOnLuas('onStartCountdown', [], false), callOnHaxes('startCountdown', [], false)];
 		if(!ret.contains(FunkinLua.Function_Stop)) {
 			if (skipCountdown || startOnTime > 0) skipArrowStartTween = true;
 
@@ -2909,9 +2909,9 @@ class PlayState extends MusicBeatState
 	}
 
 	function eventNoteEarlyTrigger(event:EventNote):Float {
-		var returnedValue:Dynamic = [callOnLuas('eventEarlyTrigger', [event.event]), callOnHaxes('eventEarlyTrigger', [event.event])];
+		var returnedValue:Array<Dynamic> = [callOnLuas('eventEarlyTrigger', [event.event]), callOnHaxes('eventEarlyTrigger', [event.event])];
 		if(!returnedValue.contains(0)) {
-			return returnedValue;
+			for (i in returnedValue) if (i != 0) return i;
 		}
 
 		switch(event.event) {
@@ -3119,8 +3119,12 @@ class PlayState extends MusicBeatState
 			vocals.time = Conductor.songPosition;
 			vocals.pitch = playbackRate;
 		}
+		if (Conductor.songPosition <= vocals2.length)
+			{
+				vocals2.time = Conductor.songPosition;
+				vocals2.pitch = playbackRate;
+			}
 		vocals.play();
-		vocals2.time = Conductor.songPosition;
 		vocals2.play();
 	}
 
@@ -3294,7 +3298,7 @@ class PlayState extends MusicBeatState
 
 		if (controls.PAUSE && startedCountdown && canPause)
 		{
-			var ret:Dynamic = [callOnLuas('onPause', [], false), callOnHaxes('onPause', [], false)];
+			var ret:Array<Dynamic> = [callOnLuas('onPause', [], false), callOnHaxes('onPause', [], false)];
 			if(!ret.contains(FunkinLua.Function_Stop)) {
 				openPauseMenu();
 			}
@@ -3304,9 +3308,6 @@ class PlayState extends MusicBeatState
 		{
 			openChartEditor();
 		}
-
-		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
-		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
 
 		if (!ClientPrefs.optimization && ClientPrefs.bopStyle != "DISABLED") {
@@ -3321,7 +3322,7 @@ class PlayState extends MusicBeatState
 
 		if (health > 2)
 			health = 2;
-		var ret:Dynamic = [callOnLuas('onIconUpdate', ["player"]), callOnHaxes('onIconUpdate', ["player"])];
+		var ret:Array<Dynamic> = [callOnLuas('onIconUpdate', ["player"]), callOnHaxes('onIconUpdate', ["player"])];
 		if (!ret.contains(FunkinLua.Function_Stop)) {
 			if (healthBar.percent < 20)
 				iconP1.animation.curAnim.curFrame = 1;
@@ -3331,7 +3332,7 @@ class PlayState extends MusicBeatState
 				iconP1.animation.curAnim.curFrame = 0;
 		}
 
-		var ret:Dynamic = [callOnLuas('onIconUpdate', ["opponent"]), callOnHaxes('onIconUpdate', ["opponent"])];
+		var ret:Array<Dynamic> = [callOnLuas('onIconUpdate', ["opponent"]), callOnHaxes('onIconUpdate', ["opponent"])];
 		if (!ret.contains(FunkinLua.Function_Stop)) {
 			if (healthBar.percent > 80)
 				iconP2.animation.curAnim.curFrame = 1;
@@ -3653,7 +3654,7 @@ class PlayState extends MusicBeatState
 	function doDeathCheck(?skipHealthCheck:Bool = false) {
 		if (((skipHealthCheck && instakillOnMiss) || health <= 0) && !practiceMode && !isDead)
 		{
-			var ret:Dynamic = [callOnLuas('onGameOver', [], false), callOnHaxes('onGameOver', [], false)];
+			var ret:Array<Dynamic> = [callOnLuas('onGameOver', [], false), callOnHaxes('onGameOver', [], false)];
 			if(!ret.contains(FunkinLua.Function_Stop)) {
 				boyfriend.stunned = true;
 				deathCounter++;
@@ -4241,7 +4242,7 @@ class PlayState extends MusicBeatState
 		callOnLuas('changeDiscordClientID', ["936072337219026954"]);
 		#end
 		
-		var ret:Dynamic = [callOnLuas('onEndSong', [], false), callOnHaxes('onEndSong', [], false)];
+		var ret:Array<Dynamic> = [callOnLuas('onEndSong', [], false), callOnHaxes('onEndSong', [], false)];
 		if(!ret.contains(FunkinLua.Function_Stop) && !transitioning) {
 			if (SONG.validScore)
 			{
@@ -4483,6 +4484,7 @@ class PlayState extends MusicBeatState
 			rating.velocity.x -= FlxG.random.int(0, 10); 
 		}
 
+		#if !html5
 		var noteDiffText:FlxText = new FlxText(0, 0, 0, Highscore.floorDecimal(noteDiff, 2) + " ms", 20);
 		noteDiffText.x = coolText.x + ClientPrefs.comboOffset[4];
 		noteDiffText.screenCenter(Y);
@@ -4524,6 +4526,7 @@ class PlayState extends MusicBeatState
 				});
 			}
 		});
+		#end
 		
 		comboSpr = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
 		comboSpr.cameras = [camHUD];
@@ -4585,7 +4588,7 @@ class PlayState extends MusicBeatState
 			numGroup = new FlxGroup();
 			add(numGroup);
 		}
-		if (ClientPrefs.showMS) noteDiffGroup.add(noteDiffText);
+		#if !html5 if (ClientPrefs.showMS) noteDiffGroup.add(noteDiffText); #end
 		for (i in seperatedScore)
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
@@ -5650,7 +5653,7 @@ class PlayState extends MusicBeatState
 		setOnLuas('misses', songMisses);
 		setOnLuas('hits', songHits);
 
-		var ret:Dynamic = [callOnLuas('onRecalculateRating', [], false), callOnHaxes('onRecalculateRating', [], false)];
+		var ret:Array<Dynamic> = [callOnLuas('onRecalculateRating', [], false), callOnHaxes('onRecalculateRating', [], false)];
 		if(!ret.contains(FunkinLua.Function_Stop))
 		{
 			if(totalPlayed < 1) //Prevent divide by 0

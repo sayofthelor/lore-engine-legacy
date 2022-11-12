@@ -78,7 +78,7 @@ class HealthIcon extends FlxSprite
 	}
 
 	public function bopIcon(?beatMod:Bool = false, cname:String):Void {
-		var ret:Dynamic = [PlayState.instance.callOnLuas('onHeadBop', [cname]), PlayState.instance.callOnHaxes('onHeadBop', [cname])];
+		var ret:Array<Dynamic> = [PlayState.instance.callOnLuas('onHeadBop', [cname]), PlayState.instance.callOnHaxes('onHeadBop', [cname])];
 		if (!ret.contains(FunkinLua.Function_Stop) && !ClientPrefs.optimization && PlayState.instance.headsBop) switch (ClientPrefs.bopStyle) {
 			case "LORE":
 				if(!beatMod) scale.set(PlayState.instance.iconSize * 1.2, PlayState.instance.iconSize * 1.2) else scale.set(PlayState.instance.iconSize * 0.8, PlayState.instance.iconSize * 0.8);
