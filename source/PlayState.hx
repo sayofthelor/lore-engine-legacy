@@ -3304,10 +3304,12 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		#if !html5
 		if (FlxG.keys.anyJustPressed(debugKeysChart) && !endingSong && !inCutscene)
 		{
 			openChartEditor();
 		}
+		#end
 
 
 		if (!ClientPrefs.optimization && ClientPrefs.bopStyle != "DISABLED") {
@@ -4254,11 +4256,13 @@ class PlayState extends MusicBeatState
 			}
 			playbackRate = 1;
 
+			#if !html5
 			if (chartingMode)
 			{
 				openChartEditor();
 				return;
 			}
+			#end
 
 			if (isStoryMode)
 			{
@@ -4472,6 +4476,8 @@ class PlayState extends MusicBeatState
 
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating.image + pixelShitPart2));
 		rating.cameras = [camHUD];
+		rating.scale.set(rating.scale.x * ClientPrefs.ratingScale, rating.scale.y * ClientPrefs.ratingScale);
+		rating.updateHitbox();
 		rating.screenCenter();
 		rating.x = coolText.x - 40;
 		rating.y -= 60;
@@ -4557,8 +4563,6 @@ class PlayState extends MusicBeatState
 			comboSpr.setGraphicSize(Std.int(comboSpr.width * daPixelZoom * 0.85));
 		}
 
-		rating.scale.set(rating.scale.x * ClientPrefs.ratingScale, rating.scale.y * ClientPrefs.ratingScale);
-		comboSpr.updateHitbox();
 		rating.updateHitbox();
 
 		var seperatedScore:Array<Int> = [];
@@ -4593,6 +4597,8 @@ class PlayState extends MusicBeatState
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
 			numScore.cameras = [camHUD];
+			numScore.scale.set(numScore.scale.x * ClientPrefs.ratingScale, numScore.scale.y * ClientPrefs.ratingScale);
+			numScore.updateHitbox();
 			numScore.screenCenter();
 			numScore.x = coolText.x + (43 * daLoop * ClientPrefs.ratingScale) - 90;
 			numScore.y += 80;
@@ -4609,7 +4615,6 @@ class PlayState extends MusicBeatState
 			{
 				numScore.setGraphicSize(Std.int(numScore.width * daPixelZoom));
 			}
-			numScore.scale.set(numScore.scale.x * ClientPrefs.ratingScale, numScore.scale.y * ClientPrefs.ratingScale);
 			numScore.updateHitbox();
 
 			if (!ClientPrefs.smJudges) {
