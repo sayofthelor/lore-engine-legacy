@@ -32,19 +32,19 @@ class ControlsSubState extends MusicBeatSubstate {
 	private static var curSelected:Int = 1;
 	private static var curAlt:Bool = false;
 
-	private static var defaultKey:String = Locale.get("resetDefaultKeysNCOText");
+	private static var defaultKey:String;
 	private var bindLength:Int = 0;
 
 	var optionShit:Array<Dynamic> = [
 		[Locale.get("notesNCOText")],
 		[Locale.get("leftNCOText"), 'note_left'],
-		[Locale.get("downsNCOText"), 'note_down'],
+		[Locale.get("downNCOText"), 'note_down'],
 		[Locale.get("upNCOText"), 'note_up'],
 		[Locale.get("rightNCOText"), 'note_right'],
 		[''],
 		[Locale.get("uiNCOText")],
 		[Locale.get("leftNCOText"), 'ui_left'],
-		[Locale.get("downsNCOText"), 'ui_down'],
+		[Locale.get("downNCOText"), 'ui_down'],
 		[Locale.get("upNCOText"), 'ui_up'],
 		[Locale.get("rightNCOText"), 'ui_right'],
 		[''],
@@ -72,7 +72,7 @@ class ControlsSubState extends MusicBeatSubstate {
 
 	public function new() {
 		super();
-
+		defaultKey = Locale.get("resetDefaultKeysNCOText");
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
