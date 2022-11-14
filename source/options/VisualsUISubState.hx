@@ -54,7 +54,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			false); //Default value
 		addOption(option);
 
-		var option:Option = new Option('StepMania Style Animations', //Name
+		var option:Option = new Option('StepMania Style Judgements', //Name
 			'If checked, StepMania style judgement animations will be used.', //Description
 			'smJudges', //Save data variable name
 			'bool', //Variable type
@@ -71,6 +71,15 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.maxValue = 1;
 		option.changeValue = 0.05;
 		option.decimals = 2;
+		addOption(option);
+
+		var option:Option = new Option('Rating Position',
+			'Where the ratings are placed in the game.',
+			'ratingPosition',
+			'string',
+			'HUD',
+			['HUD', 'WORLD']
+		);
 		addOption(option);
 
 		#if !html5

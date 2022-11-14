@@ -26,6 +26,7 @@ class ClientPrefs {
 	public static var optimization:Bool = false;
 	public static var ignoreSkin:Bool = false;
 	public static var fpsPosition:String = "BOTTOM LEFT";
+	public static var ratingPosition:String = "HUD";
 	public static var showScoreBar:Bool = true;
 	public static var bopStyle:String = "LORE";
 	public static var colorblindFilter:String = "OFF";
@@ -116,6 +117,7 @@ class ClientPrefs {
 
 	public static function saveSettings() {
 		FlxG.save.data.locale = locale;
+		FlxG.save.data.ratingPosition = ratingPosition;
 		FlxG.save.data.downScroll = downScroll;
 		FlxG.save.data.showMS = showMS;
 		FlxG.save.data.showLore = showLore;
@@ -185,6 +187,9 @@ class ClientPrefs {
 	public static function loadPrefs() {
 		if(FlxG.save.data.downScroll != null) {
 			downScroll = FlxG.save.data.downScroll;
+		}
+		if(FlxG.save.data.ratingPosition != null) {
+			ratingPosition = FlxG.save.data.ratingPosition;
 		}
 		if(FlxG.save.data.showLore != null) {
 			showLore = FlxG.save.data.showLore;

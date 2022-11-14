@@ -328,13 +328,14 @@ class PlayState extends MusicBeatState
 	private var keysArray:Array<Dynamic>;
 	private var controlArray:Array<String>;
 
-	public var iconSmallGo:Float = 0.8;
-	public var iconBigGo:Float = 1.2;
 	public var iconSize:Float = 1;
 	var precacheList:Map<String, String> = new Map<String, String>();
+	var worldRatingPos:Array<Float>;
+	private var tempRatingScale:Float = 1;
 	
 	override public function create()
 	{
+		if (ClientPrefs.ratingPosition == "HUD") tempRatingScale = ClientPrefs.ratingScale;
 		if (!ClientPrefs.persistentCaching) {
 			Paths.clearStoredMemory();
 			Paths.clearUnusedMemory();
@@ -343,8 +344,6 @@ class PlayState extends MusicBeatState
 		instance = this;
 
 		if (ClientPrefs.tinyIcons) {
-			iconSmallGo = 0.6;
-			iconBigGo = 1;
 			iconSize = 0.8;
 		}
 
@@ -494,18 +493,21 @@ class PlayState extends MusicBeatState
 				camera_boyfriend: [0, 0],
 				camera_opponent: [0, 0],
 				camera_girlfriend: [0, 0],
-				camera_speed: 1
+				camera_speed: 1,
+				world_rating_position: null
 			};
 		}
 
 		defaultCamZoom = stageData.defaultZoom;
 		isPixelStage = stageData.isPixelStage;
+		if (isPixelStage && ClientPrefs.ratingPosition == "WORLD") tempRatingScale = 0.75;
 		BF_X = stageData.boyfriend[0];
 		BF_Y = stageData.boyfriend[1];
 		GF_X = stageData.girlfriend[0];
 		GF_Y = stageData.girlfriend[1];
 		DAD_X = stageData.opponent[0];
 		DAD_Y = stageData.opponent[1];
+		worldRatingPos = stageData.world_rating_position;
 
 		if(stageData.camera_speed != null)
 			cameraSpeed = stageData.camera_speed;
@@ -4475,15 +4477,20 @@ class PlayState extends MusicBeatState
 		}
 
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating.image + pixelShitPart2));
-		rating.cameras = [camHUD];
-		rating.scale.set(rating.scale.x * ClientPrefs.ratingScale, rating.scale.y * ClientPrefs.ratingScale);
+		if (ClientPrefs.ratingPosition == "HUD") rating.cameras = [camHUD];
+		rating.scale.set(rating.scale.x * tempRatingScale, rating.scale.y * tempRatingScale);
 		rating.updateHitbox();
 		rating.screenCenter();
 		rating.x = coolText.x - 40;
 		rating.y -= 60;
 		rating.visible = (!ClientPrefs.hideHud && showRating);
-		rating.x += ClientPrefs.comboOffset[0];
-		rating.y -= ClientPrefs.comboOffset[1];
+		if (worldRatingPos != null && ClientPrefs.ratingPosition == "WORLD") {
+			rating.x += worldRatingPos[0];
+			rating.y += worldRatingPos[1];
+		} else {
+			rating.x += ClientPrefs.comboOffset[0];
+			rating.y -= ClientPrefs.comboOffset[1];
+		}
 		if(!ClientPrefs.smJudges) { 
 			rating.acceleration.y = 550;
 			rating.velocity.y -= FlxG.random.int(140, 175);
@@ -4492,13 +4499,21 @@ class PlayState extends MusicBeatState
 
 		#if !html5
 		var noteDiffText:FlxText = new FlxText(0, 0, 0, Highscore.floorDecimal(noteDiff, 2) + " ms", 20);
-		noteDiffText.x = coolText.x + ClientPrefs.comboOffset[4];
+		noteDiffText.x = coolText.x;
 		noteDiffText.screenCenter(Y);
-		noteDiffText.y -= 30 + ClientPrefs.comboOffset[5];
+		noteDiffText.y -= 30;
+		if (worldRatingPos != null && ClientPrefs.ratingPosition == "WORLD") {
+			noteDiffText.x += worldRatingPos[0];
+			noteDiffText.y += worldRatingPos[1];
+			if (isPixelStage) noteDiffText.y += 50;
+		} else {
+			noteDiffText.x += ClientPrefs.comboOffset[4];
+			noteDiffText.y -= ClientPrefs.comboOffset[5];
+		}
 		noteDiffText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, OUTLINE, FlxColor.BLACK);
-		noteDiffText.scale.set(ClientPrefs.ratingScale, ClientPrefs.ratingScale);
+		noteDiffText.scale.set(tempRatingScale, tempRatingScale);
 		noteDiffText.updateHitbox();
-		noteDiffText.cameras = [camHUD];
+		if (ClientPrefs.ratingPosition == "HUD") noteDiffText.cameras = [camHUD];
 		noteDiffText.borderSize = 1.25;
 		switch(daRating.name) {
 			case "shit" | "bad":
@@ -4535,7 +4550,7 @@ class PlayState extends MusicBeatState
 		#end
 		
 		comboSpr = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
-		comboSpr.cameras = [camHUD];
+		if (ClientPrefs.ratingPosition == "HUD") comboSpr.cameras = [camHUD];
 		comboSpr.screenCenter();
 		comboSpr.x = coolText.x;
 		if(!ClientPrefs.smJudges) {
@@ -4577,7 +4592,7 @@ class PlayState extends MusicBeatState
 			lastRating = rating;
 			var scaleX = rating.scale.x;
 			var scaleY = rating.scale.y;
-			rating.scale.scale(1.2 * ClientPrefs.ratingScale);
+			rating.scale.scale(1.2 * tempRatingScale);
 			if(ratingTween!=null && ratingTween.active){
 				ratingTween.cancel();
 			}
@@ -4596,15 +4611,22 @@ class PlayState extends MusicBeatState
 		for (i in seperatedScore)
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
-			numScore.cameras = [camHUD];
-			numScore.scale.set(numScore.scale.x * ClientPrefs.ratingScale, numScore.scale.y * ClientPrefs.ratingScale);
+			if (ClientPrefs.ratingPosition == "HUD") numScore.cameras = [camHUD];
+			numScore.scale.set(numScore.scale.x * tempRatingScale, numScore.scale.y * tempRatingScale);
 			numScore.updateHitbox();
 			numScore.screenCenter();
-			numScore.x = coolText.x + (43 * daLoop * ClientPrefs.ratingScale) - 90;
+			numScore.x = coolText.x + (43 * daLoop * tempRatingScale) - 90;
 			numScore.y += 80;
 
-			numScore.x += ClientPrefs.comboOffset[2];
-			numScore.y -= ClientPrefs.comboOffset[3];
+
+			if (worldRatingPos != null && ClientPrefs.ratingPosition == "WORLD")
+			{
+				numScore.x += worldRatingPos[0];
+				numScore.y += worldRatingPos[1];
+			} else {
+				numScore.x += ClientPrefs.comboOffset[2];
+				numScore.y -= ClientPrefs.comboOffset[3];
+			}
 			
 			if (!PlayState.isPixelStage)
 			{
@@ -4628,7 +4650,7 @@ class PlayState extends MusicBeatState
 				if (ClientPrefs.smJudges) numGroup.add(numScore) else add(numScore);
 			var oldy:Float = numScore.y;
 				if (ClientPrefs.smJudges) {
-					numScore.y -= (new FlxRandom().int(20,30) * ClientPrefs.ratingScale);
+					numScore.y -= (new FlxRandom().int(20,30) * tempRatingScale);
 					FlxTween.tween(numScore, {y: oldy}, 0.2, {ease:FlxEase.circOut});
 				}
 			FlxTween.tween(numScore, {alpha: 0}, 0.2, {
