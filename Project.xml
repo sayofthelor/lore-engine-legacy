@@ -218,7 +218,6 @@
 	<section if="buildcrash">
 		<postbuild cmd="build-crash-dialog.bat" if="windows" />
 		<postbuild cmd="./build-crash-dialog.sh" if="linux" />
-		<postbuild cmd="./build-crash-dialog-mac.sh" if="mac" />
 	</section>
 
 	<!-- _________________________________ Custom _______________________________ -->
