@@ -50,7 +50,10 @@ class Main extends Sprite
 	{
 		instance = this;
 		super();
-		@:privateAccess Lib.application.window.onResize.add(function(w, h) Main.fpsVar.updatePos());
+		@:privateAccess Lib.application.window.onResize.add((w, h) -> {
+			Main.fpsVar.updatePos();
+			@:privateAccess FlxG.game.soundTray._defaultScale = (w / FlxG.width) * 2;
+		});
 		if (stage != null)
 		{
 			init();
