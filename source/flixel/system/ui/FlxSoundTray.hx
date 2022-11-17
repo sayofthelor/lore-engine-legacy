@@ -153,15 +153,10 @@ class FlxSoundTray extends Sprite
 		y = 0;
 		visible = true;
 		active = true;
-		var globalVolume:Int = Math.round(FlxG.sound.volume * 10);
-
-		if (FlxG.sound.muted)
-		{
-			globalVolume = 0;
-		}
+		var globalVolume:Int = FlxG.sound.muted ? 0 : Math.round(FlxG.sound.volume * 10);
 
         text.text = '${Locale.get("volumeText")}: ${globalVolume * 10}%';
-        
+
 		for (i in 0..._bars.length)
 		{
 			if (i < globalVolume)
