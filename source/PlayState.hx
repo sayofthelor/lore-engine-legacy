@@ -215,7 +215,12 @@ class PlayState extends MusicBeatState
 	public var healthGain:Float = 1;
 	public var healthLoss:Float = 1;
 	public var instakillOnMiss:Bool = false;
-	public var cpuControlled:Bool = false;
+	public var cpuControlled(default, set):Bool = false;
+	public function set_cpuControlled(v:Bool):Bool {
+		cpuControlled = v;
+		updateScore(false, true);
+		return v;
+	}
 	public var practiceMode:Bool = false;
 
 
@@ -2495,7 +2500,7 @@ class PlayState extends MusicBeatState
 
 	public var scoreColTween:FlxTween = null;
 
-	public function updateScore(miss:Bool = false)
+	public function updateScore(miss:Bool = false, ?cpuUpdate:Bool = false)
 	{
 		if (cpuControlled) {
 			scoreTxt.text = "Botplay Enabled \\ Score Not Counted";
@@ -2538,8 +2543,10 @@ class PlayState extends MusicBeatState
 				}
 			});
 		}
-		callOnLuas('onUpdateScore', [miss]);
-		callOnHaxes('onUpdateScore', [miss]);
+		if (!cpuUpdate) {
+			callOnLuas('onUpdateScore', [miss]);
+			callOnHaxes('onUpdateScore', [miss]);
+		}
 	}
 
 	public function setSongTime(time:Float)
