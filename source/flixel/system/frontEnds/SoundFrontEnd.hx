@@ -82,6 +82,9 @@ class SoundFrontEnd
 	 */
 	public var volume(default, set):Float = 1;
 
+	public var volumeUpSound:String = "volumeUp";
+	public var volumeDownSound:String = "volumeDown";
+
 	/**
 	 * Set up and play a looping background soundtrack.
 	 *
@@ -339,9 +342,9 @@ class SoundFrontEnd
 		volume += Amount;
         if (soundTrayEnabled) {
             if (Amount > 0) {
-                play(Paths.sound("volumeUp"), 0.5);
+                play(Paths.sound(volumeUpSound), 0.5);
             } else {
-                play(Paths.sound("volumeDown"), 0.5);
+                play(Paths.sound(volumeDownSound), 0.5);
             }
         }
 		showSoundTray();
