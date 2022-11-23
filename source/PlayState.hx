@@ -2504,9 +2504,9 @@ class PlayState extends MusicBeatState
 	{
 		if (cpuControlled) {
 			scoreTxt.text = "Botplay Enabled \\ Score Not Counted";
-		} else if(ratingName == '?') {
+		} else if(ratingName == '?' && !cpuUpdate) {
 			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: 0% [' + ratingName + ']';
-		} else {
+		} else if (!cpuUpdate) {
 			scoreTxt.text = 'Score: ' + songScore + ' \\ Combo Breaks: ' + songMisses + ' \\ Accuracy: ' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%' + ' [' + ratingName + ' | ' + ratingFC + ']';//peeps wanted no integer rating
 		}
 
