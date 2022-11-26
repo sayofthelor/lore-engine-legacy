@@ -3566,6 +3566,7 @@ class HScript
 		interp.variables.set('Character', Character);
 		interp.variables.set('Alphabet', Alphabet);
 		interp.variables.set('CustomSubstate', CustomSubstate);
+		interp.variables.set('PauseSubState', PauseSubState);
 		#if (!flash && sys)
 		interp.variables.set('FlxRuntimeShader', FlxRuntimeShader);
 		interp.variables.set('FlxShaderToyRuntimeShader', shadertoy.FlxShaderToyRuntimeShader);
