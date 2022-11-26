@@ -111,6 +111,7 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set('ClientPrefs', ClientPrefs);
             interp.variables.set('Character', Character);
             interp.variables.set('Alphabet', Alphabet);
+            interp.variables.set('PauseSubState', PauseSubState);
             interp.variables.set('Json', haxe.Json);
             #if !flash
             interp.variables.set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
