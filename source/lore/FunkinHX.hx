@@ -182,6 +182,7 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set("onHeadBop", function(name:String) {});
             interp.variables.set("onGameOverStart", function() {});
             interp.variables.set("onGameOverConfirm", function() {});
+            interp.variables.set("onPauseMenuSelect", function(name:String) {});
             interp.variables.set("Std", Std);
             interp.variables.set("WinAPI", WinAPI);
             interp.variables.set("script", this);
