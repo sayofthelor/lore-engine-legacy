@@ -2611,7 +2611,7 @@ class PlayState extends MusicBeatState
 
 		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
 		FlxG.sound.music.pitch = playbackRate;
-		set_playbackRate(playbackRate);
+		set_playbackRate(playbackRate); // fixes finishSong bug i'm pretty sure
 		FlxG.sound.music.onComplete = finishSong.bind();
 		vocals.play();
 		vocals2.play();
