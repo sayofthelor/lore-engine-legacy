@@ -38,10 +38,10 @@ typedef MenuJSONData = {
 class MainMenuState extends MusicBeatState
 {
 	var menuJson:MenuJSONData = Json.parse(Paths.getTextFromFile("data/menu.json"));
-	public static inline final loreEngineVersion:String = '0.7.0';
-	public static inline final versionSuffix:String = ''; // just so i can add a suffix without breaking any version checks
-	public static inline final isNotFinal:Bool = false;
-	public static inline final psychEngineVersion:String = '0.6.3'; // to maximize compatibility
+	public static final loreEngineVersion:String = '0.7.0';
+	public static final versionSuffix:String = ''; // just so i can add a suffix without breaking any version checks
+	public static final isNotFinal:Bool = false;
+	public static final psychEngineVersion:String = '0.6.3'; // to maximize compatibility
 	public static var curSelected:Int = 0;
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'), 0.2, 0.2, true, true);
 	var menuItems:FlxTypedGroup<FlxSprite>;
