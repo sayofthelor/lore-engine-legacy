@@ -111,6 +111,7 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set('ClientPrefs', ClientPrefs);
             interp.variables.set('Character', Character);
             interp.variables.set('Alphabet', Alphabet);
+            interp.variables.set('PauseSubState', PauseSubState);
             interp.variables.set('Json', haxe.Json);
             #if !flash
             interp.variables.set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
@@ -182,6 +183,8 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set("onHeadBop", function(name:String) {});
             interp.variables.set("onGameOverStart", function() {});
             interp.variables.set("onGameOverConfirm", function() {});
+            interp.variables.set("onPauseMenuSelect", function(name:String) {});
+            interp.variables.set("onOpenPauseMenu", function() {});
             interp.variables.set("Std", Std);
             interp.variables.set("WinAPI", WinAPI);
             interp.variables.set("script", this);
