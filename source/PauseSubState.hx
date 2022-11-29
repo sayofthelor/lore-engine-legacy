@@ -18,7 +18,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	var menuItems:Array<String> = [];
 
-	public static var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Exit to menu'];
+	public var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Exit to menu'];
 
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
