@@ -6,6 +6,7 @@ import flixel.input.keyboard.FlxKey;
 import Controls;
 
 class ClientPrefs {
+	public static var rainbowFPS:Bool = false;
 	public static var downScroll:Bool = false;
 	public static var showLore:Bool = true;
 	public static var showMem:Bool = true;
@@ -146,6 +147,7 @@ class ClientPrefs {
 		FlxG.save.data.ignoreSkin = ignoreSkin;
 		FlxG.save.data.fpsPosition = fpsPosition;
 		FlxG.save.data.monoNotes = monoNotes;
+		FlxG.save.data.rainbowFPS = rainbowFPS;
 		//FlxG.save.data.cursing = cursing;
 		//FlxG.save.data.violence = violence;
 		FlxG.save.data.camZooms = camZooms;
@@ -214,6 +216,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.bopStyle != null) {
 			bopStyle = FlxG.save.data.bopStyle;
+		}
+		if(FlxG.save.data.rainbowFPS != null) {
+			rainbowFPS = FlxG.save.data.rainbowFPS;
 		}
 		if(FlxG.save.data.showNoteTimeHitbox != null) {
 			showNoteTimeHitbox = FlxG.save.data.showNoteTimeHitbox;

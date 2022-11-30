@@ -45,6 +45,12 @@ class FPS extends TextField
 	private var bor7:TextField;
 	private var bor8:TextField;
 	private var borderSize:Int = 2;
+
+	public var rainbowEnabled(default, set):Bool = false;
+	public function set_rainbowEnabled(v:Bool):Bool {
+		if (!v) textColor = 0xffffffff;
+		return rainbowEnabled = v;
+	}
 	
 	public function new(?x:Float = 3, ?y:Float = 3, ?color:Int = 0xFFFFFFFF)
 	{
@@ -142,6 +148,7 @@ class FPS extends TextField
 	@:noCompletion
 	private override function __enterFrame(deltaTime:Float):Void
 	{
+		if (rainbowEnabled) doRainbowThing();
 		currentTime += deltaTime;
 		times.push(currentTime);
 
@@ -195,6 +202,13 @@ class FPS extends TextField
 		bor7.y = this.y + borderSize;
 		bor8.y = this.y + borderSize;
 
+	}
+
+	private var hue:Float = 0;
+
+	private function doRainbowThing():Void {
+		hue = (hue + (FlxG.elapsed * 100)) % 360;
+		textColor = flixel.util.FlxColor.fromHSL(hue, 1, 0.8);
 	}
 
 	public function setPos(x:Null<Float> = null, y:Null<Float> = null):Void {

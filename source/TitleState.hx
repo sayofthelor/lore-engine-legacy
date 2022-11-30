@@ -250,6 +250,7 @@ class TitleState extends MusicBeatState
 	function startIntro()
 	{
 		Main.fpsVar.updatePos();
+		Main.fpsVar.set_rainbowEnabled(ClientPrefs.rainbowFPS);
 		if (!initialized)
 		{
 			/*var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);

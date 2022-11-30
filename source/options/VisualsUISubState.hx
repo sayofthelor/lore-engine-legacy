@@ -184,8 +184,16 @@ class VisualsUISubState extends BaseOptionsMenu
 			'If checked, makes the Info Display more compact.',
 			'compactFPS',
 			'bool',
-			true);
+			false);
 		addOption(option);
+
+		var option:Option = new Option('Rainbow Info Display',
+			'If checked, makes the Info Display cycle between a rainbow of colors.',
+			'rainbowFPS',
+			'bool',
+			false);
+		addOption(option);
+		option.onChange = onChangeFPSCounter;
 
 		var option:Option = new Option('Info Display Position: ',
 			"The position the Info Display is in.",
@@ -269,6 +277,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		if(Main.fpsVar != null) {
 			Main.fpsVar.set_visibility(ClientPrefs.showFPS);
 			Main.fpsVar.updatePos();
+			Main.fpsVar.set_rainbowEnabled(ClientPrefs.rainbowFPS);
 		}
 	}
 	#end

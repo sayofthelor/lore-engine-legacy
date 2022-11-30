@@ -19,6 +19,7 @@ class PauseSubState extends MusicBeatSubstate
 	var menuItems:Array<String> = [];
 
 	public var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Exit to menu'];
+	public static var instance:PauseSubState;
 
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
@@ -32,9 +33,20 @@ class PauseSubState extends MusicBeatSubstate
 	// var botplayText:FlxText;
 	public static var songName:String = '';
 
+	public function addOption(tag:String) {
+		if (!menuItemsOG.contains(tag)) {
+			menuItems.push(tag);
+		}
+	}
+	public function removeOption(tag:String) {
+		if (menuItemsOG.contains(tag)) {
+			menuItems.remove(tag);
+		}
+	}
 	public function new(x:Float, y:Float)
 	{
 		super();
+		instance = this;
 		if (CoolUtil.difficulties.length < 2)
 			menuItemsOG.remove('Change Difficulty'); // No need to change difficulty if there is only one!
 
