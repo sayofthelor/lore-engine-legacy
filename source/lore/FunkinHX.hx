@@ -31,6 +31,7 @@ using StringTools;
 class FunkinHX implements IFlxDestroyable {
     private var interp:Interp;
     public var scriptName:String = "unknown";
+    public var scriptType:FunkinHXType = NOEXEC;
     public var loaded:Bool = false;
     public var ignoreErrors:Bool = false;
 
@@ -62,6 +63,7 @@ class FunkinHX implements IFlxDestroyable {
 
     public function new(f:String, ?type:FunkinHXType = FILE):Void {
         scriptName = f;
+        scriptType = type;
         var ttr:String = null;
         if (type == FILE) {
             ttr = #if sys File.getContent #else Assets.getText #end (f);
@@ -105,6 +107,7 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set('FlxTimer', flixel.util.FlxTimer);
             interp.variables.set('FlxTween', flixel.tweens.FlxTween);
             interp.variables.set('FlxEase', flixel.tweens.FlxEase);
+            interp.variables.set('FlxText', flixel.text.FlxText);
             interp.variables.set('PlayState', PlayState);
             interp.variables.set('game', PlayState.instance);
             interp.variables.set('Paths', Paths);
@@ -114,6 +117,9 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set('Alphabet', Alphabet);
             interp.variables.set('PauseSubState', PauseSubState);
             interp.variables.set('Json', haxe.Json);
+            interp.variables.set("curBeat", 0);
+            interp.variables.set("curStep", 0);
+            interp.variables.set("curSection", 0);
             #if !flash
             interp.variables.set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
             interp.variables.set('FlxShaderToyRuntimeShader', FlxShaderToyRuntimeShader);
@@ -141,13 +147,15 @@ class FunkinHX implements IFlxDestroyable {
                 return false;
             });
             interp.variables.set("Sys", Sys);
-            interp.variables.set("add", PlayState.instance.add);
-            interp.variables.set("addBehindDad", PlayState.instance.addBehindDad);
-            interp.variables.set("addBehindGF", PlayState.instance.addBehindGF);
-            interp.variables.set("addBehindBF", PlayState.instance.addBehindBF);
-            interp.variables.set("remove", PlayState.instance.remove);
-            interp.variables.set("insert", PlayState.instance.insert);
-            interp.variables.set("indexOf", PlayState.instance.members.indexOf);
+            if (PlayState.instance != null) {
+                interp.variables.set("add", PlayState.instance.add);
+                interp.variables.set("addBehindDad", PlayState.instance.addBehindDad);
+                interp.variables.set("addBehindGF", PlayState.instance.addBehindGF);
+                interp.variables.set("addBehindBF", PlayState.instance.addBehindBF);
+                interp.variables.set("remove", PlayState.instance.remove);
+                interp.variables.set("insert", PlayState.instance.insert);
+                interp.variables.set("indexOf", PlayState.instance.members.indexOf);
+            }
             interp.variables.set("create", function() {});
             interp.variables.set("createPost", function() {});
             interp.variables.set("update", function(elapsed:Float) {});
@@ -196,12 +204,26 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set("Y", flixel.util.FlxAxes.Y);
             interp.variables.set("XY", flixel.util.FlxAxes.XY);
             interp.variables.set("FlxAxes", {X: flixel.util.FlxAxes.X, Y: flixel.util.FlxAxes.Y, XY: flixel.util.FlxAxes.XY});
+            interp.variables.set("switchState", MusicBeatState.switchState);
+            interp.variables.set("ScriptedState", ScriptedState);
 
             if (ttr != null) try {
                 interp.execute(getExprFromString(ttr, true));
                 trace("haxe file loaded successfully: " + f);
                 loaded = true;
             } catch (e:Dynamic) traace('$e');
+    }
+
+    public function doFile(?file:String, ?type:FunkinHXType) {
+        if (file == null) file = scriptName;
+        if (type == null) type = scriptType;
+        var thing:String = file;
+        if (type == FILE) thing = sys.io.File.getContent(file);
+        try {
+            interp.execute(getExprFromString(thing, true));
+            trace("haxe file loaded successfully: " + file);
+            loaded = true;
+        } catch (e:Dynamic) traace('$e');
     }
 
 

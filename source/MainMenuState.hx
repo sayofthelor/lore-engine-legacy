@@ -33,11 +33,19 @@ typedef MenuJSONData = {
 	showChecker:Bool,
 	showVersionText:Bool,
 	overrideVersionText:Bool,
-	customVersionText:String
+	customVersionText:String,
+	items:Null<Array<MenuItemData>>
 }
+
+typedef MenuItemData = {
+	name:String,
+	stateToOpen:String,
+	stateIsScripted:Bool
+}
+
 class MainMenuState extends MusicBeatState
 {
-	var menuJson:MenuJSONData = Json.parse(Paths.getTextFromFile("data/menu.json"));
+	var menuJson:MenuJSONData;
 	public static final loreEngineVersion:String = '0.7.0';
 	public static final versionSuffix:String = ''; // just so i can add a suffix without breaking any version checks
 	public static final isNotFinal:Bool = false;
@@ -51,15 +59,9 @@ class MainMenuState extends MusicBeatState
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
-	var optionShit:Array<String> = [
-		'story_mode',
-		'freeplay',
-		#if MODS_ALLOWED 'mods', #end
-		#if ACHIEVEMENTS_ALLOWED 'awards', #end
-		'credits',
-		#if !switch 'donate', #end
-		'options'
-	];
+	var optionShit:Array<String> = [];
+
+	var stateInfo:Map<String, Array<Dynamic>> = [];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -71,6 +73,13 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
+		menuJson = Json.parse(Paths.getTextFromFile("data/menu.json"));
+		if (menuJson.items != null) {
+			optionShit = [for (item in menuJson.items) item.name];
+			for (i in 0...optionShit.length) {
+				stateInfo.set(optionShit[i], [menuJson.items[i].stateToOpen, menuJson.items[i].stateIsScripted]);
+			}
+		}
 		#if (flixel_addons >= "3.0.0")
 		checker.scrollFactor.set(0.2, 0.2);
 		#end
@@ -260,22 +269,18 @@ class MainMenuState extends MusicBeatState
 							{
 								var daChoice:String = optionShit[curSelected];
 
-								switch (daChoice)
-								{
-									case 'story_mode':
-										MusicBeatState.switchState(new StoryMenuState());
-									case 'freeplay':
-										MusicBeatState.switchState(new FreeplayState());
-									#if MODS_ALLOWED
-									case 'mods':
-										MusicBeatState.switchState(new ModsMenuState());
-									#end
-									case 'awards':
-										MusicBeatState.switchState(new AchievementsMenuState());
-									case 'credits':
-										MusicBeatState.switchState(new CreditsState());
-									case 'options':
-										MusicBeatState.switchState(new options.OptionsState());
+								if (!stateInfo[daChoice][1]) {
+									var state:flixel.FlxState = Type.createInstance(Type.resolveClass(stateInfo[optionShit[curSelected]][0]), []);
+									state = switch(stateInfo[optionShit[curSelected]][0]) {
+										case "mods": new ModsMenuState();
+										case "awards": new AchievementsMenuState();
+										case "credits": new CreditsState();
+										case "options": new options.OptionsState();
+										case _: state;
+									}
+									MusicBeatState.switchState(state);
+								} else {
+									MusicBeatState.switchState(new lore.ScriptedState(stateInfo[optionShit[curSelected]][0]));
 								}
 							});
 						}

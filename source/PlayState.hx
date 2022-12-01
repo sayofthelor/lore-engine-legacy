@@ -319,7 +319,7 @@ class PlayState extends MusicBeatState
 	var boyfriendIdled:Bool = false;
 
 	// Lua shit
-	public static var instance:PlayState;
+	public static var instance:PlayState = null;
 	public var luaArray:Array<FunkinLua> = [];
 	public var haxeArray:Array<lore.FunkinHX> = [];
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;

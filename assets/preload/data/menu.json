@@ -8,5 +8,42 @@
     "showVersionText":true,
     "overrideVersionText":false,
     "customVersionText":"",
+    "items": [
+        {
+            "name": "story_mode",
+            "stateToOpen": "StoryMenuState",
+            "stateIsScripted": false
+        },
+        {
+            "name": "freeplay",
+            "stateToOpen": "FreeplayState",
+            "stateIsScripted": false
+        },
+        {
+            "name": "mods",
+            "stateToOpen": "ModsMenuState",
+            "stateIsScripted": false
+        },
+        {
+            "name": "awards",
+            "stateToOpen": "AchievementsMenuState",
+            "stateIsScripted": false
+        },
+        {
+            "name": "credits",
+            "stateToOpen": "CreditsState",
+            "stateIsScripted": false
+        },
+        {
+            "name": "donate",
+            "stateToOpen": "",
+            "stateIsScripted": false
+        },
+        {
+            "name": "options",
+            "stateToOpen": "options.OptionsState",
+            "stateIsScripted": false
+        }
+    ],
     "comments":"All custom colors are -1 for default color, 0xFFFFFFFF syntax for custom color."
 }
