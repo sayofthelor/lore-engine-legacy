@@ -32,7 +32,11 @@ class NotesSubState extends MusicBeatSubstate
 {
 	private static var curSelected:Int = 0;
 	private static var typeSelected:Int = 0;
+	#if (flixel_addons < "3.0.0")
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'), 0.2, 0.2, true, true);
+	#else
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'));
+	#end
 	private var grpNumbers:FlxTypedGroup<Alphabet>;
 	private var grpNotes:FlxTypedGroup<FlxSprite>;
 	private var shaderArray:Array<ColorSwap> = [];
@@ -45,6 +49,9 @@ class NotesSubState extends MusicBeatSubstate
 
 	var posX = 230;
 	public function new() {
+		#if (flixel_addons < "3.0.0")
+		checker.scrollFactor.set(0.2, 0.2);
+		#end
 		super();
 		
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));

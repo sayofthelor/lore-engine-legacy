@@ -33,7 +33,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	private var curOption:Option = null;
 	private var curSelected:Int = 0;
 	private var optionsArray:Array<Option>;
+	#if (flixel_addons < "3.0.0")
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'), 0.2, 0.2, true, true);
+	#else
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'));
+	#end
 	public static var checkerX:Float=0;
 	public static var checkerY:Float=0;
 	private var grpOptions:FlxTypedGroup<Alphabet>;
@@ -48,6 +52,9 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 	public function new()
 	{
+		#if (flixel_addons < "3.0.0")
+		checker.scrollFactor.set(0.2, 0.2);
+		#end
 		super();
 
 		if(title == null) title = 'Options';

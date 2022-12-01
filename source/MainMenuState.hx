@@ -43,7 +43,11 @@ class MainMenuState extends MusicBeatState
 	public static final isNotFinal:Bool = false;
 	public static final psychEngineVersion:String = '0.6.3'; // to maximize compatibility
 	public static var curSelected:Int = 0;
+	#if (flixel_addons < "3.0.0")
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'), 0.2, 0.2, true, true);
+	#else
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'));
+	#end
 	var menuItems:FlxTypedGroup<FlxSprite>;
 	private var camGame:FlxCamera;
 	private var camAchievement:FlxCamera;
@@ -67,6 +71,9 @@ class MainMenuState extends MusicBeatState
 	}
 	override function create()
 	{
+		#if (flixel_addons >= "3.0.0")
+		checker.scrollFactor.set(0.2, 0.2);
+		#end
 		#if MODS_ALLOWED
 		Paths.pushGlobalMods();
 		#end

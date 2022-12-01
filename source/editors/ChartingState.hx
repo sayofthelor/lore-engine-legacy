@@ -72,7 +72,11 @@ class ChartingState extends MusicBeatState
 		'GF Sing',
 		'No Animation'
 	];
+	#if (flixel_addons < "3.0.0")
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'), 0.2, 0.2, true, true);
+	#else
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'));
+	#end
 	private var noteTypeIntMap:Map<Int, String> = new Map<Int, String>();
 	private var noteTypeMap:Map<String, Null<Int>> = new Map<String, Null<Int>>();
 	public var ignoreWarnings = false;
@@ -209,6 +213,9 @@ class ChartingState extends MusicBeatState
 	public var mouseQuant:Bool = false;
 	override function create()
 	{
+		#if (flixel_addons < "3.0.0")
+		checker.scrollFactor.set(0.2, 0.2);
+		#end
 		if (PlayState.SONG != null)
 			_song = PlayState.SONG;
 		else

@@ -42,7 +42,11 @@ class EditorPlayState extends MusicBeatState
 	public var notes:FlxTypedGroup<Note>;
 	public var unspawnNotes:Array<Note> = [];
 	public var totalNotesHit:Float = 0.0;
+	#if (flixel_addons < "3.0.0")
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'), 0.2, 0.2, true, true);
+	#else
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Free_Checker'));
+	#end
 	var generatedMusic:Bool = false;
 	var vocals:FlxSound;
 	var vocals2:FlxSound;
@@ -76,6 +80,9 @@ class EditorPlayState extends MusicBeatState
 
 	override function create()
 	{
+		#if (flixel_addons < "3.0.0")
+		checker.scrollFactor.set(0.2, 0.2);
+		#end
 		instance = this;
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));

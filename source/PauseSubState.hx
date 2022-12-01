@@ -23,7 +23,11 @@ class PauseSubState extends MusicBeatSubstate
 
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
+	#if (flixel_addons < "3.0.0")
 	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'), 0.2, 0.2, true, true);
+	#else
+	var checker:FlxBackdrop = new FlxBackdrop(Paths.image('Substate_Checker'));
+	#end
 	var pauseMusic:FlxSound;
 	var practiceText:FlxText;
 	var skipTimeText:FlxText;
@@ -45,6 +49,9 @@ class PauseSubState extends MusicBeatSubstate
 	}
 	public function new(x:Float, y:Float)
 	{
+		#if (flixel_addons >= "3.0.0")
+		checker.scrollFactor.set(0.2, 0.2);
+		#end
 		super();
 		instance = this;
 		if (CoolUtil.difficulties.length < 2)

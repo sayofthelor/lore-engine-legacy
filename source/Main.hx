@@ -46,6 +46,9 @@ class Main extends Sprite
 		Lib.current.addChild(new Main());
 	}
 
+	#if (flixel < "5.0.0")
+	@:deprecated("Please update to the latest version of HaxeFlixel.")
+	#end
 	public function new()
 	{
 		instance = this;
@@ -91,7 +94,7 @@ class Main extends Sprite
 		}
 	
 		ClientPrefs.loadDefaultKeys();
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
 		game.focusLostFramerate = 60;
 		addChild(game);
 

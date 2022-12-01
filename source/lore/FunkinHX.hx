@@ -72,12 +72,13 @@ class FunkinHX implements IFlxDestroyable {
         interp.variables.set("import", function(className:String)
             {
                 var splitClassName = [for (e in className.split(".")) e.trim()];
+                if (interp.variables.exists(splitClassName[splitClassName.length - 1])) return;
                 var realClassName = splitClassName.join(".");
                 var cl = Type.resolveClass(realClassName);
                 var en = Type.resolveEnum(realClassName);
                 if (cl == null && en == null)
                 {
-                    traace('Class / Enum at $realClassName does not exist.');
+                    openfl.Lib.application.window.alert('Class / Enum at $realClassName does not exist.', 'Haxe script error');
                 }
                 else
                 {
@@ -191,6 +192,10 @@ class FunkinHX implements IFlxDestroyable {
             interp.variables.set("destroy", function() {});
             interp.variables.set("Note", Note);
             interp.variables.set("trace", traace);
+            interp.variables.set("X", flixel.util.FlxAxes.X);
+            interp.variables.set("Y", flixel.util.FlxAxes.Y);
+            interp.variables.set("XY", flixel.util.FlxAxes.XY);
+            interp.variables.set("FlxAxes", {X: flixel.util.FlxAxes.X, Y: flixel.util.FlxAxes.Y, XY: flixel.util.FlxAxes.XY});
 
             if (ttr != null) try {
                 interp.execute(getExprFromString(ttr, true));
@@ -246,7 +251,10 @@ class FunkinHX implements IFlxDestroyable {
                     trace('$f exists, but is not a function!');
                     return null;
                 }
-            } catch (e:Dynamic) if (!ignoreErrors) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e, 'Haxe script error');
+            } catch (e:Dynamic) {
+                if (!ignoreErrors) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e, 'Haxe script error');
+                return null;
+            }
             trace('$f does not exist!');
             return null;
         }
