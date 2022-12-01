@@ -18,7 +18,7 @@ Extra features include:
 
 NOTE: If you're running on Linux, please use the official Linux build instead of running the game through Wine. FNF has quite a few input, stuttering, and minimization issues with Wine at the moment.
 
-use haxe 4.2.4 bozos
+use haxe 4.2.5 bozos
 
 ## Screenshots:
 ![image](https://user-images.githubusercontent.com/35895538/184577088-49f7d70d-56af-4869-9f62-f25df2c396e2.png)
