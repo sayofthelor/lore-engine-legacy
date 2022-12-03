@@ -5663,7 +5663,7 @@ class PlayState extends MusicBeatState
 	public function setOnHaxes(variable:String, arg:Dynamic) {
 		#if hscript
 		for (i in haxeArray) {
-			i.setInterpVariable(variable, arg);
+			i.set(variable, arg);
 		}
 		#end
 	}
