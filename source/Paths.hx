@@ -35,6 +35,8 @@ class Paths
 		'sounds',
 		'shaders',
 		'locale',
+		'states',
+		'extendable',
 		'videos',
 		'images',
 		'stages',
