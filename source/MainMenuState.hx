@@ -262,7 +262,7 @@ class MainMenuState extends lore.ScriptableState
 						{
 							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
 							{
-								script.runFunc("onOptionSelected", [optionShit[curSelected]]);
+								if (script != null) script.runFunc("onOptionSelected", [optionShit[curSelected]]);
 								var daChoice:String = optionShit[curSelected];
 
 								switch (daChoice)
