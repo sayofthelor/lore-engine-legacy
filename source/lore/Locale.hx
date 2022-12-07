@@ -9,7 +9,6 @@ class Locale {
     public static function init():Void {
         selectedLocale = ClientPrefs.locale;
         localeObject = Json.parse(lime.utils.Assets.getText(Paths.localeFile(selectedLocale)));
-        trace(localeObject);
     }
 
     public static function get(key:String):String {
