@@ -153,6 +153,7 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	public static var inPlayState:Bool = false;
 
 	public var spawnTime:Float = 2000;
 

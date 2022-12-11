@@ -112,6 +112,7 @@ class MusicBeatState extends FlxUIState
 	}
 
 	public static function switchState(nextState:FlxState) {
+		PlayState.inPlayState = (Type.getClass(nextState) == PlayState);
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
