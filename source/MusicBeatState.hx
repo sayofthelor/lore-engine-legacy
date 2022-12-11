@@ -25,6 +25,12 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
+
+	override public function new() {
+		PlayState.inPlayState = (Type.getClass(this) == PlayState);
+		super();
+	}
+
 	override function create() {
 		camBeat = FlxG.camera;
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
@@ -112,7 +118,6 @@ class MusicBeatState extends FlxUIState
 	}
 
 	public static function switchState(nextState:FlxState) {
-		PlayState.inPlayState = (Type.getClass(nextState) == PlayState);
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
