@@ -1,10 +1,10 @@
 package lore;
 
-class ScriptableState extends MusicBeatState {
+class ScriptableSubState extends MusicBeatSubstate {
     public var script:FunkinHX = null;
     public var scriptName:String;
     var temp:FunkinHX->Void;
-    override public function new(name:String, ?directory:String = "states", ?primer:FunkinHX->Void = null) {
+    override public function new(name:String, ?directory:String = "substates", ?primer:FunkinHX->Void = null) {
         if (primer == null) {
             primer = this.primer;
         } else {
@@ -35,7 +35,8 @@ class ScriptableState extends MusicBeatState {
         script.remove("addBehindGF");
         script.remove("addBehindDad");
         script.remove("PlayState");
-        script.set("state", this);
+        script.set("subState", this);
+        script.set("close", close);
         script.set("controls", controls);
         script.set("add", add);
         script.set("remove", remove);
@@ -47,7 +48,7 @@ class ScriptableState extends MusicBeatState {
         if (script != null) script.runFunc("createPost", []);
     }
     public override function update(elapsed:Float):Void {
-        if (flixel.FlxG.keys.justPressed.F8) MusicBeatState.switchState(Type.createInstance(CoolUtil.lastState, []));
+        if (flixel.FlxG.keys.justPressed.F8) close();
         if (script != null) script.runFunc("update", [elapsed]);
         super.update(elapsed);
         if (script != null) script.runFunc("updatePost", [elapsed]);

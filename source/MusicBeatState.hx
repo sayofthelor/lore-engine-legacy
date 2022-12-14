@@ -121,6 +121,7 @@ class MusicBeatState extends FlxUIState
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
+		CoolUtil.lastState = Type.getClass(curState); // just to get rid of maybe loop yellow underline in vscode
 		if(!FlxTransitionableState.skipNextTransIn) {
 			leState.openSubState(new CustomFadeTransition(0.6, false));
 			if(nextState == FlxG.state) {

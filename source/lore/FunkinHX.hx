@@ -205,6 +205,7 @@ class FunkinHX implements IFlxDestroyable {
             set("XY", flixel.util.FlxAxes.XY);
             set("switchState", MusicBeatState.switchState);
             set("ModdedState", ModdedState);
+            set("ModdedSubState", ModdedSubState);
             #if sys
             set("FlxAxes", FlxMacroUtil.buildMap("flixel.util.FlxAxes"));
             set("FlxColor", FlxMacroUtil.buildMap("flixel.util.FlxColor"));
