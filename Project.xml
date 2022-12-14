@@ -159,6 +159,9 @@
 	<haxeflag name="--macro" value="include('flixel.tweens')" />
 	<haxeflag name="--macro" value="include('flixel.ui')" />
 	<haxeflag name="--macro" value="include('flixel.util')" />
+	<haxeflag name="--macro" value="flixel.system.macros.FlxMacroUtil.buildMap('flixel.util.FlxAxes')" if="sys" />
+	<haxeflag name="--macro" value="flixel.system.macros.FlxMacroUtil.buildMap('flixel.util.FlxColor')" if="sys" />
+	<haxeflag name="--macro" value="flixel.system.macros.FlxMacroUtil.buildMap('flixel.input.keyboard.FlxKey')" if="sys" />
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->

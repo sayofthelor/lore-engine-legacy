@@ -1,15 +1,12 @@
 package lore;
 
-import lime.app.Application;
-import lime.*;
-import openfl.*;
-import flixel.*;
 import shadertoy.FlxShaderToyRuntimeShader;
 import hscript.Parser;
 import hscript.Interp;
 import hscript.Expr;
 import flixel.util.FlxDestroyUtil.IFlxDestroyable;
 import #if html5 lime.utils.Assets; #else sys.io.File; #end
+#if sys import flixel.system.macros.FlxMacroUtil; #end
 
 using StringTools;
 
@@ -206,9 +203,13 @@ class FunkinHX implements IFlxDestroyable {
             set("X", flixel.util.FlxAxes.X);
             set("Y", flixel.util.FlxAxes.Y);
             set("XY", flixel.util.FlxAxes.XY);
-            set("FlxAxes", {X: flixel.util.FlxAxes.X, Y: flixel.util.FlxAxes.Y, XY: flixel.util.FlxAxes.XY});
             set("switchState", MusicBeatState.switchState);
             set("ModdedState", ModdedState);
+            #if sys
+            set("FlxAxes", FlxMacroUtil.buildMap("flixel.util.FlxAxes"));
+            set("FlxColor", FlxMacroUtil.buildMap("flixel.util.FlxColor"));
+            set("FlxKey", FlxMacroUtil.buildMap("flixel.input.keyboard.FlxKey"));
+            #end
             if (primer != null) primer(this);
 
             if (ttr != null) try {
