@@ -24,6 +24,7 @@ class ScriptableSubState extends MusicBeatSubstate {
             return;
         }
         super();
+        cameras = [flixel.FlxG.cameras.list[flixel.FlxG.cameras.list.length - 1]];
     }
     private function primer(script:FunkinHX):Void {
         script.remove("game");

@@ -155,6 +155,7 @@ class FunkinHX implements IFlxDestroyable {
                 set("remove", PlayState.instance.remove);
                 set("insert", PlayState.instance.insert);
                 set("indexOf", PlayState.instance.members.indexOf);
+                set("openSubState", PlayState.instance.openSubState);
             }
             set("create", function() {});
             set("createPost", function() {});

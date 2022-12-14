@@ -36,6 +36,7 @@ class Paths
 		'shaders',
 		'locale',
 		'states',
+		'substates',
 		'extendable',
 		'videos',
 		'images',
