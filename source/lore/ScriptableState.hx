@@ -4,7 +4,8 @@ class ScriptableState extends MusicBeatState {
     public var script:FunkinHX = null;
     public var scriptName:String;
     var temp:FunkinHX->Void;
-    override public function new(name:String, ?directory:String = "states", ?primer:FunkinHX->Void = null) {
+    override public function new(?name:Null<String> = null, ?directory:String = "extendable", ?primer:FunkinHX->Void = null) {
+        if (name == null) name = Type.getClassName(Type.getClass(this));
         if (primer == null) {
             primer = this.primer;
         } else {
