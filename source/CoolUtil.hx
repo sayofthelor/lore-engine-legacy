@@ -19,7 +19,7 @@ class CoolUtil
 {
 	public static var lastState(default, set):Class<flixel.FlxState> = MainMenuState;
 	public static function set_lastState(value:Class<flixel.FlxState>):Class<flixel.FlxState> {
-		if (value == MusicBeatState) value == MainMenuState;
+		if (value == MusicBeatState) value = MainMenuState;
 		else lastState = value;
 		return value;
 	}
