@@ -37,10 +37,11 @@ class MacroTools {
     }
 
     // modified from flixel.system.macros.FlxMacroUtil
-    public static macro function getMapFromAbstract(typePath:Expr, invert:Bool = false, ?exclude:Array<String>):Expr
+    // you still have to use get (e.g. FlxColor.get("WHITE") instead of FlxColor.WHITE) but it seems to be the best i can do
+    public static macro function getMapFromAbstract(typePath:Expr, invert:Bool = false, ?exclude:Array<String>):ExprOf<Map<String, Dynamic>>
         {
             var type = Context.getType(typePath.toString());
-            var values = [];
+            var values:Map<String, Dynamic> = [];
     
             if (exclude == null)
                 exclude = ["NONE_IS_ACTUALLY_A_VAR_BUT_THIS_PROBABLY_ISNT"];
@@ -62,7 +63,7 @@ class MacroTools {
                                 }
                                 if (f.name.toUpperCase() == f.name && !exclude.contains(f.name)) // uppercase?
                                 {
-                                    values.push({name: f.name, value: value});
+                                    values.set(f.name, value);
                                 }
                             default:
                         }
@@ -70,12 +71,12 @@ class MacroTools {
                 default:
             }
     
-            var finalExpr;
-            if (invert)
-                finalExpr = values.map(function(v) return macro $v{v.value} => $v{v.name});
-            else
-                finalExpr = values.map(function(v) return macro $v{v.name} => $v{v.value});
+            var finalExpr:Map<String, Dynamic> = [];
+            for (k => v in values) {
+                if (invert) finalExpr.set(v, k);
+                else finalExpr.set(k, v);
+            }
     
-            return macro $a{finalExpr};
+            return macro $v{finalExpr};
         }
 }
