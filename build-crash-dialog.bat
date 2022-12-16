@@ -2,7 +2,7 @@
 
 cd crash-dialog
 echo Building crash dialog...
-lime build windows
+haxelib run lime build windows
 copy build\openfl\windows\bin\CrashDialog.exe ..\export\release\windows\bin\CrashDialog.exe
 cd ..
 

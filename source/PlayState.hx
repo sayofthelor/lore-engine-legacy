@@ -2606,7 +2606,10 @@ class PlayState extends MusicBeatState
 			iconP2.bopIcon(ClientPrefs.bopStyle == "LORE", "dad");
 		}
 		if (camZooming) {
-			FlxG.camera.zoom += (0.015 / defaultCamZoom) * camZoomingMult;
+			var thing:Float;
+			if (defaultCamZoom <= 1) thing = (0.015 * defaultCamZoom);
+			else thing = (0.015 / defaultCamZoom); 
+			FlxG.camera.zoom += thing * camZoomingMult;
 			camHUD.zoom += 0.03 * camZoomingMult;
 		}
 

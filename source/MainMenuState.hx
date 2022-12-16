@@ -38,9 +38,10 @@ typedef MenuJSONData = {
 class MainMenuState extends lore.ScriptableState
 {
 	var menuJson:MenuJSONData = Json.parse(Paths.getTextFromFile("data/menu.json"));
-	public static final loreEngineVersion:String = '0.7.0';
+	public static final loreEngineVersion:String = MacroTools.getEngineVersion();
 	public static final versionSuffix:String = ''; // just so i can add a suffix without breaking any version checks
-	public static final isNotFinal:Bool = false;
+	public static final isNotFinal:Bool = true;
+	public static final commitHash:String = MacroTools.getGitCommitHash();
 	public static final psychEngineVersion:String = '0.6.3'; // to maximize compatibility
 	public static var curSelected:Int = 0;
 	#if (flixel_addons < "3.0.0")
@@ -162,7 +163,9 @@ class MainMenuState extends lore.ScriptableState
 
 		FlxG.camera.follow(camFollowPos, null, 1);
 
-		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, (ClientPrefs.showLore ? "Lore Engine v" + (loreEngineVersion.endsWith(".0") ? loreEngineVersion.replace(".0", "") + versionSuffix + " \\ " : loreEngineVersion + versionSuffix + " \\ ") : "") + "Friday Night Funkin' v" + Application.current.meta.get('version')#if debug + " (debug)"#end, 12);
+		var verText = (ClientPrefs.showLore ? "Lore Engine v" + (loreEngineVersion.endsWith(".0") ? loreEngineVersion.replace(".0", "") + versionSuffix + " \\ " : loreEngineVersion + versionSuffix + " \\ ") : "") + "Friday Night Funkin' v" + Application.current.meta.get('version')#if debug + " (debug)"#end;
+		if (isNotFinal && commitHash != "") verText += ' (not final, commit hash ${commitHash})';
+		var versionShit:FlxText = new FlxText(12, FlxG.height - 24, 0, verText, 12);
 		versionShit.scrollFactor.set();
 		if (menuJson.overrideVersionText && menuJson.customVersionText != "") versionShit.text = menuJson.customVersionText;
 		versionShit.screenCenter(X);

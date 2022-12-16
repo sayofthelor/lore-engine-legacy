@@ -207,11 +207,9 @@ class FunkinHX implements IFlxDestroyable {
             set("switchState", MusicBeatState.switchState);
             set("ModdedState", ModdedState);
             set("ModdedSubState", ModdedSubState);
-            #if sys
-            set("FlxAxes", FlxMacroUtil.buildMap("flixel.util.FlxAxes"));
-            set("FlxColor", FlxMacroUtil.buildMap("flixel.util.FlxColor"));
-            set("FlxKey", FlxMacroUtil.buildMap("flixel.input.keyboard.FlxKey"));
-            #end
+            set("FlxAxes", MacroTools.getMapFromAbstract(flixel.util.FlxAxes));
+            set("FlxColor", MacroTools.getMapFromAbstract(flixel.util.FlxColor));
+            set("FlxKey", MacroTools.getMapFromAbstract(flixel.input.keyboard.FlxKey));
             if (primer != null) primer(this);
 
             if (ttr != null) try {
