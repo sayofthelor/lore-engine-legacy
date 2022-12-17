@@ -67,7 +67,7 @@ class MainMenuState extends lore.ScriptableState
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
 	override public function new() {
-		super(script:lore.FunkinHX -> {
+		super((script:lore.FunkinHX) -> {
 			script.set("onOptionSelected", function(name:String) {});
 			script.set("addOption", addOption);
 		});

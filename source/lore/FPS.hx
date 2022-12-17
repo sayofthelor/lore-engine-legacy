@@ -170,7 +170,8 @@ class FPS extends TextField
 			(ClientPrefs.showFPSNum ? (currentFPS + (!ClientPrefs.compactFPS ? " FPS" : "") + (ClientPrefs.showMem || ClientPrefs.showLore ? "\n" : "")) : "") +
 			(ClientPrefs.showMem ? (!ClientPrefs.compactFPS ? "Memory: " : "") + memoryMegas + (gigaFlag ? " GB" : " MB") + (ClientPrefs.showLore ? "\n" : "") : "") +
 			(ClientPrefs.showLore ? (!ClientPrefs.compactFPS ? "Lore " : "") + "v" + (MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) + MainMenuState.versionSuffix : "")
-			#if debug + " (debug)" #end;
+			#if debug + " (debug)" #end
+			+ ((MainMenuState.isNotFinal && MainMenuState.commitHash != "") ? ' (${MainMenuState.commitHash.substr(0, 6)})' : "");
 
 			bor1.text = text;
 			bor2.text = text;

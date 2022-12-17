@@ -210,6 +210,7 @@ class FunkinHX implements IFlxDestroyable {
             set("FlxAxes", MacroTools.getMapFromAbstract(flixel.util.FlxAxes));
             set("FlxColor", MacroTools.getMapFromAbstract(flixel.util.FlxColor));
             set("FlxKey", MacroTools.getMapFromAbstract(flixel.input.keyboard.FlxKey));
+            set("FlxPoint", MacroTools.getMapFromAbstract(flixel.math.FlxPoint));
             if (primer != null) primer(this);
 
             if (ttr != null) try {
