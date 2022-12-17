@@ -73,7 +73,7 @@ class FunkinHX implements IFlxDestroyable {
         var tempBuf = new StringBuf();
         var tempArray = ttr.split("\n");
         if (tempArray[0].contains("package")) tempArray.remove(tempArray[0]);
-        for (i in tempArray) tempBuf.add(i);
+        for (i in tempArray) tempBuf.add(i + "\n");
         ttr = tempBuf.toString();
         interp = new Interp();
         set("import", function(className:String)
