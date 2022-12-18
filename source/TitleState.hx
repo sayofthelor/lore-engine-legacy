@@ -135,11 +135,6 @@ class TitleState extends MusicBeatState
 		swagShader = new ColorSwap();
 		super.create();
 
-		FlxG.save.bind('funkin', 'ninjamuffin99');
-
-		ClientPrefs.loadPrefs();
-
-		FlxG.autoPause = ClientPrefs.pauseOnFocusLost;
 
 		#if CHECK_FOR_UPDATES
 		if(ClientPrefs.checkForUpdates && !closedState) {
@@ -249,8 +244,6 @@ class TitleState extends MusicBeatState
 
 	function startIntro()
 	{
-		Main.fpsVar.updatePos();
-		Main.fpsVar.set_rainbowEnabled(ClientPrefs.rainbowFPS);
 		if (!initialized)
 		{
 			/*var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);

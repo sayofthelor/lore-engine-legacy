@@ -186,6 +186,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'bool',
 			false);
 		addOption(option);
+		option.onChange = onChangeFPSCounter;
 
 		var option:Option = new Option('Rainbow Info Display',
 			'If checked, makes the Info Display cycle between a rainbow of colors.',
@@ -200,7 +201,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'fpsPosition',
 			'string',
 			'BOTTOM LEFT', ['TOP LEFT', 'BOTTOM LEFT']);
-		option.onChange = doThingUpdate;
+		option.onChange = onChangeFPSCounter;
 		addOption(option);
 
 		var option:Option = new Option('Show Framerate',
@@ -208,7 +209,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		'showFPSNum',
 		'bool',
 		true);
-		option.onChange = doThingUpdate;
+		option.onChange = onChangeFPSCounter;
 		addOption(option);
 		
 		var option:Option = new Option('Show Memory Usage',
@@ -216,7 +217,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'showMem',
 			'bool',
 			true);
-		option.onChange = doThingUpdate;
+		option.onChange = onChangeFPSCounter;
 		addOption(option);
 
 		var option:Option = new Option('Show Lore Engine Watermark',
@@ -224,7 +225,7 @@ class VisualsUISubState extends BaseOptionsMenu
 		'showLore',
 		'bool',
 		true);
-		option.onChange = doThingUpdate;
+		option.onChange = onChangeFPSCounter;
 		addOption(option);
 		#end
 		
@@ -249,11 +250,6 @@ class VisualsUISubState extends BaseOptionsMenu
 		super();
 	}
 
-	function doThingUpdate():Void {
-		Main.fpsVar.updatePos();
-		new FlxTimer().start(0.05, function(t) Main.fpsVar.updatePos());
-		new FlxTimer().start(0.1, function(t) Main.fpsVar.updatePos());
-	}
 	var changedMusic:Bool = false;
 	function onChangePauseMusic()
 	{
@@ -274,11 +270,7 @@ class VisualsUISubState extends BaseOptionsMenu
 	#if !mobile
 	function onChangeFPSCounter()
 	{
-		if(Main.fpsVar != null) {
-			Main.fpsVar.set_visibility(ClientPrefs.showFPS);
-			Main.fpsVar.updatePos();
-			Main.fpsVar.set_rainbowEnabled(ClientPrefs.rainbowFPS);
-		}
+		if(Main.fpsVar != null) Main.fpsVar.updateFromPrefs();
 	}
 	#end
 }

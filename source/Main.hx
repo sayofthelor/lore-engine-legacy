@@ -54,7 +54,7 @@ class Main extends Sprite
 		instance = this;
 		super();
 		@:privateAccess Lib.application.window.onResize.add((w, h) -> {
-			Main.fpsVar.updatePos();
+			Main.fpsVar.updatePosition();
 			@:privateAccess FlxG.game.soundTray._defaultScale = (w / FlxG.width) * 2;
 		});
 		if (stage != null)
@@ -97,16 +97,13 @@ class Main extends Sprite
 		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
 		game.focusLostFramerate = 60;
 		addChild(game);
+		FlxG.save.bind('funkin', 'ninjamuffin99');
+		ClientPrefs.loadPrefs();
+		FlxG.autoPause = ClientPrefs.pauseOnFocusLost;
 
 		#if !mobile
-		fpsVar = new lore.FPS(3, 3, 0xFFFFFF);
+		fpsVar = new lore.FPS(3, 3, 0xFFFFFFFF);
 		addChild(fpsVar);
-		Lib.current.stage.align = "tl";
-		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
-		if(fpsVar != null) {
-			fpsVar.set_visibility(ClientPrefs.showFPS);
-		}
-		fpsVar.updatePos();
 		#end
 		#if desktop Assets.getImage("assets/images/coconut.jpg"); #end
 		#if html5
