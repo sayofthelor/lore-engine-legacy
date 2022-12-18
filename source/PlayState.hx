@@ -86,6 +86,11 @@ using StringTools;
 
 class PlayState extends MusicBeatState
 {
+	public var clearCache:Bool = true;
+	override public function new(clearCache:Bool = true) {
+		super();
+		this.clearCache = clearCache;
+	}
 	public static var STRUM_X = 42;
 	public var topTimeSignature:Int = 4;
 	public var updateUnderlay:Bool = false;
@@ -342,7 +347,7 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 		if (ClientPrefs.ratingPosition == "HUD") tempRatingScale = ClientPrefs.ratingScale;
-		if (!ClientPrefs.persistentCaching) {
+		if (!ClientPrefs.persistentCaching && clearCache) {
 			Paths.clearStoredMemory();
 			Paths.clearUnusedMemory();
 		}
