@@ -5615,6 +5615,7 @@ class PlayState extends MusicBeatState
 
 	public function callOnLuas(event:String, args:Array<Dynamic>, ignoreStops = true, exclusions:Array<String> = null):Dynamic {
 		var returnVal:Dynamic = FunkinLua.Function_Continue;
+		var returnArray:Array<Dynamic> = [];
 		#if LUA_ALLOWED
 		if(exclusions == null) exclusions = [];
 		for (script in luaArray) {
@@ -5630,14 +5631,17 @@ class PlayState extends MusicBeatState
 			if(!bool && ret != 0) {
 				returnVal = cast ret;
 			}
+			returnArray.push(returnVal);
 		}
 		#end
 		//trace(event, returnVal);
+		if (returnArray.contains(FunkinLua.Function_Stop)) return FunkinLua.Function_Stop;
 		return returnVal;
 	}
 
 	public function callOnHaxes(event:String, args:Array<Dynamic>, ignoreStops = true, exclusions:Array<String> = null):Dynamic {
 		var returnVal:Dynamic = FunkinLua.Function_Continue;
+		var returnArray:Array<Dynamic> = [];
 		#if hscript
 		if(exclusions == null) exclusions = [];
 		for (script in haxeArray) {
@@ -5653,9 +5657,11 @@ class PlayState extends MusicBeatState
 			if(!bool) {
 				returnVal = cast ret;
 			}
+			returnArray.push(returnVal);
 		}
 		#end
 		//trace(event, returnVal);
+		if (returnArray.contains(FunkinLua.Function_Stop)) return FunkinLua.Function_Stop;
 		return returnVal;
 	}
 

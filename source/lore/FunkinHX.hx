@@ -194,6 +194,8 @@ class FunkinHX implements IFlxDestroyable {
             set("sectionHit", function() {});
             set("onRecalculateRating", function() {});
             set("Function_Stop", FunkinLua.Function_Stop);
+            set("Function_StopScript", FunkinLua.Function_StopLua);
+            set("Function_StopLua", FunkinLua.Function_StopLua); // just in case
             set("onIconUpdate", function(p:String) {});
             set("onHeadBop", function(name:String) {});
             set("onGameOverStart", function() {});
