@@ -188,6 +188,7 @@ class MainMenuState extends lore.ScriptableState
 			}
 		}
 		#end
+		super.createPost();
 	}
 
 	#if ACHIEVEMENTS_ALLOWED
@@ -295,6 +296,7 @@ class MainMenuState extends lore.ScriptableState
 				MusicBeatState.switchState(new MasterEditorMenu());
 			}
 			#end
+			super.updatePost(elapsed);
 		}
 	}
 	public function addOption(name:String) {
