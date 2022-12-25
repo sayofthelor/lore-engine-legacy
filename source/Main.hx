@@ -39,6 +39,7 @@ class Main extends Sprite
 	public static var fpsVar:lore.FPS;
 	public static var instance:Main;
 	public var game:FlxGame;
+	public static var gameInitialized:Bool = false;
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
@@ -79,11 +80,12 @@ class Main extends Sprite
 
 	private function setupGame():Void
 	{
-		var stageWidth:Int = Lib.current.stage.stageWidth;
-		var stageHeight:Int = Lib.current.stage.stageHeight;
 
 		#if desktop Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash); #end
 
+		#if (flixel < "5.0.0")
+		var stageWidth:Int = Lib.current.stage.stageWidth;
+		var stageHeight:Int = Lib.current.stage.stageHeight;
 		if (zoom == -1)
 		{
 			var ratioX:Float = stageWidth / gameWidth;
@@ -92,12 +94,24 @@ class Main extends Sprite
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
+		#end
 	
 		ClientPrefs.loadDefaultKeys();
+		FlxG.save.bind('funkin', 'ninjamuffin99');
+		ClientPrefs.loadPrefs();
+		if (ClientPrefs.aspectRatio != '16:9') { // not a function to ensure you can't call it from the game
+			var _ratioArray:Array<Int> = [ for (i in ClientPrefs.aspectRatio.split(':')) Std.parseInt(i) ];
+			var _height:Int = Std.int((1280 / _ratioArray[0]) * _ratioArray[1]);
+			gameHeight = _height;
+			@:privateAccess Lib.current.stage.__setLogicalSize(gameWidth, gameHeight);
+			Lib.application.window.resize(gameWidth, gameHeight);
+			Lib.application.window.y -= Std.int((gameHeight - 720) / 2);
+		}
 		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
 		game.focusLostFramerate = 60;
 		addChild(game);
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		gameInitialized = true;
+		PlayerSettings.init();
 		ClientPrefs.loadPrefs();
 		FlxG.autoPause = ClientPrefs.pauseOnFocusLost;
 

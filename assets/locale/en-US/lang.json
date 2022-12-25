@@ -39,6 +39,8 @@
     "numbersOffsetDACText": "Numbers offset: ",
     "judgementOffsetDACText": "Judgement (MS) offset: ",
 
+    "aspectRatioGraphicsText": "Aspect Ratio",
+    "aspectRatioGraphicsDesc": "The aspect ratio the game will use. 16:9 recommended and graphical anomalies may occur if you change this. Takes effect after restarting the game.",
     "pauseOnFocusLostGraphicsText": "Pause on Focus Lost",
     "pauseOnFocusLostGraphicsDesc": "If checked, the game will pause when the window loses focus.",
     "persistentCachingGraphicsText": "Persistent Caching",

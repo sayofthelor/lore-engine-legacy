@@ -6,6 +6,7 @@ import flixel.input.keyboard.FlxKey;
 import Controls;
 
 class ClientPrefs {
+	public static var aspectRatio:String = '16:9';
 	public static var rainbowFPS:Bool = false;
 	public static var downScroll:Bool = false;
 	public static var showLore:Bool = true;
@@ -117,6 +118,7 @@ class ClientPrefs {
 	}
 
 	public static function saveSettings() {
+		FlxG.save.data.aspectRatio = aspectRatio;
 		FlxG.save.data.locale = locale;
 		FlxG.save.data.ratingPosition = ratingPosition;
 		FlxG.save.data.downScroll = downScroll;
@@ -187,6 +189,9 @@ class ClientPrefs {
 	}
 
 	public static function loadPrefs() {
+		if(FlxG.save.data.aspectRatio != null) {
+			aspectRatio = FlxG.save.data.aspectRatio;
+		}
 		if(FlxG.save.data.downScroll != null) {
 			downScroll = FlxG.save.data.downScroll;
 		}
@@ -288,12 +293,14 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.framerate != null) {
 			framerate = FlxG.save.data.framerate;
-			if(framerate > FlxG.drawFramerate) {
-				FlxG.updateFramerate = framerate;
-				FlxG.drawFramerate = framerate;
-			} else {
-				FlxG.drawFramerate = framerate;
-				FlxG.updateFramerate = framerate;
+			if (Main.gameInitialized) { // prevent crash on startup
+				if(framerate > FlxG.drawFramerate) {
+					FlxG.updateFramerate = framerate;
+					FlxG.drawFramerate = framerate;
+				} else {
+					FlxG.drawFramerate = framerate;
+					FlxG.updateFramerate = framerate;
+				}
 			}
 		}
 		/*if(FlxG.save.data.cursing != null) {
@@ -369,27 +376,29 @@ class ClientPrefs {
 			}
 		}
 		
-		// flixel automatically saves your volume!
-		if(FlxG.save.data.volume != null)
-		{
-			FlxG.sound.volume = FlxG.save.data.volume;
-		}
-		if (FlxG.save.data.mute != null)
-		{
-			FlxG.sound.muted = FlxG.save.data.mute;
-		}
-		if (FlxG.save.data.checkForUpdates != null)
-		{
-			checkForUpdates = FlxG.save.data.checkForUpdates;
-		}
-		var save:FlxSave = new FlxSave();
-		save.bind('controls_v2', 'ninjamuffin99');
-		if(save != null && save.data.customControls != null) {
-			var loadedControls:Map<String, Array<FlxKey>> = save.data.customControls;
-			for (control => keys in loadedControls) {
-				keyBinds.set(control, keys);
+		if (Main.gameInitialized) {
+			// flixel automatically saves your volume!
+			if(FlxG.save.data.volume != null)
+			{
+				FlxG.sound.volume = FlxG.save.data.volume;
 			}
-			reloadControls();
+			if (FlxG.save.data.mute != null)
+			{
+				FlxG.sound.muted = FlxG.save.data.mute;
+			}
+			if (FlxG.save.data.checkForUpdates != null)
+			{
+				checkForUpdates = FlxG.save.data.checkForUpdates;
+			}
+			var save:FlxSave = new FlxSave();
+			save.bind('controls_v2', 'ninjamuffin99');
+			if(save != null && save.data.customControls != null) {
+				var loadedControls:Map<String, Array<FlxKey>> = save.data.customControls;
+				for (control => keys in loadedControls) {
+					keyBinds.set(control, keys);
+				}
+				reloadControls();
+			}
 		}
 	}
 

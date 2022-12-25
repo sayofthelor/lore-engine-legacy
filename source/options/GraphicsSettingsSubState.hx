@@ -13,6 +13,13 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 		title = 'Graphics';
 		rpcTitle = 'Graphics Settings Menu'; //for Discord Rich Presence
 
+		var option:Option = new Option(Locale.get("aspectRatioGraphicsText"),
+			Locale.get("aspectRatioGraphicsDesc"),
+			'aspectRatio',
+			'string',
+			'16:9', ['16:9', '16:10', '3:2', '4:3', '5:4']);
+		addOption(option);
+
 		var option:Option = new Option(Locale.get("pauseOnFocusLostGraphicsText"),
 			Locale.get("pauseOnFocusLostGraphicsDesc"),
 			'pauseOnFocusLost',

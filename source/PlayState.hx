@@ -96,7 +96,14 @@ class PlayState extends MusicBeatState
 	public var updateUnderlay:Bool = false;
 	public static var STRUM_X_MIDDLESCROLL = -278;
 	public var laneunderlay:FlxSprite;
-	public static var ratingStuff:Array<Dynamic> = [
+	public var ratingColors:Map<String, Int> = [
+		"shit" => FlxColor.RED,
+		"bad" => FlxColor.RED,
+		"good" => FlxColor.GREEN,
+		"sick" => FlxColor.CYAN,
+		"marv" => FlxColor.YELLOW
+	];
+	public static final ratingStuff:Array<Dynamic> = [
 		['You Suck!', 0.46], // 0 to 45
 		['F', 0.51], // 45 to F50
 		['D-', 0.56], // 50 to 55
@@ -1493,6 +1500,26 @@ class PlayState extends MusicBeatState
 
 
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
+		#if hscript
+		for (i in haxeArray) {
+			i.set("boyfriend", boyfriend);
+			i.set("dad", dad);
+			i.set("gf", gf);
+			i.set("iconP1", iconP1);
+			i.set("iconP2", iconP2);
+			i.set("healthBarBG", healthBarBG);
+			i.set("healthBar", healthBar);
+			i.set("scoreTxt", scoreTxt);
+			i.set("timeTxt", timeTxt);
+			i.set("timeBarBG", timeBarBG);
+			i.set("timeBar", timeBar);
+			i.set("playerStrums", playerStrums);
+			i.set("opponentStrums", opponentStrums);
+			i.set("strumLineNotes", strumLineNotes);
+			i.set("strumLine", strumLine);
+			i.set("notes", notes);
+		}
+		#end
 		callOnLuas('onCreatePost', []);
 		callOnHaxes('createPost', []);
 
@@ -4534,16 +4561,9 @@ class PlayState extends MusicBeatState
 		noteDiffText.updateHitbox();
 		if (ClientPrefs.ratingPosition == "HUD") noteDiffText.cameras = [camHUD];
 		noteDiffText.borderSize = 1.25;
-		switch(daRating.name) {
-			case "shit" | "bad":
-				noteDiffText.color = FlxColor.RED;
-			case "good":
-				noteDiffText.color = FlxColor.GREEN;
-			case "sick":
-				noteDiffText.color = FlxColor.CYAN;
-			case "marv":
-				noteDiffText.color = FlxColor.YELLOW;
-		}
+		if (ratingColors.get(daRating.name) != null)
+			noteDiffText.color = ratingColors.get(daRating.name);
+		else noteDiffText.color = FlxColor.WHITE;
 		noteDiffText.y = noteDiffText.y - 10;
 		var nty = noteDiffText.y + 10;
 		if (noteDiffTween != null) noteDiffTween.cancel();
