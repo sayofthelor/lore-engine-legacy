@@ -57,6 +57,7 @@ jobs:
           haxelib install haxeui-core
           haxelib install haxeui-openfl
           haxelib list
+          chmod +x build-crash-dialog.sh
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
