@@ -24,6 +24,14 @@ using StringTools;
  
 
 class FunkinHX implements IFlxDestroyable {
+    private static var possiblyMaliciousCode(default, null):Array<String> = [
+        "@:privateAccess",
+        "ClientPrefs.aspectRatio",
+        "Highscore",
+        "Process",
+        "Sys.command",
+        "Reflect"
+    ];
     private var interp:Interp;
     public var scriptName:String = "unknown";
     public var scriptType:FunkinHXType = NOEXEC;
@@ -72,7 +80,20 @@ class FunkinHX implements IFlxDestroyable {
         }
         var tempBuf = new StringBuf();
         var tempArray = ttr.split("\n");
+        var maliciousLines = [];
         if (tempArray[0].contains("package")) tempArray.remove(tempArray[0]);
+        for (i in 0...tempArray.length) {
+            for (e in possiblyMaliciousCode) if (tempArray[i].contains(e)) maliciousLines.push('Line ${i+1}: ${tempArray[i]}');
+        }
+        if (maliciousLines.length > 0) {
+            var alertText:String = 'Th${maliciousLines.length == 1 ? "is line" : "ese lines"} of code are potentially malicious:\n\n{lines}\n\nWould you like to continue executing the script?'; 
+            alertText = alertText.replace("{lines}", maliciousLines.join("\n"));
+            var confirmation = WinAPI.messageBoxYN(alertText, 'Potentially malicious code detected');
+            if (!confirmation) {
+                destroy();
+                return;
+            }
+        }
         for (i in tempArray) tempBuf.add(i + "\n");
         ttr = tempBuf.toString();
         interp = new Interp();
@@ -233,7 +254,7 @@ class FunkinHX implements IFlxDestroyable {
             if (code == null)
                 return null;
             var parser = new hscript.Parser();
-            parser.allowTypes = true;
+            parser.allowTypes = parser.allowMetadata = true;
             var ast:Expr = null;
             try
             {
@@ -278,7 +299,6 @@ class FunkinHX implements IFlxDestroyable {
                 if (!ignoreErrors) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e, 'Haxe script error');
                 return null;
             }
-            trace('$f does not exist!');
             return null;
         }
 

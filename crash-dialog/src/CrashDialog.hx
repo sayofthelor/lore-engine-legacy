@@ -84,11 +84,7 @@ class CrashDialog
 
 				mainView.findComponent("restart-button", Button).onClick = function(_)
 				{
-					#if windows
-					new Process("Lore", []);
-					#elseif linux
-					new Process("./Lore", []);
-					#end
+					new Process('${#if linux "./" #else "" #end}Lore', []);
 
 					Sys.exit(0);
 				};

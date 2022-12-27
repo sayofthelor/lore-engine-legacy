@@ -1,4 +1,6 @@
 #if windows
+import cpp.ConstCharStar;
+
 @:buildXml('
 <target id="haxe">
     <lib name="dwmapi.lib" if="windows" />
@@ -31,5 +33,13 @@ class WinAPI {
     #end
     public static function setTransColor(red:Int, green:Int, blue:Int, alpha:Int = 0) {
         return alpha;
+    }
+    // from indie cross \/ \/ \/
+    public static function messageBoxYN(msg:ConstCharStar = null, title:ConstCharStar = null):Bool {
+        #if windows
+        var msgBox:Int = untyped MessageBox(null, msg, title, untyped __cpp__("MB_ICONQUESTION | MB_YESNO"));
+        return msgBox == 6;
+        #end
+        return true;
     }
 }
