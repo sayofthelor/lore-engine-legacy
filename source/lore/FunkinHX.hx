@@ -256,18 +256,10 @@ class FunkinHX implements IFlxDestroyable {
             return ast;
         }
 
-        public function runFunc(f:String, ?args:Array<Dynamic>):Any {
+        public function runFunc(f:String, args:Array<Dynamic> = null):Any {
             if (!loaded) return null;
             try {
-                if (interp.variables.exists(f)) {
-                    if (Reflect.isFunction(interp.variables[f])) {
-                        var f = interp.variables[f];
-                        if (args.length < 1) return f();
-                        else return Reflect.callMethod(null, f, args);
-                    }
-                    trace('$f exists, but is not a function!');
-                    return null;
-                }
+                return interp.callMethod(f, args);
             } catch (e:Dynamic) {
                 if (!ignoreErrors) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e, 'Haxe script error');
                 return null;
