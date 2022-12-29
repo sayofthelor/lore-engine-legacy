@@ -1,6 +1,7 @@
-#if windows
+#if cpp
 import cpp.ConstCharStar;
-
+#end
+#if windows
 @:buildXml('
 <target id="haxe">
     <lib name="dwmapi.lib" if="windows" />
