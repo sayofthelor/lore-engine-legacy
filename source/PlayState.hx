@@ -1,16 +1,18 @@
 package;
 
-import shadertoy.FlxShaderToyRuntimeShader;
-import flixel.group.FlxGroup;
-import flixel.math.FlxRandom;
-import flixel.graphics.FlxGraphic;
-import flixel.input.mouse.FlxMouse;
-#if desktop
-import Discord.DiscordClient;
-#end
+import Achievements;
+import Conductor.Rating;
+import DialogueBoxPsych;
+import FunkinLua;
+import Note.EventNote;
 import Section.SwagSection;
+import Shaders;
 import Song.SwagSong;
+import StageData;
 import WiggleEffect.WiggleEffectType;
+import animateatlas.AtlasFrameMaker;
+import editors.CharacterEditorState;
+import editors.ChartingState;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -25,11 +27,20 @@ import flixel.addons.effects.FlxTrailArea;
 import flixel.addons.effects.chainable.FlxEffectSprite;
 import flixel.addons.effects.chainable.FlxWaveEffect;
 import flixel.addons.transition.FlxTransitionableState;
+import flixel.animation.FlxAnimationController;
+import flixel.effects.particles.FlxEmitter;
+import flixel.effects.particles.FlxParticle;
+import flixel.graphics.FlxGraphic;
 import flixel.graphics.atlas.FlxAtlas;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.input.keyboard.FlxKey;
+import flixel.input.mouse.FlxMouse;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
+import flixel.math.FlxRandom;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
@@ -38,6 +49,7 @@ import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import flixel.util.FlxCollision;
 import flixel.util.FlxColor;
+import flixel.util.FlxSave;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
@@ -46,26 +58,15 @@ import lime.utils.Assets;
 import openfl.Lib;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
+import openfl.events.KeyboardEvent;
 import openfl.filters.BitmapFilter;
 import openfl.utils.Assets as OpenFlAssets;
-import editors.ChartingState;
-import editors.CharacterEditorState;
-import flixel.group.FlxSpriteGroup;
-import flixel.input.keyboard.FlxKey;
-import Note.EventNote;
-import openfl.events.KeyboardEvent;
-import flixel.effects.particles.FlxEmitter;
-import flixel.effects.particles.FlxParticle;
-import flixel.util.FlxSave;
-import flixel.animation.FlxAnimationController;
-import animateatlas.AtlasFrameMaker;
-import Achievements;
-import StageData;
-import FunkinLua;
-import DialogueBoxPsych;
-import Shaders;
-import Conductor.Rating;
+import shadertoy.FlxShaderToyRuntimeShader;
 
+using StringTools;
+#if desktop
+import Discord.DiscordClient;
+#end
 #if !flash 
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
@@ -82,7 +83,6 @@ import js.html.FileSystem;
 import vlc.MP4Handler;
 #end
 
-using StringTools;
 
 class PlayState extends MusicBeatState
 {
@@ -4062,6 +4062,8 @@ class PlayState extends MusicBeatState
 							var lastAlpha:Float = boyfriend.alpha;
 							boyfriend.alpha = 0.00001;
 							boyfriend = boyfriendMap.get(value2);
+							callOnLuas("onChangeCharacter", ["bf"]);
+							callOnHaxes("onChangeCharacter", ["bf"]);
 							boyfriend.alpha = lastAlpha;
 							iconP1.changeIcon(boyfriend.healthIcon, boyfriend.hasVictory);
 						}
@@ -4077,6 +4079,8 @@ class PlayState extends MusicBeatState
 							var lastAlpha:Float = dad.alpha;
 							dad.alpha = 0.00001;
 							dad = dadMap.get(value2);
+							callOnLuas("onChangeCharacter", ["dad"]);
+							callOnHaxes("onChangeCharacter", ["dad"]);
 							if(!dad.curCharacter.startsWith('gf')) {
 								if(wasGf && gf != null) {
 									gf.visible = true;
@@ -4102,6 +4106,8 @@ class PlayState extends MusicBeatState
 								var lastAlpha:Float = gf.alpha;
 								gf.alpha = 0.00001;
 								gf = gfMap.get(value2);
+								callOnLuas("onChangeCharacter", ["gf"]);
+								callOnHaxes("onChangeCharacter", ["gf"]);
 								gf.alpha = lastAlpha;
 							}
 							setOnLuas('gfName', gf.curCharacter);

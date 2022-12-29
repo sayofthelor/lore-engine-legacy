@@ -81,9 +81,11 @@ class FunkinHX implements IFlxDestroyable {
         var tempBuf = new StringBuf();
         var tempArray = ttr.split("\n");
         var maliciousLines = [];
-        if (tempArray[0].contains("package")) tempArray.remove(tempArray[0]);
+        if (tempArray[0].contains("package;")) tempArray.remove(tempArray[0]); // haven't figured out how to fix in hscript-lore so keeping this here for now
         for (i in 0...tempArray.length) {
-            for (e in possiblyMaliciousCode) if (tempArray[i].contains(e)) maliciousLines.push('Line ${i+1}: ${tempArray[i]}');
+            for (e in possiblyMaliciousCode) if (tempArray[i].contains(e)) {
+                maliciousLines.push('Line ${i+1}: ${tempArray[i]}');
+            }
         }
         if (maliciousLines.length > 0) {
             var alertText:String = 'Th${maliciousLines.length == 1 ? "is line" : "ese lines"} of code are potentially malicious:\n\n{lines}\n\nWould you like to continue executing the script?'; 
@@ -97,36 +99,6 @@ class FunkinHX implements IFlxDestroyable {
         for (i in tempArray) tempBuf.add(i + "\n");
         ttr = tempBuf.toString();
         interp = new Interp();
-        set("import", function(className:String)
-            {
-                var splitClassName = [for (e in className.split(".")) e.trim()];
-                if (interp.variables.exists(splitClassName[splitClassName.length - 1])) return;
-                var realClassName = splitClassName.join(".");
-                var cl = Type.resolveClass(realClassName);
-                var en = Type.resolveEnum(realClassName);
-                if (cl == null && en == null)
-                {
-                    openfl.Lib.application.window.alert('Class / Enum at $realClassName does not exist.', 'Haxe script error');
-                }
-                else
-                {
-                    if (en != null)
-                    {
-                        // ENUM!!!!
-                        var enumThingy = {};
-                        for (c in en.getConstructors())
-                        {
-                            Reflect.setField(enumThingy, c, en.createByName(c));
-                        }
-                        set(splitClassName[splitClassName.length - 1], enumThingy);
-                    }
-                    else
-                    {
-                        // CLASS!!!!
-                        set(splitClassName[splitClassName.length - 1], cl);
-                    }
-                }
-            });
             set('FlxG', flixel.FlxG);
             set('FlxSprite', flixel.FlxSprite);
             set('FlxCamera', flixel.FlxCamera);
@@ -223,6 +195,7 @@ class FunkinHX implements IFlxDestroyable {
             set("onGameOverConfirm", function() {});
             set("onPauseMenuSelect", function(name:String) {});
             set("onOpenPauseMenu", function() {});
+            set("onChangeCharacter", function(name:String, charObject:Character) {});
             set("Std", Std);
             set("WinAPI", WinAPI);
             set("script", this);
