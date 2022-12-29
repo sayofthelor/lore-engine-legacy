@@ -88,11 +88,11 @@ class Main extends Sprite
 		var stageHeight:Int = Lib.current.stage.stageHeight;
 		if (zoom == -1)
 		{
-			var ratioX:Float = stageWidth / gameWidth;
-			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
-			gameWidth = Math.ceil(stageWidth / zoom);
-			gameHeight = Math.ceil(stageHeight / zoom);
+			var ratioX:Float = stageWidth / game.width;
+			var ratioY:Float = stageHeight / game.height;
+			game.zoom = Math.min(ratioX, ratioY);
+			game.width = Math.ceil(stageWidth / game.zoom);
+			game.height = Math.ceil(stageHeight / game.zoom);
 		}
 		#end
 	
@@ -123,6 +123,16 @@ class Main extends Sprite
 		#if html5
 		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
+		#end
+	
+
+		#if desktop
+		if (!Discord.DiscordClient.isInitialized) {
+			Discord.DiscordClient.initialize();
+			Application.current.window.onClose.add(function() {
+				Discord.DiscordClient.shutdown();
+			});
+		}
 		#end
 	}
 
