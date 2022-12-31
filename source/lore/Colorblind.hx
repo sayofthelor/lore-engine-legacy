@@ -10,6 +10,7 @@ import openfl.filters.BitmapFilter;
 
 class Colorblind {
     public static var filters:Array<BitmapFilter> = []; // the filters the game has active
+	public static var activeFilter:BitmapFilter = null; // the filter that's currently active
     public static var gameFilters:Map<String, {filter:BitmapFilter, ?onUpdate:Void->Void}> = [
 		"DEUTERANOPIA" => {
 			var matrix:Array<Float> = [
@@ -45,6 +46,7 @@ class Colorblind {
         if (ClientPrefs.colorblindFilter != "NONE" && gameFilters.get(ClientPrefs.colorblindFilter) != null) {
             var realFilter = gameFilters.get(ClientPrefs.colorblindFilter).filter;
             if (realFilter != null) filters.push(realFilter);
+			activeFilter = realFilter;
         }
         FlxG.game.setFilters(filters);
     }
