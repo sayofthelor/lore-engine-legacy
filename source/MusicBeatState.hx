@@ -1,15 +1,21 @@
 package;
 
-import Conductor.BPMChangeEvent;
+import editors.WeekEditorState;
+import editors.MasterEditorMenu;
+import editors.DialogueCharacterEditorState;
+import editors.DialogueEditorState;
+import editors.CharacterEditorState;
+import lore.ScriptableState;
+import lore.ModdedState;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.FlxState;
 import flixel.FlxCamera;
-import flixel.FlxBasic;
 
 class MusicBeatState extends FlxUIState
 {
+	private static var __exists(default, null):String->Bool = #if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end;
 	private var curSection:Int = 0;
 	private var stepsToDo:Int = 0;
 
@@ -116,8 +122,20 @@ class MusicBeatState extends FlxUIState
 		curDecStep = lastChange.stepTime + shit;
 		curStep = lastChange.stepTime + Math.floor(shit);
 	}
-
+	
 	public static function switchState(nextState:FlxState) {
+		var className = Type.getClassName(Type.getClass(nextState));
+		var stateIsNotOverrideable = false;
+		for (i in StaticThingVSCWarningGetterArounder.deniedStates) if (Type.getClass(nextState) == i) stateIsNotOverrideable = true;
+		if ((__exists(Paths.modFolders('states/override/${className}.hx')) || __exists(Paths.modFolders('states/override/${className}.hxs'))) && (!stateIsNotOverrideable)) {
+			nextState.destroy();
+			__actualSwitchState(new lore.ScriptableState(className, 'states/override'));
+		} else {
+			__actualSwitchState(nextState);
+		}
+	}
+
+	private static function __actualSwitchState(nextState:FlxState) {
 		// Custom made Trans in
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
@@ -173,4 +191,23 @@ class MusicBeatState extends FlxUIState
 		if(PlayState.SONG != null && PlayState.SONG.notes[curSection] != null) val = PlayState.SONG.notes[curSection].sectionBeats;
 		return val == null ? 4 : val;
 	}
+}
+
+@:allow(MusicBeatState)
+class StaticThingVSCWarningGetterArounder {
+	private static var deniedStates(default, null):Array<Class<FlxState>> = [
+		ModdedState,
+		ScriptableState,
+		PlayState,
+		options.OptionsState,
+		ModsMenuState,
+		CharacterEditorState,
+		editors.ChartingState,
+		DialogueEditorState,
+		DialogueCharacterEditorState,
+		MasterEditorMenu,
+		WeekEditorState,
+		WeekEditorFreeplayState,
+		editors.EditorPlayState
+	];
 }
