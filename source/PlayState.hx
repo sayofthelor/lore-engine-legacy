@@ -2729,7 +2729,9 @@ class PlayState extends MusicBeatState
 			if (defaultCamZoom <= 1) thing = (0.015 * defaultCamZoom);
 			else thing = (0.015 / defaultCamZoom); 
 			FlxG.camera.zoom += thing * camZoomingMult;
-			camHUD.zoom += 0.03 * camZoomingMult;
+			if (defaultHUDZoom <= 1) thing = (0.03 * defaultHUDZoom);
+			else thing = (0.03 / defaultHUDZoom); 
+			camHUD.zoom += thing * camZoomingMult;
 		}
 
 		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
