@@ -38,12 +38,12 @@ class PauseSubState extends MusicBeatSubstate
 	public static var songName:String = '';
 
 	public function addOption(tag:String) {
-		if (!menuItemsOG.contains(tag)) {
+		if (!menuItems.contains(tag)) {
 			menuItems.push(tag);
 		}
 	}
 	public function removeOption(tag:String) {
-		if (menuItemsOG.contains(tag)) {
+		if (menuItems.contains(tag)) {
 			menuItems.remove(tag);
 		}
 	}
@@ -287,9 +287,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
-					#if LUA_ALLOWED
-					PlayState.instance.callOnLuas('changeDiscordClientID', ["936072337219026954"]);
-					#end
+					Discord.DiscordClient.changeClientID("936072337219026954");
 
 					WeekData.loadTheFirstEnabledMod();
 					if (PlayState.isStoryMode)

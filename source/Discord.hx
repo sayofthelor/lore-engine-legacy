@@ -7,6 +7,7 @@ import discord_rpc.DiscordRpc;
 #if LUA_ALLOWED
 import llua.Lua;
 import llua.State;
+using llua.Lua.Lua_helper;
 #end
 
 using StringTools;
@@ -94,20 +95,20 @@ class DiscordClient
 	}
 
 	#if LUA_ALLOWED
-	public static var changeable:Null<Function> = null;
 	public static function addLuaCallbacks(lua:State) {
-		Lua_helper.add_callback(lua, "changePresence", function(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float) {
+		lua.add_callback("changePresence", function(details:String, state:Null<String>, ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float) {
 			changePresence(details, state, smallImageKey, hasStartTimestamp, endTimestamp);
 		});
-		Lua_helper.add_callback(lua, "changeDiscordClientID", function(id:String) {
-			DiscordRpc.shutdown();
-			DiscordRpc.start({
-				clientID: id,
-				onReady: onReady,
-				onError: onError,
-				onDisconnected: onDisconnected
-			});
-		});
+		lua.add_callback("changeDiscordClientID", changeClientID);
 	}
 	#end
+	public static function changeClientID(id:String) {
+		DiscordRpc.shutdown();
+		DiscordRpc.start({
+			clientID: id,
+			onReady: onReady,
+			onError: onError,
+			onDisconnected: onDisconnected
+		});
+	}
 }

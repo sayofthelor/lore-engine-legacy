@@ -942,7 +942,7 @@ class PlayState extends MusicBeatState
 						filesPushed.push(file);
 					}
 
-					if(file.endsWith('.hx') && !filesPushed.contains(file))
+					if((file.endsWith('.hx') || file.endsWith('.hxs')) && !filesPushed.contains(file))
 						{
 							haxeArray.push(new lore.FunkinHX(folder + file));
 							filesPushed.push(file);
@@ -975,6 +975,20 @@ class PlayState extends MusicBeatState
 		#if (MODS_ALLOWED && hscript)
 		doPush = false;
 		var hxFile:String = 'stages/' + curStage + '.hx';
+		if(FileSystem.exists(Paths.modFolders(hxFile))) {
+			hxFile = Paths.modFolders(hxFile);
+			doPush = true;
+		} else {
+			hxFile = Paths.getPreloadPath(hxFile);
+			if(FileSystem.exists(hxFile)) {
+				doPush = true;
+			}
+		}
+
+		if(doPush)
+			haxeArray.push(new lore.FunkinHX(hxFile));
+		doPush = false;
+		var hxFile:String = 'stages/' + curStage + '.hxs';
 		if(FileSystem.exists(Paths.modFolders(hxFile))) {
 			hxFile = Paths.modFolders(hxFile);
 			doPush = true;
@@ -1110,7 +1124,7 @@ class PlayState extends MusicBeatState
 		add(laneunderlay);
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
-		timeTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 248, 19, 400, "", 32);
+		timeTxt = new FlxText(STRUM_X + (FlxG.width / 2) - 298, 19, 500, "", 32);
 		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
 		timeTxt.alpha = 0;
@@ -1125,7 +1139,7 @@ class PlayState extends MusicBeatState
 		updateTime = showTime;
 
 		timeBarBG = new AttachedSprite('timeBar');
-		timeBarBG.x = timeTxt.x;
+		timeBarBG.x = timeTxt.x + 50;
 		timeBarBG.y = timeTxt.y + (timeTxt.height / 4);
 		timeBarBG.scrollFactor.set();
 		timeBarBG.alpha = 0;
@@ -1138,7 +1152,7 @@ class PlayState extends MusicBeatState
 			'songPercent', 0, 1);
 		timeBar.scrollFactor.set();
 		timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
-		timeBar.numDivisions = 800; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
+		timeBar.numDivisions = 1600; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
 		timeBarBG.sprTracker = timeBar;
@@ -1239,6 +1253,27 @@ class PlayState extends MusicBeatState
 				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
 			}
 			#end
+			#if MODS_ALLOWED
+			var hscriptToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.hxs');
+			if(FileSystem.exists(hscriptToLoad))
+			{
+				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+			}
+			else
+			{
+				hscriptToLoad = Paths.getPreloadPath('custom_notetypes/' + notetype + '.hxs');
+				if(FileSystem.exists(hscriptToLoad))
+				{
+					haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+				}
+			}
+			#elseif sys
+			var hscriptToLoad:String = Paths.getPreloadPath('custom_notetypes/' + notetype + '.hxs');
+			if(OpenFlAssets.exists(hscriptToLoad))
+			{
+				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+			}
+			#end
 		}
 		for (event in eventPushedMap.keys())
 		{
@@ -1258,6 +1293,27 @@ class PlayState extends MusicBeatState
 			}
 			#elseif sys
 			var hscriptToLoad:String = Paths.getPreloadPath('custom_events/' + event + '.hx');
+			if(OpenFlAssets.exists(hscriptToLoad))
+			{
+				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+			}
+			#end
+			#if MODS_ALLOWED
+			var hscriptToLoad:String = Paths.modFolders('custom_events/' + event + '.hxs');
+			if(FileSystem.exists(hscriptToLoad))
+			{
+				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+			}
+			else
+			{
+				hscriptToLoad = Paths.getPreloadPath('custom_events/' + event + '.hxs');
+				if(FileSystem.exists(hscriptToLoad))
+				{
+					haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+				}
+			}
+			#elseif sys
+			var hscriptToLoad:String = Paths.getPreloadPath('custom_events/' + event + '.hxs');
 			if(OpenFlAssets.exists(hscriptToLoad))
 			{
 				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
@@ -1386,7 +1442,7 @@ class PlayState extends MusicBeatState
 						luaArray.push(new FunkinLua(folder + file));
 						filesPushed.push(file);
 					}
-					if(file.endsWith('.hx') && !filesPushed.contains(file))
+					if((file.endsWith('.hx') || file.endsWith('.hxs')) && !filesPushed.contains(file))
 						{
 							haxeArray.push(new lore.FunkinHX(folder + file));
 							filesPushed.push(file);
@@ -1753,6 +1809,35 @@ class PlayState extends MusicBeatState
 		#if hscript
 		var doPush:Bool = false;
 		var hscriptFile:String = 'characters/' + name + '.hx';
+		#if MODS_ALLOWED
+		if(FileSystem.exists(Paths.modFolders(hscriptFile))) {
+			hscriptFile = Paths.modFolders(hscriptFile);
+			doPush = true;
+		} else {
+			hscriptFile = Paths.getPreloadPath(hscriptFile);
+			if(FileSystem.exists(hscriptFile)) {
+				doPush = true;
+			}
+		}
+		#else
+		hscriptFile = Paths.getPreloadPath(hscriptFile);
+		if(Assets.exists(hscriptFile)) {
+			doPush = true;
+		}
+		#end
+
+		if(doPush)
+		{
+			for (script in haxeArray)
+			{
+				if(script.scriptName == hscriptFile) return;
+			}
+			haxeArray.push(new lore.FunkinHX(hscriptFile));
+		}
+		#end
+		#if hscript
+		var doPush:Bool = false;
+		var hscriptFile:String = 'characters/' + name + '.hxs';
 		#if MODS_ALLOWED
 		if(FileSystem.exists(Paths.modFolders(hscriptFile))) {
 			hscriptFile = Paths.modFolders(hscriptFile);
@@ -4064,6 +4149,7 @@ class PlayState extends MusicBeatState
 							var lastAlpha:Float = boyfriend.alpha;
 							boyfriend.alpha = 0.00001;
 							boyfriend = boyfriendMap.get(value2);
+							setOnHaxes('boyfriend', boyfriend);
 							callOnLuas("onChangeCharacter", ["bf"]);
 							callOnHaxes("onChangeCharacter", ["bf"]);
 							boyfriend.alpha = lastAlpha;
@@ -4081,6 +4167,7 @@ class PlayState extends MusicBeatState
 							var lastAlpha:Float = dad.alpha;
 							dad.alpha = 0.00001;
 							dad = dadMap.get(value2);
+							setOnHaxes('dad', dad);
 							callOnLuas("onChangeCharacter", ["dad"]);
 							callOnHaxes("onChangeCharacter", ["dad"]);
 							if(!dad.curCharacter.startsWith('gf')) {
@@ -4108,6 +4195,7 @@ class PlayState extends MusicBeatState
 								var lastAlpha:Float = gf.alpha;
 								gf.alpha = 0.00001;
 								gf = gfMap.get(value2);
+								setOnHaxes('gf', gf);
 								callOnLuas("onChangeCharacter", ["gf"]);
 								callOnHaxes("onChangeCharacter", ["gf"]);
 								gf.alpha = lastAlpha;
@@ -4296,9 +4384,6 @@ class PlayState extends MusicBeatState
 		#end
 
 
-		#if LUA_ALLOWED
-		callOnLuas('changeDiscordClientID', ["936072337219026954"]);
-		#end
 		
 		var ret:Array<Dynamic> = [callOnLuas('onEndSong', [], false), callOnHaxes('onEndSong', [], false)];
 		if(!ret.contains(FunkinLua.Function_Stop) && !transitioning) {
@@ -5414,6 +5499,7 @@ class PlayState extends MusicBeatState
 	}
 
 	override function destroy() {
+		Discord.DiscordClient.changeClientID("936072337219026954");
 		for (lua in luaArray) {
 			lua.call('onDestroy', []);
 			lua.stop();

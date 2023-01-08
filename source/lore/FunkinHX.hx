@@ -99,6 +99,7 @@ class FunkinHX implements IFlxDestroyable {
         for (i in tempArray) tempBuf.add(i + "\n");
         ttr = tempBuf.toString();
         interp = new Interp();
+            set("DiscordClient", Discord.DiscordClient);
             set('preloadImage', (s:String) -> Paths.image(s));
             set('preloadSound', (s:String) -> Paths.sound(s));
             set('preloadMusic', (s:String) -> Paths.music(s));

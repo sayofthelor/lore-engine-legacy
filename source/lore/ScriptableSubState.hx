@@ -15,11 +15,17 @@ class ScriptableSubState extends MusicBeatSubstate {
             }
         }
         scriptName = '${directory}/${name}.hx';
-        if (sys.FileSystem.exists(Paths.modFolders(scriptName))) {
+        #if MODS_ALLOWED if (#if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end (Paths.modFolders(scriptName))) {
             script = new FunkinHX(Paths.modFolders(scriptName), primer);
-        } else if (sys.FileSystem.exists(Paths.getPreloadPath(scriptName))) {
+        } else #end if (#if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end (Paths.getPreloadPath(scriptName))) {
             script = new FunkinHX(Paths.getPreloadPath(scriptName), primer);
         } else {
+            scriptName = '${directory}/${name}.hxs';
+            #if MODS_ALLOWED if (#if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end (Paths.modFolders(scriptName))) {
+                script = new FunkinHX(Paths.modFolders(scriptName), primer);
+            } else #end if (#if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end (Paths.getPreloadPath(scriptName))) {
+                script = new FunkinHX(Paths.getPreloadPath(scriptName), primer);
+            }
             super();
             return;
         }
