@@ -15,20 +15,13 @@ class ScriptableState extends MusicBeatState {
                 temp(f);
             }
         }
-        scriptName = '${directory}/${name}.hx';
-        #if MODS_ALLOWED if (#if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end (Paths.modFolders(scriptName))) {
-            script = new FunkinHX(Paths.modFolders(scriptName), primer);
-        } else #end if (#if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end (Paths.getPreloadPath(scriptName))) {
-            script = new FunkinHX(Paths.getPreloadPath(scriptName), primer);
-        } else {
-            scriptName = '${directory}/${name}.hxs';
+        for (i in FunkinHX.supportedFileTypes) {
+            var scriptName:String = '${directory}/${name}.${i}';
             #if MODS_ALLOWED if (#if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end (Paths.modFolders(scriptName))) {
                 script = new FunkinHX(Paths.modFolders(scriptName), primer);
             } else #end if (#if sys sys.FileSystem.exists #else lime.utils.Assets.exists #end (Paths.getPreloadPath(scriptName))) {
                 script = new FunkinHX(Paths.getPreloadPath(scriptName), primer);
             }
-            super();
-            return;
         }
         super();
     }

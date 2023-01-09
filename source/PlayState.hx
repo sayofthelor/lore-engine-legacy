@@ -943,10 +943,12 @@ class PlayState extends MusicBeatState
 						filesPushed.push(file);
 					}
 
-					if((file.endsWith('.hx') || file.endsWith('.hxs')) && !filesPushed.contains(file))
-						{
-							haxeArray.push(new lore.FunkinHX(folder + file));
-							filesPushed.push(file);
+					for (i in lore.FunkinHX.supportedFileTypes) {
+						if (file.endsWith('.${i}') && !filesPushed.contains(file))
+							{
+								haxeArray.push(new lore.FunkinHX(folder + file));
+								filesPushed.push(file);
+							}
 						}
 				}
 			}
@@ -974,34 +976,22 @@ class PlayState extends MusicBeatState
 		#end
 
 		#if (MODS_ALLOWED && hscript)
-		doPush = false;
-		var hxFile:String = 'stages/' + curStage + '.hx';
-		if(FileSystem.exists(Paths.modFolders(hxFile))) {
-			hxFile = Paths.modFolders(hxFile);
-			doPush = true;
-		} else {
-			hxFile = Paths.getPreloadPath(hxFile);
-			if(FileSystem.exists(hxFile)) {
+		for (i in lore.FunkinHX.supportedFileTypes) {
+			doPush = false;
+			var hxFile:String = 'stages/' + curStage + '.${i}';
+			if(FileSystem.exists(Paths.modFolders(hxFile))) {
+				hxFile = Paths.modFolders(hxFile);
 				doPush = true;
+			} else {
+				hxFile = Paths.getPreloadPath(hxFile);
+				if(FileSystem.exists(hxFile)) {
+					doPush = true;
+				}
 			}
-		}
 
-		if(doPush)
-			haxeArray.push(new lore.FunkinHX(hxFile));
-		doPush = false;
-		var hxFile:String = 'stages/' + curStage + '.hxs';
-		if(FileSystem.exists(Paths.modFolders(hxFile))) {
-			hxFile = Paths.modFolders(hxFile);
-			doPush = true;
-		} else {
-			hxFile = Paths.getPreloadPath(hxFile);
-			if(FileSystem.exists(hxFile)) {
-				doPush = true;
-			}
+			if(doPush)
+				haxeArray.push(new lore.FunkinHX(hxFile));
 		}
-
-		if(doPush)
-			haxeArray.push(new lore.FunkinHX(hxFile));
 		#end
 
 		callOnHaxes('create', []);
@@ -1233,93 +1223,55 @@ class PlayState extends MusicBeatState
 		#if hscript
 		for (notetype in noteTypeMap.keys())
 		{
-			#if MODS_ALLOWED
-			var hscriptToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.hx');
-			if(FileSystem.exists(hscriptToLoad))
-			{
-				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
-			}
-			else
-			{
-				hscriptToLoad = Paths.getPreloadPath('custom_notetypes/' + notetype + '.hx');
+			for (i in lore.FunkinHX.supportedFileTypes) {
+				#if MODS_ALLOWED
+				var hscriptToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.${i}');
 				if(FileSystem.exists(hscriptToLoad))
 				{
 					haxeArray.push(new lore.FunkinHX(hscriptToLoad));
 				}
-			}
-			#elseif sys
-			var hscriptToLoad:String = Paths.getPreloadPath('custom_notetypes/' + notetype + '.hx');
-			if(OpenFlAssets.exists(hscriptToLoad))
-			{
-				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
-			}
-			#end
-			#if MODS_ALLOWED
-			var hscriptToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.hxs');
-			if(FileSystem.exists(hscriptToLoad))
-			{
-				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
-			}
-			else
-			{
-				hscriptToLoad = Paths.getPreloadPath('custom_notetypes/' + notetype + '.hxs');
-				if(FileSystem.exists(hscriptToLoad))
+				else
+				{
+					hscriptToLoad = Paths.getPreloadPath('custom_notetypes/' + notetype + '.${i}');
+					if(FileSystem.exists(hscriptToLoad))
+					{
+						haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+					}
+				}
+				#elseif sys
+				var hscriptToLoad:String = Paths.getPreloadPath('custom_notetypes/' + notetype + '.${i}');
+				if(OpenFlAssets.exists(hscriptToLoad))
 				{
 					haxeArray.push(new lore.FunkinHX(hscriptToLoad));
 				}
+				#end
 			}
-			#elseif sys
-			var hscriptToLoad:String = Paths.getPreloadPath('custom_notetypes/' + notetype + '.hxs');
-			if(OpenFlAssets.exists(hscriptToLoad))
-			{
-				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
-			}
-			#end
 		}
 		for (event in eventPushedMap.keys())
 		{
-			#if MODS_ALLOWED
-			var hscriptToLoad:String = Paths.modFolders('custom_events/' + event + '.hx');
-			if(FileSystem.exists(hscriptToLoad))
-			{
-				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
-			}
-			else
-			{
-				hscriptToLoad = Paths.getPreloadPath('custom_events/' + event + '.hx');
+			for (i in lore.FunkinHX.supportedFileTypes) {
+				#if MODS_ALLOWED
+				var hscriptToLoad:String = Paths.modFolders('custom_events/' + event + '.${i}');
 				if(FileSystem.exists(hscriptToLoad))
 				{
 					haxeArray.push(new lore.FunkinHX(hscriptToLoad));
 				}
-			}
-			#elseif sys
-			var hscriptToLoad:String = Paths.getPreloadPath('custom_events/' + event + '.hx');
-			if(OpenFlAssets.exists(hscriptToLoad))
-			{
-				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
-			}
-			#end
-			#if MODS_ALLOWED
-			var hscriptToLoad:String = Paths.modFolders('custom_events/' + event + '.hxs');
-			if(FileSystem.exists(hscriptToLoad))
-			{
-				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
-			}
-			else
-			{
-				hscriptToLoad = Paths.getPreloadPath('custom_events/' + event + '.hxs');
-				if(FileSystem.exists(hscriptToLoad))
+				else
+				{
+					hscriptToLoad = Paths.getPreloadPath('custom_events/' + event + '.${i}');
+					if(FileSystem.exists(hscriptToLoad))
+					{
+						haxeArray.push(new lore.FunkinHX(hscriptToLoad));
+					}
+				}
+				#elseif sys
+				var hscriptToLoad:String = Paths.getPreloadPath('custom_events/' + event + '.${i}');
+				if(OpenFlAssets.exists(hscriptToLoad))
 				{
 					haxeArray.push(new lore.FunkinHX(hscriptToLoad));
 				}
+				#end
 			}
-			#elseif sys
-			var hscriptToLoad:String = Paths.getPreloadPath('custom_events/' + event + '.hxs');
-			if(OpenFlAssets.exists(hscriptToLoad))
-			{
-				haxeArray.push(new lore.FunkinHX(hscriptToLoad));
-			}
-			#end
 		}
 		#end
 		noteTypeMap.clear();
@@ -1443,11 +1395,13 @@ class PlayState extends MusicBeatState
 						luaArray.push(new FunkinLua(folder + file));
 						filesPushed.push(file);
 					}
-					if((file.endsWith('.hx') || file.endsWith('.hxs')) && !filesPushed.contains(file))
-						{
-							haxeArray.push(new lore.FunkinHX(folder + file));
-							filesPushed.push(file);
-						}
+					for (i in lore.FunkinHX.supportedFileTypes) {
+						if(file.endsWith('.${i}') && !filesPushed.contains(file))
+							{
+								haxeArray.push(new lore.FunkinHX(folder + file));
+								filesPushed.push(file);
+							}
+					}
 				}
 			}
 		}
@@ -1808,61 +1762,34 @@ class PlayState extends MusicBeatState
 		#end
 
 		#if hscript
-		var doPush:Bool = false;
-		var hscriptFile:String = 'characters/' + name + '.hx';
-		#if MODS_ALLOWED
-		if(FileSystem.exists(Paths.modFolders(hscriptFile))) {
-			hscriptFile = Paths.modFolders(hscriptFile);
-			doPush = true;
-		} else {
+		for (i in lore.FunkinHX.supportedFileTypes) {
+			var doPush:Bool = false;
+			var hscriptFile:String = 'characters/' + name + '.${i}';
+			#if MODS_ALLOWED
+			if(FileSystem.exists(Paths.modFolders(hscriptFile))) {
+				hscriptFile = Paths.modFolders(hscriptFile);
+				doPush = true;
+			} else {
+				hscriptFile = Paths.getPreloadPath(hscriptFile);
+				if(FileSystem.exists(hscriptFile)) {
+					doPush = true;
+				}
+			}
+			#else
 			hscriptFile = Paths.getPreloadPath(hscriptFile);
-			if(FileSystem.exists(hscriptFile)) {
+			if(Assets.exists(hscriptFile)) {
 				doPush = true;
 			}
-		}
-		#else
-		hscriptFile = Paths.getPreloadPath(hscriptFile);
-		if(Assets.exists(hscriptFile)) {
-			doPush = true;
-		}
-		#end
+			#end
 
-		if(doPush)
-		{
-			for (script in haxeArray)
+			if(doPush)
 			{
-				if(script.scriptName == hscriptFile) return;
+				for (script in haxeArray)
+				{
+					if(script.scriptName == hscriptFile) return;
+				}
+				haxeArray.push(new lore.FunkinHX(hscriptFile));
 			}
-			haxeArray.push(new lore.FunkinHX(hscriptFile));
-		}
-		#end
-		#if hscript
-		var doPush:Bool = false;
-		var hscriptFile:String = 'characters/' + name + '.hxs';
-		#if MODS_ALLOWED
-		if(FileSystem.exists(Paths.modFolders(hscriptFile))) {
-			hscriptFile = Paths.modFolders(hscriptFile);
-			doPush = true;
-		} else {
-			hscriptFile = Paths.getPreloadPath(hscriptFile);
-			if(FileSystem.exists(hscriptFile)) {
-				doPush = true;
-			}
-		}
-		#else
-		hscriptFile = Paths.getPreloadPath(hscriptFile);
-		if(Assets.exists(hscriptFile)) {
-			doPush = true;
-		}
-		#end
-
-		if(doPush)
-		{
-			for (script in haxeArray)
-			{
-				if(script.scriptName == hscriptFile) return;
-			}
-			haxeArray.push(new lore.FunkinHX(hscriptFile));
 		}
 		#end
 	}

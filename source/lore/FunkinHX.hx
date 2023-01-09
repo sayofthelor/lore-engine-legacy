@@ -24,6 +24,7 @@ using StringTools;
  
 
 class FunkinHX implements IFlxDestroyable {
+    public static var supportedFileTypes(default, null):Array<String> = ["fnf" /* hi gray */, "hscript", "hsc", "hxs", "hx"]; // if multiple files exist, this list in reverse is the priority order
     private static var possiblyMaliciousCode(default, null):Array<String> = [
         "@:privateAccess",
         "ClientPrefs.aspectRatio",

@@ -127,7 +127,8 @@ class MusicBeatState extends FlxUIState
 		var className = Type.getClassName(Type.getClass(nextState));
 		var stateIsNotOverrideable = false;
 		for (i in StaticThingVSCWarningGetterArounder.deniedStates) if (Type.getClass(nextState) == i) stateIsNotOverrideable = true;
-		if ((__exists(Paths.modFolders('states/override/${className}.hx')) || __exists(Paths.modFolders('states/override/${className}.hxs'))) && (!stateIsNotOverrideable)) {
+		var t = [ for (i in lore.FunkinHX.supportedFileTypes) __exists(Paths.modFolders('states/override/${className}.${i}')) ];
+		if (t.contains(true) && !stateIsNotOverrideable) {
 			nextState.destroy();
 			__actualSwitchState(new lore.ScriptableState(className, 'states/override'));
 		} else {
