@@ -39,8 +39,8 @@ See [wiki page](https://github.com/sayofthelor/lore-engine/wiki/How-to-compile-L
 * Yoshubs - PE Input System
 * bbpanzu - Misc PE Contributions
 
-If you get an error about StatePointer when using Lua, run `haxelib remove linc_luajit` into Command Prompt/PowerShell, then re-install linc_luajit.
+inside `Project.xml`, you will find several variables to customize Psych Engine to your liking
 
-If you want video support on your mod, simply do `haxelib install hxCodec` on a Command prompt/PowerShell
+to start you off, disabling Videos should be simple, simply Delete the line `"VIDEOS_ALLOWED"` or comment it out by wrapping the line in XML-like comments, like this `<!-- YOUR_LINE_HERE -->`
 
 otherwise, you can delete the "VIDEOS_ALLOWED" Line on Project.xml

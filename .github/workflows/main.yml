@@ -37,26 +37,9 @@ jobs:
           sudo apt-get install libvlc-dev
           sudo apt-get install libvlccore-dev
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null
-          haxelib install lime
-          haxelib install openfl
-          haxelib --never install flixel
-          haxelib run lime setup flixel
-          haxelib run lime setup
-          haxelib install flixel-tools
-          haxelib install flixel-ui
-          haxelib install tjson
-          haxelib install hxjsonast
-          haxelib install hxCodec
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
-          haxelib git hscript-lore http://github.com/sayofthelor/hscript-lore
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib git flixel-shadertoy-shader-lr https://github.com/sayofthelor/flixel-shadertoy-shader-lr
-          haxelib install hxcpp-debug-server
-          haxelib install haxeui-core
-          haxelib install haxeui-openfl
-          haxelib list
-          chmod +x build-crash-dialog.sh
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
+          haxelib run hmm install
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
@@ -80,25 +63,9 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup C:/haxelib
-          haxelib install hxcpp > nul
-          haxelib install lime
-          haxelib install openfl
-          haxelib --never install flixel
-          haxelib run lime setup flixel
-          haxelib run lime setup
-          haxelib install flixel-tools
-          haxelib git flixel-shadertoy-shader-lr https://github.com/sayofthelor/flixel-shadertoy-shader-lr
-          haxelib install flixel-ui
-          haxelib install tjson
-          haxelib install hxjsonast
-          haxelib install hxCodec
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
-          haxelib git hscript-lore http://github.com/sayofthelor/hscript-lore
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib install hxcpp-debug-server
-          haxelib install haxeui-core
-          haxelib install haxeui-openfl
-          haxelib list
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
+          haxelib run hmm install
         shell: cmd
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
@@ -123,25 +90,9 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null
-          haxelib install lime
-          haxelib install openfl
-          haxelib --never install flixel
-          haxelib run lime setup flixel
-          haxelib run lime setup
-          haxelib install flixel-tools
-          haxelib install flixel-ui
-          haxelib install tjson
-          haxelib install hxjsonast
-          haxelib install hxCodec
-          haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
-          haxelib git hscript-lore http://github.com/sayofthelor/hscript-lore
-          haxelib git flixel-shadertoy-shader-lr https://github.com/sayofthelor/flixel-shadertoy-shader-lr/
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib install hxcpp-debug-server
-          haxelib install haxeui-core
-          haxelib install haxeui-openfl
-          haxelib list
+          haxelib install hxcpp > /dev/null --quiet
+          haxelib install hmm --quiet
+          haxelib run hmm install
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
