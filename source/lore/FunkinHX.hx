@@ -40,6 +40,12 @@ class FunkinHX implements IFlxDestroyable {
     public var ignoreErrors:Bool = false;
     public static final println:String->Void = #if sys Sys.println #elseif js (untyped console).log #end;
 
+    private static function _dynamicify(obj:Map<String, Dynamic>):Dynamic {
+        var nd:Dynamic = {};
+        for (k => v in obj) Reflect.setField(nd, k, v);
+        return nd;
+    }
+
     public function destroy():Void {
         interp = null;
         scriptName = null;
@@ -82,7 +88,6 @@ class FunkinHX implements IFlxDestroyable {
         var tempBuf = new StringBuf();
         var tempArray = ttr.split("\n");
         var maliciousLines = [];
-        if (tempArray[0].contains("package;")) tempArray.remove(tempArray[0]); // haven't figured out how to fix in hscript-lore so keeping this here for now
         for (i in 0...tempArray.length) {
             for (e in possiblyMaliciousCode) if (tempArray[i].contains(e)) {
                 maliciousLines.push('Line ${i+1}: ${tempArray[i]}');
@@ -213,10 +218,11 @@ class FunkinHX implements IFlxDestroyable {
             set("switchState", MusicBeatState.switchState);
             set("ModdedState", ModdedState);
             set("ModdedSubState", ModdedSubState);
-            set("FlxAxes", MacroTools.getMapFromAbstract(flixel.util.FlxAxes));
-            set("FlxColor", MacroTools.getMapFromAbstract(flixel.util.FlxColor));
-            set("FlxKey", MacroTools.getMapFromAbstract(flixel.input.keyboard.FlxKey));
-            set("FlxPoint", MacroTools.getMapFromAbstract(flixel.math.FlxPoint));
+            set("FlxAxes", _dynamicify(MacroTools.getMapFromAbstract(flixel.util.FlxAxes)));
+            set("FlxColor", _dynamicify(MacroTools.getMapFromAbstract(flixel.util.FlxColor)));
+            set("FlxKey", _dynamicify(MacroTools.getMapFromAbstract(flixel.input.keyboard.FlxKey)));
+            set("FlxPoint", _dynamicify(MacroTools.getMapFromAbstract(flixel.math.FlxPoint)));
+            set("Map", haxe.ds.Map);
             if (primer != null) primer(this);
 
             if (ttr != null) try {
