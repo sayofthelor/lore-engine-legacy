@@ -51,12 +51,17 @@
       "version": null
     },
     {
-      "name": "hscript",
+      "name": "hxcpp-debug-server",
       "type": "haxelib",
       "version": null
     },
     {
-      "name": "hxcpp-debug-server",
+      "name": "haxeui-core",
+      "type": "haxelib",
+      "version": null
+    },
+    {
+      "name": "haxeui-openfl",
       "type": "haxelib",
       "version": null
     },
@@ -68,11 +73,18 @@
       "url": "https://github.com/Aidan63/linc_discord-rpc"
     },
     {
-      "name": "hscript-ex",
+      "name": "hscript-lore",
       "type": "git",
       "dir": null,
       "ref": "master",
-      "url": "https://github.com/ianharrigan/hscript-ex"
+      "url": "https://github.com/sayofthelor/hscript-lore"
+    },
+    {
+      "name": "flixel-shadertoy-shader-lr",
+      "type": "git",
+      "dir": null,
+      "ref": "master",
+      "url": "https://github.com/sayofthelor/flixel-shadertoy-shader-lr"
     },
     {
       "name": "linc_luajit",
