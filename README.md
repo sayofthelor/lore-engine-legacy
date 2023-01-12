@@ -5,6 +5,9 @@ Psych Engine with some neat tweaks.
 Originally intended for an FNF mod for my Chemistry class, but that never came through.
 
 Extra features include:
+- Haxe scripting support
+- Custom states
+- Overrideable states
 - Improved frame rate counter
 - Aesthetic and customizability improvements
 - Colorblind mode
@@ -38,9 +41,3 @@ See [wiki page](https://github.com/sayofthelor/lore-engine/wiki/How-to-compile-L
 * Keoiki - PE Note Splash Animations
 * Yoshubs - PE Input System
 * bbpanzu - Misc PE Contributions
-
-inside `Project.xml`, you will find several variables to customize Psych Engine to your liking
-
-to start you off, disabling Videos should be simple, simply Delete the line `"VIDEOS_ALLOWED"` or comment it out by wrapping the line in XML-like comments, like this `<!-- YOUR_LINE_HERE -->`
-
-otherwise, you can delete the "VIDEOS_ALLOWED" Line on Project.xml
