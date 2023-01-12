@@ -40,6 +40,12 @@ class FunkinHX implements IFlxDestroyable {
     public var ignoreErrors:Bool = false;
     public static final println:String->Void = #if sys Sys.println #elseif js (untyped console).log #end;
 
+    /**
+     * Takes a Hash<Dynamic> and returns a Dynamic object.
+     * Used here to make map representations of static abstract fields be accessible like they are in an abstract before compiling.
+     * @param obj 
+     * @return Dynamic
+     */
     private static function _dynamicify(obj:Map<String, Dynamic>):Dynamic {
         var nd:Dynamic = {};
         for (k => v in obj) Reflect.setField(nd, k, v);
@@ -89,6 +95,7 @@ class FunkinHX implements IFlxDestroyable {
         var tempArray = ttr.split("\n");
         var maliciousLines = [];
         for (i in 0...tempArray.length) {
+            if (tempArray[i].startsWith("package;")) tempArray[i] = "";
             for (e in possiblyMaliciousCode) if (tempArray[i].contains(e)) {
                 maliciousLines.push('Line ${i+1}: ${tempArray[i]}');
             }

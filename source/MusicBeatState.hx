@@ -209,6 +209,7 @@ class StaticThingVSCWarningGetterArounder {
 		MasterEditorMenu,
 		WeekEditorState,
 		WeekEditorFreeplayState,
-		editors.EditorPlayState
+		editors.EditorPlayState,
+		TitleState
 	];
 }
