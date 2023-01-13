@@ -3,11 +3,6 @@ import flixel.FlxG;
 import openfl.filters.ColorMatrixFilter;
 import openfl.filters.BitmapFilter;
 
-/*
-    pretty much straight nabbed from Forever Engine, thanks Yoshubs
-    if this shit doesn't work imma be mad
-*/
-
 class Colorblind {
     public static var filters:Array<BitmapFilter> = []; // the filters the game has active
 	public static var activeFilter:BitmapFilter = null; // the filter that's currently active

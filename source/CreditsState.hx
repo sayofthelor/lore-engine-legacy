@@ -123,13 +123,6 @@ class CreditsState extends MusicBeatState
 				'https://twitter.com/RiverOaken',
 				'B42F71'
 			],
-			[
-				'shubs',
-				'shubs',
-				'Additional Programmer of Psych Engine',
-				'https://twitter.com/yoshubs',
-				'5E99DF'
-			],
 			[''],
 			['Former Psych Engine Members'],
 			[

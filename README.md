@@ -39,5 +39,4 @@ See [wiki page](https://github.com/sayofthelor/lore-engine/wiki/How-to-compile-L
 * sayofthelor - woman
 ### Special Thanks
 * Keoiki - PE Note Splash Animations
-* Yoshubs - PE Input System
 * bbpanzu - Misc PE Contributions
