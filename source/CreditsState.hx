@@ -237,13 +237,15 @@ class CreditsState extends MusicBeatState
 					Paths.currentModDirectory = creditsStuff[i][5];
 				}
 
-				var icon:AttachedSprite = new AttachedSprite('credits/' + creditsStuff[i][1]);
-				icon.xAdd = optionText.width + 10;
-				icon.sprTracker = optionText;
+				if (Paths.image('credits/' + creditsStuff[i][1]) != null) {
+					var icon:AttachedSprite = new AttachedSprite('credits/' + creditsStuff[i][1]);
+					icon.xAdd = optionText.width + 10;
+					icon.sprTracker = optionText;
 
-				// using a FlxGroup is too much fuss!
-				iconArray.push(icon);
-				add(icon);
+					// using a FlxGroup is too much fuss!
+					iconArray.push(icon);
+					add(icon);
+				}
 				Paths.currentModDirectory = '';
 
 				if (curSelected == -1)
