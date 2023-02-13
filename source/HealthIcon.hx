@@ -69,6 +69,7 @@ class HealthIcon extends FlxSprite
 		super.updateHitbox();
 		offset.x = iconOffsets[0];
 		offset.y = (ClientPrefs.bopStyle != "PSYCH-OLD" ? iconOffsets[1] : (initHeight / 2) - (height / 2));
+	}
 	
 
 	public function runScaleUpdate(elapsed:Float):Void {
