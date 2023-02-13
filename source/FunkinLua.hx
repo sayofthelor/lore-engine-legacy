@@ -2869,14 +2869,6 @@ class FunkinLua {
 			if (icon == "player") loadFrames(PlayState.instance.iconP1, frameImage, spriteType);
 			else if (icon == "opponent") loadFrames(PlayState.instance.iconP2, frameImage, spriteType);
 		});
-		Lua_helper.add_callback(lua, "setIconOffsets", function(char:String, x:Float, y:Float) {
-			if (char == "player") {
-				PlayState.instance.iconP1.offsets.set(x, y);
-			}
-			else if (char == "opponent") {
-				PlayState.instance.iconP2.offsets.set(x, y);
-			}
-		});
 		Lua_helper.add_callback(lua, "addIconAnimationByPrefix", function(char:String, name:String, prefix:String, framerate:Int = 24, loop:Bool = true) {
 			if (char == "player") {
 				PlayState.instance.iconP1.animation.addByPrefix(name, prefix, framerate, loop, PlayState.instance.iconP1.isPlayer);
