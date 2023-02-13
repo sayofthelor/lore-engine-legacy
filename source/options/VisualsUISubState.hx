@@ -104,6 +104,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'string',
 			'LORE', ['LORE',
 			'PSYCH',
+			'PSYCH-OLD',
 			'REACTIVE',
 			'DISABLED'
 		]);

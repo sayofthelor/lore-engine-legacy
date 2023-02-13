@@ -11,7 +11,6 @@ class HealthIcon extends FlxSprite
 	public var sprTracker:FlxSprite;
 	private var isOldIcon:Bool = false;
 	public var isPlayer:Bool = false;
-	public var offsets:FlxPoint = new FlxPoint();
 	private var char:String = '';
 
 	public function new(char:String = 'bf', isPlayer:Bool = false, ?hasVictory:Bool = false)
@@ -37,6 +36,7 @@ class HealthIcon extends FlxSprite
 	}
 
 	private var iconOffsets:Array<Float> = [0, 0];
+	private var initHeight:Float;
 	public function changeIcon(char:String, ?hasVictory:Bool = false) {
 		if(this.char != char) {
 			var name:String = 'icons/' + char;
@@ -49,6 +49,7 @@ class HealthIcon extends FlxSprite
 
 			iconOffsets[0] = (width - 150) / 2;
 			iconOffsets[1] = (width - 150) / 2;
+			initHeight = height;
 
 			updateHitbox();
 
@@ -66,13 +67,14 @@ class HealthIcon extends FlxSprite
 	override function updateHitbox()
 	{
 		super.updateHitbox();
-		offset.x = iconOffsets[0] + offsets.x;
-		offset.y = iconOffsets[1] + offsets.y;
-	}
+		offset.x = iconOffsets[0];
+		offset.y = (ClientPrefs.bopStyle != "PSYCH-OLD" ? iconOffsets[1] : (initHeight / 2) - (height / 2));
+	
 
 	public function runScaleUpdate(elapsed:Float):Void {
-		var multx:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.x, CoolUtil.boundTo(1 - (elapsed * (9 * PlayState.instance.headBopSpeed)), 0, 1));
-		var multy:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.y, CoolUtil.boundTo(1 - (elapsed * (9 * PlayState.instance.headBopSpeed)), 0, 1));
+		var _modifier:Float = (ClientPrefs.bopStyle == "PSYCH-OLD" ? 30 / 9 : 1);
+		var multx:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.x, CoolUtil.boundTo(1 - (elapsed * (9 * _modifier * PlayState.instance.headBopSpeed)), 0, 1));
+		var multy:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.y, CoolUtil.boundTo(1 - (elapsed * (9 * _modifier * PlayState.instance.headBopSpeed)), 0, 1));
 		scale.set(multx, multy);
 		updateHitbox();
 	}
@@ -83,7 +85,7 @@ class HealthIcon extends FlxSprite
 			case "LORE":
 				if(!beatMod) scale.set(PlayState.instance.iconSize * 1.2, PlayState.instance.iconSize * 1.2) else scale.set(PlayState.instance.iconSize * 0.8, PlayState.instance.iconSize * 0.8);
 				updateHitbox();
-			case "PSYCH" | "REACTIVE":
+			case "PSYCH" | "REACTIVE" | "PSYCH-OLD":
 				scale.set(PlayState.instance.iconSize * 1.2, PlayState.instance.iconSize * 1.2);
 				updateHitbox();
 		}
