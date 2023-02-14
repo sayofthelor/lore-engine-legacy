@@ -43,7 +43,7 @@ class ClientPrefs {
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var pauseOnFocusLost:Bool = true;
 	public static var ghostTapping:Bool = true;
-	public static var timeBarType:String = 'Time Left';
+	public static var timeBarType:String = 'Time Elapsed / Total';
 	public static var locale:String = "en-US";
 	public static var scoreZoom:Bool = true;
 	public static var noReset:Bool = false;

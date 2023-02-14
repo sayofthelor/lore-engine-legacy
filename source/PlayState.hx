@@ -3455,6 +3455,8 @@ class PlayState extends MusicBeatState
 
 					if (ClientPrefs.timeBarType.contains("and Time"))
 						timeTxt.text = SONG.song + " (" + FlxStringUtil.formatTime(secondsTotal / playbackRate, false) + ")";
+					else if (ClientPrefs.timeBarType == "Time Elapsed / Total")
+						timeTxt.text = FlxStringUtil.formatTime(secondsTotal / playbackRate, false) + " / " + FlxStringUtil.formatTime(songLength / 1000 / playbackRate, false);
 					else if(ClientPrefs.timeBarType != 'Song Name')
 						timeTxt.text = FlxStringUtil.formatTime(secondsTotal / playbackRate, false);
 				}
@@ -4652,7 +4654,7 @@ class PlayState extends MusicBeatState
 			lastRating = rating;
 			var scaleX = rating.scale.x;
 			var scaleY = rating.scale.y;
-			rating.scale.scale(1.2 * tempRatingScale);
+			rating.scale.add(.2 * scaleX, .2 * scaleY);
 			if(ratingTween!=null && ratingTween.active){
 				ratingTween.cancel();
 			}

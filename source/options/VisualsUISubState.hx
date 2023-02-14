@@ -121,8 +121,8 @@ class VisualsUISubState extends BaseOptionsMenu
 			"What should the Time Bar display?",
 			'timeBarType',
 			'string',
-			'SN and Time Left',
-			['SN and Time Left', 'SN and Time Elapsed', 'Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
+			'Time Elapsed / Total',
+			['Time Elapsed / Total', 'SN and Time Left', 'SN and Time Elapsed', 'Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
 		addOption(option);
 
 		var option:Option = new Option('New Time Bar',
