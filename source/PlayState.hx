@@ -1339,7 +1339,7 @@ class PlayState extends MusicBeatState
 		add(iconP2);
 		reloadHealthBarColors();
 
-		scoreTxt = new FlxText(0, healthBarBG.y + 26, FlxG.width, "", 20);
+		scoreTxt = new FlxText(0, healthBarBG.y + 30, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
@@ -4710,10 +4710,10 @@ class PlayState extends MusicBeatState
 
 			//if (combo >= 10 || combo == 0)
 				if (ClientPrefs.smJudges) numGroup.add(numScore) else add(numScore);
-			var oldy:Float = numScore.y;
 				if (ClientPrefs.smJudges) {
-					numScore.y -= (new FlxRandom().int(20,30) * tempRatingScale);
-					FlxTween.tween(numScore, {y: oldy}, 0.2, {ease:FlxEase.circOut});
+					var oldScale:Float = numScore.scale.x;
+					numScore.scale.set(1.4 * oldScale, 1.4 * oldScale);
+					FlxTween.tween(numScore.scale, {x: oldScale, y: oldScale}, 0.2, {ease:FlxEase.circOut});
 				}
 			FlxTween.tween(numScore, {alpha: 0}, 0.2, {
 				onComplete: function(tween:FlxTween)

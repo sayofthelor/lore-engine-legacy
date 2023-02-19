@@ -12,6 +12,7 @@ class HealthIcon extends FlxSprite
 	private var isOldIcon:Bool = false;
 	public var isPlayer:Bool = false;
 	private var char:String = '';
+	public var afterNew:Bool = false;
 
 	public function new(char:String = 'bf', isPlayer:Bool = false, ?hasVictory:Bool = false)
 	{
@@ -20,6 +21,7 @@ class HealthIcon extends FlxSprite
 		this.isPlayer = isPlayer;
 		changeIcon(char, hasVictory);
 		scrollFactor.set();
+		afterNew = true;
 	}
 
 	override function update(elapsed:Float)
@@ -49,7 +51,7 @@ class HealthIcon extends FlxSprite
 
 			iconOffsets[0] = (width - 150) / 2;
 			iconOffsets[1] = (width - 150) / 2;
-			initHeight = height;
+			initHeight = height / (afterNew && PlayState.inPlayState ? PlayState.instance.iconSize : 1);
 
 			updateHitbox();
 
@@ -68,7 +70,7 @@ class HealthIcon extends FlxSprite
 	{
 		super.updateHitbox();
 		offset.x = iconOffsets[0];
-		offset.y = (ClientPrefs.bopStyle != "PSYCH-OLD" ? iconOffsets[1] : (initHeight / 2) - (height / 2));
+		offset.y = (ClientPrefs.bopStyle != "PSYCH-OLD" ? iconOffsets[1] : ((initHeight * (PlayState.inPlayState ? PlayState.instance.iconSize : 1) / 2) - (height / 2)));
 	}
 	
 
