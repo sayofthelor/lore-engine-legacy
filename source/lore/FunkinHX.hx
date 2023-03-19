@@ -38,6 +38,7 @@ class FunkinHX implements IFlxDestroyable {
     public var scriptType:FunkinHXType = NOEXEC;
     public var loaded:Bool = false;
     public var ignoreErrors:Bool = false;
+    private var identifier:Null<String> = null;
     public static final println:String->Void = #if sys Sys.println #elseif js (untyped console).log #end;
 
     /**
@@ -112,6 +113,15 @@ class FunkinHX implements IFlxDestroyable {
         for (i in tempArray) tempBuf.add(i + "\n");
         ttr = tempBuf.toString();
         interp = new Interp();
+            if (PlayState.inPlayState) {
+                set('setScriptIdentifier', (s:String) -> identifier = s);
+                set('getScriptFromIdentifier', (s:String) -> {
+                    for (i in PlayState.instance.haxeArray) {
+                        if (i.identifier == s && i.identifier != null) return i;
+                    };
+                    return null;
+                });
+            }
             set("DiscordClient", Discord.DiscordClient);
             set('preloadImage', (s:String) -> Paths.image(s));
             set('preloadSound', (s:String) -> Paths.sound(s));
