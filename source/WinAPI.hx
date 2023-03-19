@@ -35,6 +35,22 @@ class WinAPI {
     public static function setTransColor(red:Int, green:Int, blue:Int, alpha:Int = 0) {
         return alpha;
     }
+
+    // kudos to bing chatgpt thing i hate C++
+    #if windows
+    @:functionCode('
+        HWND hwnd = GetActiveWindow();
+        HMENU hmenu = GetSystemMenu(hwnd, FALSE);
+        if (enable) {
+            EnableMenuItem(hmenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
+        } else {
+            EnableMenuItem(hmenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
+        }
+    ')
+    #end
+    public static function setCloseButtonEnabled(enable:Bool) {
+        return enable;
+    }
     // from indie cross \/ \/ \/
     public static function messageBoxYN(#if cpp msg:ConstCharStar = null, title:ConstCharStar = null #else msg:String = null, title:String = null #end):Bool {
         #if windows

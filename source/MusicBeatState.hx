@@ -37,6 +37,11 @@ class MusicBeatState extends FlxUIState
 		super();
 	}
 
+	override function destroy() {
+		WinAPI.setCloseButtonEnabled(true);
+		super.destroy();
+	}
+
 	override function create() {
 		camBeat = FlxG.camera;
 		var skip:Bool = FlxTransitionableState.skipNextTransOut;
