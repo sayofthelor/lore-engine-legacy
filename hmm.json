@@ -13,8 +13,7 @@
     {
       "name": "flixel",
       "type": "haxelib",
-      "version": "5.0.2",
-      "comment": "this is the last known version of flixel that works until i fix my FlxCamera bug"
+      "version": null
     },
     {
       "name": "flixel-addons",
