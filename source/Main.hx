@@ -54,6 +54,17 @@ class Main extends Sprite
 	{
 		instance = this;
 		super();
+		if (Sys.args()[0] == "--generate-version-json") {
+			var verJson = {
+				version: lore.macros.MacroTools.getEngineVersion(),
+				gitHash: lore.macros.MacroTools.getGitCommitHash()
+			};
+			#if sys
+			sys.io.File.saveContent('versionInfo.json', haxe.Json.stringify(verJson, "\t"));
+			#end
+			Sys.exit(0);
+			return;
+		}
 		@:privateAccess Lib.application.window.onResize.add((w, h) -> {
 			Main.fpsVar.updatePosition();
 			@:privateAccess FlxG.game.soundTray._defaultScale = (w / FlxG.width) * 2;
