@@ -3633,7 +3633,7 @@ class PlayState extends MusicBeatState
 						notes.remove(daNote, true);
 						daNote.cameras = [camHUD];
 						add(daNote);
-						FlxTween.tween(daNote, { alpha: 0 }, 0.25, {onComplete: (_) -> {
+						FlxTween.tween(daNote, { alpha: 0, y: daNote.y + 25 }, 0.25, {onComplete: (_) -> {
 							daNote.active = false;
 							daNote.kill();
 							daNote.destroy();
