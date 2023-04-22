@@ -113,6 +113,7 @@ class FunkinHX implements IFlxDestroyable {
         for (i in tempArray) tempBuf.add(i + "\n");
         ttr = tempBuf.toString();
         interp = new Interp();
+            set("require", Type.resolveClass);
             if (PlayState.inPlayState) {
                 set('setScriptIdentifier', (s:String) -> identifier = s);
                 set('getScriptFromIdentifier', (s:String) -> {
