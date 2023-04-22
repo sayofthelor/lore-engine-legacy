@@ -3630,13 +3630,14 @@ class PlayState extends MusicBeatState
 						if (daNote.mustPress && !cpuControlled &&!daNote.ignoreNote && !endingSong && (daNote.tooLate || !daNote.wasGoodHit)) {
 							noteMiss(daNote);
 						}
-
-						daNote.active = false;
-						daNote.visible = false;
-
-						daNote.kill();
 						notes.remove(daNote, true);
-						daNote.destroy();
+						daNote.cameras = [camHUD];
+						add(daNote);
+						FlxTween.tween(daNote, { alpha: 0 }, 0.25, {onComplete: (_) -> {
+							daNote.active = false;
+							daNote.kill();
+							daNote.destroy();
+						}});
 					}
 				});
 			}
@@ -5475,7 +5476,7 @@ class PlayState extends MusicBeatState
 		lastStepHit = curStep;
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
-		callOnLuas('onStepHit', []);
+		callOnHaxes('stepHit', []);
 	}
 
 	var lightningStrikeBeat:Int = 0;

@@ -54,6 +54,11 @@ class FlxCamera extends FlxBasic
 	public static var defaultZoom:Float = 1.0;
 
 	/**
+	 * Random point used for the fixed `shake()` effect.
+	 */
+	 public var fxShakePoint:FlxPoint = FlxPoint.get();
+
+	/**
 	 * Used behind-the-scenes during the draw phase so that members use the same default
 	 * cameras as their parent.
 	 * 
@@ -817,6 +822,12 @@ class FlxCamera extends FlxBasic
 					matrix.translate(width / 2, height / 2);
 				}
 
+			if (_fxShakeDuration > 0)
+				{
+					matrix.translate(fxShakePoint.x, fxShakePoint.y);
+				}
+		
+
 			#if FLX_RENDER_TRIANGLE
 			var drawItem:FlxDrawTrianglesItem = startTrianglesBatch(frame.parent, smoothing, isColored, blend);
 			#else
@@ -1165,6 +1176,7 @@ class FlxCamera extends FlxBasic
 		scroll = FlxDestroyUtil.put(scroll);
 		targetOffset = FlxDestroyUtil.put(targetOffset);
 		deadzone = FlxDestroyUtil.put(deadzone);
+		fxShakePoint = FlxDestroyUtil.put(fxShakePoint);
 
 		target = null;
 		flashSprite = null;
@@ -1364,14 +1376,16 @@ class FlxCamera extends FlxBasic
 			}
 			else
 			{
-				if (_fxShakeAxes.x)
-				{
-					flashSprite.x += FlxG.random.float(-_fxShakeIntensity * width, _fxShakeIntensity * width) * zoom * FlxG.scaleMode.scale.x;
-				}
-				if (_fxShakeAxes.y)
-				{
-					flashSprite.y += FlxG.random.float(-_fxShakeIntensity * height, _fxShakeIntensity * height) * zoom * FlxG.scaleMode.scale.y;
-				}
+				fxShakePoint.set(_fxShakeAxes.x ? _fxShakeIntensity * width * FlxG.random.float(-1, 1) : 0,
+						_fxShakeAxes.y ? _fxShakeIntensity * height * FlxG.random.float(-1, 1) : 0);
+				// if (_fxShakeAxes.x)
+				// {
+				// 	flashSprite.x += (_fxShakeIntensity * width * FlxG.random.float(-1, 1)) * zoom * FlxG.scaleMode.scale.x;
+				// }
+				// if (_fxShakeAxes.y)
+				// {
+				// 	flashSprite.y += (_fxShakeIntensity * height * FlxG.random.float(-1, 1)) * zoom * FlxG.scaleMode.scale.y;
+				// }
 			}
 		}
 	}
@@ -1916,25 +1930,52 @@ class FlxCamera extends FlxBasic
 	 * screen coordinates.
 	 * @since 4.3.0
 	 */
-	public inline function containsPoint(point:FlxPoint, width:Float = 0, height:Float = 0):Bool
+	public inline function containsPoint(oPoint:FlxPoint, width:Float = 0, height:Float = 0):Bool
 	{
+		var point = FlxPoint.weak().copyFrom(oPoint).subtractPoint(fxShakePoint);
 		var contained = (point.x + width > viewMarginLeft) && (point.x < viewMarginRight)
-			&& (point.y + height > viewMarginTop) && (point.y < viewMarginBottom);
+			&& (point.y + height > viewMarginTop) && (point.y + fxShakePoint.y < viewMarginBottom);
+		oPoint.putWeak();
 		point.putWeak();
 		return contained;
 	}
 	
 	/**
-	 * Checks whether this camera contains a given rectangle, in screen coordinates.
-	 * @since 4.11.0
-	 */
-	public inline function containsRect(rect:FlxRect):Bool
-	{
-		var contained = (rect.right > viewMarginLeft) && (rect.x < viewMarginRight)
-			&& (rect.bottom > viewMarginTop) && (rect.y < viewMarginBottom);
-		rect.putWeak();
-		return contained;
-	}
+     * Checks whether this camera contains a given rectangle, in screen coordinates.
+     * @since 4.11.0
+	 * @author @SirAxolot
+     */
+	 public inline function containsRect(rect:FlxRect):Bool
+		{
+			// make a new rect to leave the original intact
+			var _tempRect:FlxRect = FlxRect.weak().copyFrom(rect);
+			var _tempCamRect:FlxRect = FlxRect.weak();
+	
+			// god i WISH there was a function for this. this code looks painful
+			_tempCamRect.left = viewMarginLeft - 50;
+			_tempCamRect.right = viewMarginRight + 50;
+			_tempCamRect.top = viewMarginTop - 50;
+			_tempCamRect.bottom = viewMarginBottom + 50;
+	
+			if (angle != 0)
+			{
+				_tempCamRect.getRotatedBounds(angle, FlxPoint.weak(), _tempRect);
+			}
+	
+			if (_fxShakeDuration > 0)
+			{
+				_tempCamRect.offset(fxShakePoint.x, fxShakePoint.y);
+			}
+	
+			var contained = (_tempRect.right > _tempCamRect.left)
+				&& (_tempRect.x < _tempCamRect.right)
+				&& (_tempRect.bottom > _tempCamRect.top)
+				&& (_tempRect.y < _tempCamRect.bottom);
+			rect.putWeak();
+			_tempRect.putWeak();
+			_tempCamRect.putWeak();
+			return contained;
+		}
 
 	function set_followLerp(Value:Float):Float
 	{
