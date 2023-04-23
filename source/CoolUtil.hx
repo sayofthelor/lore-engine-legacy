@@ -24,6 +24,11 @@ class CoolUtil
 		else lastState = value;
 		return value;
 	}
+	// sleep function that blocks the main thread
+	public static inline function blockExecution(time:Float):Void {
+		var start:Float = Sys.time();
+		while (Sys.time() - start < time) {"do nothing";}
+	}
 	public static var defaultDifficulties:Array<String> = [
 		'Easy',
 		'Normal',

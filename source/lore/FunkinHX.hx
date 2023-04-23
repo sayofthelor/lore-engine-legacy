@@ -288,7 +288,10 @@ class FunkinHX implements IFlxDestroyable {
             try {
                 return interp.callMethod(f, args);
             } catch (e:Dynamic) {
-                if (!ignoreErrors && !flixel.FlxG.keys.pressed.SHIFT) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e + '\n\nHold SHIFT to bypass the error if it\'s blocking gameplay.', 'Haxe script error');
+                if (!ignoreErrors && !flixel.FlxG.keys.pressed.SHIFT) {
+                    openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e + '\n\nHold SHIFT to bypass the error if it\'s blocking gameplay.', 'Haxe script error');
+                    CoolUtil.blockExecution(0.25); // to give the player time to hold shift
+                }
                 return null;
             }
             return null;
