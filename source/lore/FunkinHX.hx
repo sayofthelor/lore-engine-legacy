@@ -113,7 +113,6 @@ class FunkinHX implements IFlxDestroyable {
         for (i in tempArray) tempBuf.add(i + "\n");
         ttr = tempBuf.toString();
         interp = new Interp();
-            set("require", Type.resolveClass);
             if (PlayState.inPlayState) {
                 set('setScriptIdentifier', (s:String) -> identifier = s);
                 set('getScriptFromIdentifier', (s:String) -> {
@@ -289,7 +288,7 @@ class FunkinHX implements IFlxDestroyable {
             try {
                 return interp.callMethod(f, args);
             } catch (e:Dynamic) {
-                if (!ignoreErrors) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e, 'Haxe script error');
+                if (!ignoreErrors && !flixel.FlxG.keys.pressed.SHIFT) openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e + '\n\nHold SHIFT to bypass the error if it\'s blocking gameplay.', 'Haxe script error');
                 return null;
             }
             return null;
