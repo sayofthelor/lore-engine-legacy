@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 
 using StringTools;
 
-class AttachedSprite extends FlxSprite
+class AttachedSprite extends flxgif.FlxGifSprite
 {
 	public var sprTracker:FlxSprite;
 	public var xAdd:Float = 0;

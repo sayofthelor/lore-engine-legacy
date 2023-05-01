@@ -341,6 +341,10 @@ class ModsMenuState extends MusicBeatState
 				newMod.icon.animation.add("icon", [for (i in 0...totalFrames) i],10);
 				newMod.icon.animation.play("icon");
 			}
+			else if (Paths.fileExists(values[0] + "/pack.gif", IMAGE)) {
+				newMod.icon.loadGif(sys.io.File.getBytes(Paths.mods(values[0] + "/pack.gif")));
+				newMod.icon.setGraphicSize(150, 150);
+			}
 			else
 			{
 				newMod.icon.loadGraphic(Paths.image('unknownMod'));
