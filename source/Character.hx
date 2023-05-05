@@ -39,7 +39,7 @@ typedef CharacterFile = {
 typedef AnimArray = {
 	var anim:String;
 	var name:String;
-	var fps:Int;
+	var fps:Float;
 	var loop:Bool;
 	@:optional var hookToSongSpeed:Null<Bool>;
 	var indices:Array<Int>;
@@ -203,7 +203,7 @@ class Character extends FlxSprite
 					for (anim in animationsArray) {
 						var animAnim:String = '' + anim.anim;
 						var animName:String = '' + anim.name;
-						var animFps:Int = anim.fps;
+						var animFps:Float = anim.fps;
 						if (anim.hookToSongSpeed == null) {
 							anim.hookToSongSpeed = false;
 						}
