@@ -207,7 +207,7 @@ class Character extends FlxSprite
 						if (anim.hookToSongSpeed == null) {
 							anim.hookToSongSpeed = false;
 						}
-						animFps = (anim.hookToSongSpeed ? Std.int(animFps * PlayState.instance.playbackRate) : animFps);
+						animFps = (anim.hookToSongSpeed ? (animFps * PlayState.instance.playbackRate) : animFps);
 						var animLoop:Bool = !!anim.loop; //Bruh
 						var animIndices:Array<Int> = anim.indices;
 						if(animIndices != null && animIndices.length > 0) {
