@@ -880,7 +880,7 @@ class CharacterEditorState extends MusicBeatState
 			for (anim in char.animationsArray) {
 				var animAnim:String = '' + anim.anim;
 				var animName:String = '' + anim.name;
-				var animFps:Int = anim.fps;
+				var animFps:Float = anim.fps;
 				var animLoop:Bool = !!anim.loop; //Bruh
 				var animIndices:Array<Int> = anim.indices;
 				if(animIndices != null && animIndices.length > 0) {
@@ -1047,7 +1047,7 @@ class CharacterEditorState extends MusicBeatState
 		for (anim in char.animationsArray) {
 			var animAnim:String = '' + anim.anim;
 			var animName:String = '' + anim.name;
-			var animFps:Int = anim.fps;
+			var animFps:Float = anim.fps;
 			var animLoop:Bool = !!anim.loop; //Bruh
 			var animIndices:Array<Int> = anim.indices;
 			if(animIndices != null && animIndices.length > 0) {

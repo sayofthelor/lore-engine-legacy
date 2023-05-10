@@ -188,7 +188,7 @@ class FlxAnimationController implements IFlxDestroyable
 	 * @param   flipX       Whether the frames should be flipped horizontally.
 	 * @param   flipY       Whether the frames should be flipped vertically.
 	 */
-	public function add(name:String, frames:Array<Int>, frameRate = 30.0, looped = true, flipX = false, flipY = false):Void
+	public function add(name:String, frames:Array<Int>, frameRate:Float = 30.0, looped = true, flipX = false, flipY = false):Void
 	{
 		if (numFrames == 0)
 		{

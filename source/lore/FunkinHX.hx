@@ -40,6 +40,11 @@ class FunkinHX implements IFlxDestroyable {
     public var ignoreErrors:Bool = false;
     private var identifier:Null<String> = null;
     public static final println:String->Void = #if sys Sys.println #elseif js (untyped console).log #end;
+    
+    public static function inlineCast<T>(v:Dynamic, t:Class<T>) {
+        var c:T = cast v;
+        return c;
+    }
 
     /**
      * Takes a Hash<Dynamic> and returns a Dynamic object.
@@ -239,6 +244,7 @@ class FunkinHX implements IFlxDestroyable {
             set("FlxColor", _dynamicify(MacroTools.getMapFromAbstract(flixel.util.FlxColor)));
             set("FlxKey", _dynamicify(MacroTools.getMapFromAbstract(flixel.input.keyboard.FlxKey)));
             set("FlxPoint", _dynamicify(MacroTools.getMapFromAbstract(flixel.math.FlxPoint)));
+            set("cast", inlineCast);
             if (primer != null) primer(this);
 
             if (ttr != null) try {
@@ -307,7 +313,7 @@ class FunkinHX implements IFlxDestroyable {
     
 }
 
-@:enum abstract FunkinHXType(Int) from Int to Int {
+enum abstract FunkinHXType(Int) from Int to Int {
     var FILE = 0;
     var STRING = 1;
     var NOEXEC = 2;
