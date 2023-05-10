@@ -39,7 +39,7 @@ class FunkinHX implements IFlxDestroyable {
     public var loaded:Bool = false;
     public var ignoreErrors:Bool = false;
     private var identifier:Null<String> = null;
-    public static final println:String->Void = #if sys Sys.println #elseif js (untyped console).log #end;
+    public static final println:String->Void = #if sys Sys.println #elseif js js.Browser.console.log #end;
     
     public static function inlineCast<T>(v:Dynamic, t:Class<T>) {
         var c:T = cast v;
