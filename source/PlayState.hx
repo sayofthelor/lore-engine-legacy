@@ -4589,7 +4589,7 @@ class PlayState extends MusicBeatState
 		if (ratingColors.get(daRating.name) != null)
 			noteDiffText.color = ratingColors.get(daRating.name);
 		else noteDiffText.color = FlxColor.WHITE;
-		noteDiffText.scale.scale(1.2);
+		noteDiffText.scale *= 1.2;
 		if (noteDiffTween != null) noteDiffTween.cancel();
 		if (diffTween2 != null && diffTween2.active)
 			{

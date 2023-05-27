@@ -1002,7 +1002,7 @@ class EditorPlayState extends MusicBeatState
 				lastRating = rating;
 				var scaleX = rating.scale.x;
 				var scaleY = rating.scale.y;
-				rating.scale.scale(1.2 * ClientPrefs.ratingScale);
+				rating.scale *= 1.2;
 				if(ratingTween!=null && ratingTween.active){
 					ratingTween.cancel();
 				}
