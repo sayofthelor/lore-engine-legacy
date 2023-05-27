@@ -4572,7 +4572,6 @@ class PlayState extends MusicBeatState
 		var noteDiffText:FlxText = new FlxText(0, 0, 0, Highscore.floorDecimal(noteDiff, 2) + " ms", 20);
 		noteDiffText.x = coolText.x;
 		noteDiffText.screenCenter(Y);
-		noteDiffText.y -= 30;
 		if (worldRatingPos != null && ClientPrefs.ratingPosition == "WORLD") {
 			noteDiffText.x += worldRatingPos[0];
 			noteDiffText.y += worldRatingPos[1];
@@ -4589,8 +4588,7 @@ class PlayState extends MusicBeatState
 		if (ratingColors.get(daRating.name) != null)
 			noteDiffText.color = ratingColors.get(daRating.name);
 		else noteDiffText.color = FlxColor.WHITE;
-		noteDiffText.y = noteDiffText.y - 10;
-		var nty = noteDiffText.y + 10;
+		noteDiffText.scale.scale(1.2);
 		if (noteDiffTween != null) noteDiffTween.cancel();
 		if (diffTween2 != null && diffTween2.active)
 			{
@@ -4598,7 +4596,7 @@ class PlayState extends MusicBeatState
 				diffTween2 = null;
 			}
 
-		noteDiffTween = FlxTween.tween(noteDiffText, {y: nty}, 0.2, {
+		noteDiffTween = FlxTween.tween(noteDiffText.scale, {x: tempRatingScale, y: tempRatingScale}, 0.1, {
 			onComplete: function(twn:FlxTween) {
 				if (noteDiffText.alive && noteDiffTween==twn) diffTween2 = FlxTween.tween(noteDiffText, {alpha: 0}, 0.2, {
 					ease: FlxEase.circOut,
