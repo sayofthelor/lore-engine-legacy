@@ -120,7 +120,7 @@ class FPS extends TextField
 			loreThing = "v";
 		}
 		if (ClientPrefs.showFPSNum) { templateText += '{fps}${fpsThing}'; if (ClientPrefs.showMem || ClientPrefs.showLore) templateText += "\n"; }
-		if (ClientPrefs.showMem) { templateText += '${memThing}{memory} {memEnd}'; if (ClientPrefs.showLore) templateText += "\n"; }
+		if (ClientPrefs.showMem) { templateText += '${memThing}{memory}'; if (ClientPrefs.showLore) templateText += "\n"; }
 		if (ClientPrefs.showLore) { templateText += '${loreThing}${(MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) + MainMenuState.versionSuffix}'; }
 		#if debug if (templateText != "") templateText += " "; templateText += '(debug)'; #end
 		if (MainMenuState.isNotFinal && MainMenuState.commitHash != "") { if (templateText != "") templateText += " "; templateText += '(${MainMenuState.commitHash.substr(0, 6)})'; }
@@ -148,8 +148,35 @@ class FPS extends TextField
 	private var hue:Float = 0;
 
 	private function doRainbowThing():Void {
-		textColor = flixel.util.FlxColor.fromHSL({hue = (hue + (FlxG.elapsed * 100)) % 360; hue;}, 1, 0.8);
+		textColor = fromHSL({hue = (hue + (FlxG.elapsed * 100)) % 360; hue;}, 1, 0.8);
 	}
+
+	// function named fromHSL which takes a hue, saturation, and lightness value and returns a color (0xffRRGGBB)
+	private static inline function fromHSL(h:Float, s:Float, l:Float) {
+		h /= 360;
+		var r:Float, g:Float, b:Float;
+		if (s == 0.0) {
+			r = g = b = l;
+		} else {
+			var q:Float = l < 0.5 ? l * (1.0 + s) : l + s - l * s;
+			var p:Float = 2.0 * l - q;
+			r = hue2rgb(p, q, h + 1.0 / 3.0);
+			g = hue2rgb(p, q, h);
+			b = hue2rgb(p, q, h - 1.0 / 3.0);
+		}
+		return (Math.round(r * 255) << 16) + (Math.round(g * 255) << 8) + Math.round(b * 255);
+	}
+
+	// hue2rgb function
+	private static inline function hue2rgb(p:Float, q:Float, h:Float) {
+		if (h < 0.0) h += 1.0;
+		if (h > 1.0) h -= 1.0;
+		if (6.0 * h < 1.0) return p + (q - p) * 6.0 * h;
+		if (2.0 * h < 1.0) return q;
+		if (3.0 * h < 2.0) return p + (q - p) * ((2.0 / 3.0) - h) * 6.0;
+		return p;
+	}
+	
 }
 
 #if cpp
