@@ -3204,7 +3204,7 @@ class PlayState extends MusicBeatState
 		}*/
 		if (updateUnderlay == true) 
 		{
-			try laneunderlay?.x = playerStrums.members[0].x - 25;
+			try laneunderlay.x = playerStrums.members[0].x - 25
 			catch(e) {}
 		}
 		callOnLuas('onUpdate', [elapsed]);
