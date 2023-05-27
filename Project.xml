@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
+	<haxeflag name="-w" value="-WDeprecated" /> <!-- up here juuuuuuuuust to be sure -->
 	<!-- _________________________ Application Settings _________________________ -->
 
 	<app title="Friday Night Funkin': Lore Engine" file="Lore" packageName="com.sabinelol.lore" package="com.sabinelol.lore" main="Main" version="0.2.8" company="sabinelol" />
