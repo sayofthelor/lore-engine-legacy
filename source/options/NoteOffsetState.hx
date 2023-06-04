@@ -217,8 +217,8 @@ class NoteOffsetState extends MusicBeatState
 	var onComboMenu:Bool = true;
 	var holdingObjectType:Null<Int> = null;
 
-	var startMousePos:FlxPoint = new FlxPoint();
-	var startComboOffset:FlxPoint = new FlxPoint();
+	var startMousePos:FlxPoint = FlxPoint.get();
+	var startComboOffset:FlxPoint = FlxPoint.get();
 
 	override public function update(elapsed:Float)
 	{

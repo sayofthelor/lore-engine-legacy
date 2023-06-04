@@ -1061,7 +1061,7 @@ class PlayState extends MusicBeatState
 		if (!ClientPrefs.optimization) boyfriendGroup.add(boyfriend);
 		startCharacterLua(boyfriend.curCharacter);
 
-		var camPos:FlxPoint = new FlxPoint(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
+		var camPos:FlxPoint = FlxPoint.get(girlfriendCameraOffset[0], girlfriendCameraOffset[1]);
 		if(gf != null)
 		{
 			camPos.x += gf.getGraphicMidpoint().x + gf.cameraPosition[0];
@@ -1280,7 +1280,7 @@ class PlayState extends MusicBeatState
 		// After all characters being loaded, it makes then invisible 0.01s later so that the player won't freeze when you change characters
 		// add(strumLine);
 
-		camFollow = new FlxPoint();
+		camFollow = FlxPoint.get();
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 
 		snapCamFollowToPos(camPos.x, camPos.y);

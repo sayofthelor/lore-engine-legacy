@@ -29,12 +29,16 @@ class MacroTools {
       }
     
     public static macro function getEngineVersion():ExprOf<String> {
-        var ver:String = sys.io.File.getContent("engineVersion.txt");
-        return macro $v{ver};
+        #if !display
+        return macro $v{sys.io.File.getContent("./engineVersion.txt")};
+        #else
+        return macro $v{"X.X.X"}
+        #end
     }
 
     // modified from flixel.system.macros.FlxMacroUtil
     // you still have to use get (e.g. FlxColor.get("WHITE") instead of FlxColor.WHITE) but it seems to be the best i can do
+    // nevermind i slayed :3
     public static macro function getMapFromAbstract(typePath:Expr, invert:Bool = false, ?exclude:Array<String>):ExprOf<Map<String, Dynamic>>
         {
             var type = Context.getType(typePath.toString());

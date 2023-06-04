@@ -35,8 +35,8 @@ class Alphabet extends FlxSpriteGroup
 	public var scaleY(default, set):Float = 1;
 	public var rows:Int = 0;
 
-	public var distancePerItem:FlxPoint = new FlxPoint(20, 120);
-	public var startPosition:FlxPoint = new FlxPoint(0, 0); //for the calculations
+	public var distancePerItem:FlxPoint = FlxPoint.get(20, 120);
+	public var startPosition:FlxPoint = FlxPoint.get(0, 0); //for the calculations
 
 	public function new(x:Float, y:Float, text:String = "", ?bold:Bool = true)
 	{
@@ -337,8 +337,8 @@ class AlphaCharacter extends FlxSprite
 	var parent:Alphabet;
 	public var alignOffset:Float = 0; //Don't change this
 	public var letterOffset:Array<Float> = [0, 0];
-	public var spawnPos:FlxPoint = new FlxPoint();
-	public var spawnScale:FlxPoint = new FlxPoint();
+	public var spawnPos:FlxPoint = FlxPoint.get();
+	public var spawnScale:FlxPoint = FlxPoint.get();
 
 	public var row:Int = 0;
 	public var rowWidth:Float = 0;
