@@ -55,6 +55,7 @@ class ClientPrefs {
 	public static var checkForUpdates:Bool = true;
 	public static var compactFPS:Bool = false;
 	public static var showFPSNum:Bool = true;
+	public static var skipTransitions:Bool = false;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 
@@ -118,6 +119,7 @@ class ClientPrefs {
 	}
 
 	public static function saveSettings() {
+		FlxG.save.data.skipTransitions = skipTransitions;
 		FlxG.save.data.aspectRatio = aspectRatio;
 		FlxG.save.data.locale = locale;
 		FlxG.save.data.ratingPosition = ratingPosition;
@@ -194,6 +196,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.downScroll != null) {
 			downScroll = FlxG.save.data.downScroll;
+		}
+		if(FlxG.save.data.skipTransitions != null) {
+			skipTransitions = FlxG.save.data.skipTransitions;
 		}
 		if(FlxG.save.data.ratingPosition != null) {
 			ratingPosition = FlxG.save.data.ratingPosition;

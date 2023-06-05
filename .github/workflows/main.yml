@@ -31,7 +31,7 @@ jobs:
           apt: libluajit-5.1-2
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.1
       # Runs a set of commands using the runners shell
       - name: Restore Cache
         uses: actions/cache@v3
@@ -72,7 +72,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.1
       # Runs a set of commands using the runners shell
       - name: Restore Cache
         uses: actions/cache@v3
@@ -112,7 +112,7 @@ jobs:
 
       - uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.2.5
+          haxe-version: 4.3.1
       # Runs a set of commands using the runners shell
       - name: Restore Cache
         uses: actions/cache@v3

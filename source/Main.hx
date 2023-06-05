@@ -38,7 +38,7 @@ class Main extends Sprite
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var fpsVar:lore.FPS;
 	public static var instance:Main;
-	public var game:FlxGame;
+	public var game:lore.LoreGame;
 	public static var gameInitialized:Bool = false;
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -118,7 +118,7 @@ class Main extends Sprite
 			Lib.application.window.resize(gameWidth, gameHeight);
 			Lib.application.window.y -= Std.int((gameHeight - 720) / 2);
 		}
-		game = new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
+		game = new lore.LoreGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen);
 		game.focusLostFramerate = 60;
 		addChild(game);
 		gameInitialized = true;
@@ -187,13 +187,14 @@ class Main extends Sprite
 				}
 			}
 
-	
-			errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/sayofthelor/lore-engine";
-	
 			if (!FileSystem.exists("./crash/"))
 				FileSystem.createDirectory("./crash/");
-	
+
+
+			errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/sayofthelor/lore-engine";
+
 			File.saveContent(path, errMsg + "\n");
+	
 	
 			Sys.println(errMsg);
 			Sys.println("Crash dump saved in " + Path.normalize(path));

@@ -44,7 +44,7 @@ class MusicBeatState extends FlxUIState
 
 	override function create() {
 		camBeat = FlxG.camera;
-		var skip:Bool = FlxTransitionableState.skipNextTransOut;
+		var skip:Bool = FlxTransitionableState.skipNextTransOut || ClientPrefs.skipTransitions;
 		super.create();
 
 		if(!skip) {
@@ -146,7 +146,7 @@ class MusicBeatState extends FlxUIState
 		var curState:Dynamic = FlxG.state;
 		var leState:MusicBeatState = curState;
 		CoolUtil.lastState = Type.getClass(curState); // just to get rid of maybe loop yellow underline in vscode
-		if(!FlxTransitionableState.skipNextTransIn) {
+		if(!FlxTransitionableState.skipNextTransIn && !ClientPrefs.skipTransitions) {
 			leState.openSubState(new CustomFadeTransition(0.6, false));
 			if(nextState == FlxG.state) {
 				CustomFadeTransition.finishCallback = function() {
@@ -200,7 +200,7 @@ class MusicBeatState extends FlxUIState
 }
 
 @:allow(MusicBeatState)
-class StaticThingVSCWarningGetterArounder {
+private class StaticThingVSCWarningGetterArounder {
 	private static var deniedStates(default, null):Array<Class<FlxState>> = [
 		ModdedState,
 		ScriptableState,
@@ -215,6 +215,7 @@ class StaticThingVSCWarningGetterArounder {
 		WeekEditorState,
 		WeekEditorFreeplayState,
 		editors.EditorPlayState,
-		TitleState
+		TitleState,
+		lore.CrashState
 	];
 }

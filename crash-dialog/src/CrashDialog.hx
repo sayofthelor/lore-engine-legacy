@@ -49,7 +49,7 @@ class CrashDialog
 				app.addComponent(mainView);
 
 				var messageLabel:Label = mainView.findComponent("message-label", Label);
-				messageLabel.text = quotes[Std.random(quotes.length)] + '\nUnfortunately, Lore Engine v${EngineMacro.getEngineVersion()} has crashed.';
+				messageLabel.text = quotes[Std.random(quotes.length)] + '\nUnfortunately, Lore Engine v${EngineMacro.getEngineVersion()} has crashed hard enough that the in-game crash handler didn\'t catch it.\nSorry about that.';
 				messageLabel.percentWidth = 100;
 				messageLabel.textAlign = "center";
 

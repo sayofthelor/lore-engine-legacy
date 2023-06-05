@@ -24,6 +24,13 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.onChange = lore.Colorblind.updateFilter;
 		addOption(option);
 
+		var option:Option = new Option("Skip Transitions",
+			"If checked, skips the transition animations between screens.",
+			'skipTransitions',
+			'bool',
+			false);
+		addOption(option);
+
 		var option:Option = new Option('Scroll Underlay Opacity', //Name
 			'Opacity of underlay of notes', //Description
 			'underlayAlpha', //Save data variable name

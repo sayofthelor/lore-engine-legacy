@@ -102,8 +102,8 @@ class FPS extends TextField
 	public static function formatMemory(Bytes:Float, Precision:Int = 2):String {
 		var units:Array<String> = ["B", "KB", "MB", "GB", "TB", "PB"];
 		var curUnit = 0;
-		while (Bytes >= 1024 && curUnit < units.length - 1) {
-			Bytes /= 1024;
+		while (Bytes >= 1000 && curUnit < units.length - 1) {
+			Bytes /= 1000;
 			curUnit++;
 		}
 		return FlxMath.roundDecimal(Bytes, Precision) + ' ${units[curUnit]}';

@@ -1,6 +1,11 @@
 {
   "dependencies": [
     {
+      "name": "actuate",
+      "type": "haxelib",
+      "version": null
+    },
+    {
       "name": "lime",
       "type": "haxelib",
       "version": null
