@@ -129,6 +129,8 @@ class ClientPrefs {
 	}
 
 	public static function saveSettings() {
+		FlxG.save.data.displayMiB = displayMiB;
+		FlxG.save.data.rawMemoryFormat = rawMemoryFormat;
 		FlxG.save.data.skipTransitions = skipTransitions;
 		FlxG.save.data.aspectRatio = aspectRatio;
 		FlxG.save.data.locale = locale;
@@ -230,6 +232,12 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.compactFPS != null) {
 			compactFPS = FlxG.save.data.compactFPS;
+		}
+		if(FlxG.save.data.rawMemoryFormat != null) {
+			rawMemoryFormat = FlxG.save.data.rawMemoryFormat;
+		}
+		if(FlxG.save.data.displayMiB != null) {
+			displayMiB = FlxG.save.data.displayMiB;
 		}
 		if(FlxG.save.data.showFPSNum != null) {
 			showFPSNum = FlxG.save.data.showFPSNum;
