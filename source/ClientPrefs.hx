@@ -6,6 +6,16 @@ import flixel.input.keyboard.FlxKey;
 import Controls;
 
 class ClientPrefs {
+	@:allow(Option) private static var rawMemoryFormat(default, set):String = "MB";
+	@:allow(Option) private static function set_rawMemoryFormat(value:String):String {
+		if (value == "MB") {
+			displayMiB = false;
+		} else if (value == "MiB") {
+			displayMiB = true;
+		}
+		return rawMemoryFormat = value;
+	}
+	public static var displayMiB:Bool = false;
 	public static var aspectRatio:String = '16:9';
 	public static var rainbowFPS:Bool = false;
 	public static var downScroll:Bool = false;

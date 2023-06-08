@@ -212,6 +212,14 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.onChange = onChangeFPSCounter;
 		addOption(option);
 
+		var option:Option = new Option("Memory Format: ", 
+			"The format of the memory usage in the info display. 1 MiB is 1024 bytes, and 1 MB is 1000 bytes.",
+			'rawMemoryFormat',
+			'string',
+			'MB', ['MB', 'MiB']
+		);
+		addOption(option);
+
 		var option:Option = new Option('Show Framerate',
 		"If checked, the framerate will be in the Info Display.",
 		'showFPSNum',
