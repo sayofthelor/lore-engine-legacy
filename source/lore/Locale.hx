@@ -12,6 +12,6 @@ class Locale {
     }
 
     public static function get(key:String):String {
-        return Reflect.field(localeObject, key);
+        return Reflect.field(localeObject, key) ?? 'NO VAL FOR $key';
     }
 }
