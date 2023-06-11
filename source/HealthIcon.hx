@@ -75,10 +75,8 @@ class HealthIcon extends FlxSprite
 	
 
 	public function runScaleUpdate(elapsed:Float):Void {
-		var _modifier:Float = (ClientPrefs.bopStyle == "PSYCH-OLD" ? 30 / 9 : 1);
-		var multx:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.x, CoolUtil.boundTo(1 - (elapsed * (9 * _modifier * PlayState.instance.headBopSpeed)), 0, 1));
-		var multy:Float = FlxMath.lerp(PlayState.instance.iconSize, scale.y, CoolUtil.boundTo(1 - (elapsed * (9 * _modifier * PlayState.instance.headBopSpeed)), 0, 1));
-		scale.set(multx, multy);
+		var clamp:Float = CoolUtil.boundTo(1 - (elapsed * (9 * (ClientPrefs.bopStyle == "PSYCH-OLD" ? 30 / 9 : 1) * PlayState.instance.headBopSpeed)), 0, 1);
+		scale.set(FlxMath.lerp(PlayState.instance.iconSize, scale.x, clamp), FlxMath.lerp(PlayState.instance.iconSize, scale.y, clamp));
 		updateHitbox();
 	}
 
@@ -86,10 +84,12 @@ class HealthIcon extends FlxSprite
 		var ret:Array<Dynamic> = [PlayState.instance.callOnLuas('onHeadBop', [cname]), PlayState.instance.callOnHaxes('onHeadBop', [cname])];
 		if (!ret.contains(FunkinLua.Function_Stop) && !ClientPrefs.optimization && PlayState.instance.headsBop) switch (ClientPrefs.bopStyle) {
 			case "LORE":
-				if(!beatMod) scale.set(PlayState.instance.iconSize * 1.2, PlayState.instance.iconSize * 1.2) else scale.set(PlayState.instance.iconSize * 0.8, PlayState.instance.iconSize * 0.8);
+				var thing:Float = PlayState.instance.iconSize * (!beatMod ? 1.2 : 0.8);
+				scale.set(thing, thing);
 				updateHitbox();
 			case "PSYCH" | "REACTIVE" | "PSYCH-OLD":
-				scale.set(PlayState.instance.iconSize * 1.2, PlayState.instance.iconSize * 1.2);
+				var thing:Float = PlayState.instance.iconSize * 1.2;
+				scale.set(thing, thing);
 				updateHitbox();
 		}
 	}
