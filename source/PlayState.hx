@@ -231,6 +231,7 @@ class PlayState extends MusicBeatState
 	public var cpuControlled(default, set):Bool = false;
 	public function set_cpuControlled(v:Bool):Bool {
 		cpuControlled = v;
+		if (!v && scoreTxt != null) scoreTxt.alpha = 1;
 		updateScore(false, true);
 		return v;
 	}
@@ -297,6 +298,7 @@ class PlayState extends MusicBeatState
 	public var scoreTxt:FlxText = null;
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
+	var botplaySin:Float = 0;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -3198,6 +3200,10 @@ class PlayState extends MusicBeatState
 
 	override public function update(elapsed:Float)
 	{
+		if (cpuControlled) {
+			botplaySin += 180 * elapsed;
+			scoreTxt.alpha = 1 - Math.sin((Math.PI * botplaySin) / 180);
+		}
 		/*if (FlxG.keys.justPressed.NINE)
 		{
 			iconP1.swapOldIcon();
