@@ -177,6 +177,9 @@ class FunkinHX implements IFlxDestroyable {
                 return false;
             });
             set("Sys", Sys);
+            set("Math", Math);
+            set("Type", Type);
+            set("Std", Std);
             if (PlayState.inPlayState) {
                 set("add", PlayState.instance.add);
                 set("addBehindDad", PlayState.instance.addBehindDad);
