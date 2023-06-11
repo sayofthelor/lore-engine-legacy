@@ -1,5 +1,6 @@
 package editors;
 
+import lore.FunkinHX;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -980,13 +981,15 @@ class ChartingState extends MusicBeatState
 			if(FileSystem.exists(directory)) {
 				for (file in FileSystem.readDirectory(directory)) {
 					var path = haxe.io.Path.join([directory, file]);
-					if (!FileSystem.isDirectory(path) && file.endsWith('.lua')) {
-						var fileToCheck:String = file.substr(0, file.length - 4);
-						if(!noteTypeMap.exists(fileToCheck)) {
-							displayNameList.push(fileToCheck);
-							noteTypeMap.set(fileToCheck, key);
-							noteTypeIntMap.set(key, fileToCheck);
-							key++;
+					for (ext in {var e:Array<String> = [ for (x in FunkinHX.supportedFileTypes) '.$x' ]; e.push(".lua"); e;}) {
+						if (!FileSystem.isDirectory(path) && file.endsWith(ext)) {
+							var fileToCheck:String = file.substr(0, file.length - ext.length);
+							if(!noteTypeMap.exists(fileToCheck)) {
+								displayNameList.push(fileToCheck);
+								noteTypeMap.set(fileToCheck, key);
+								noteTypeIntMap.set(key, fileToCheck);
+								key++;
+							}
 						}
 					}
 				}
