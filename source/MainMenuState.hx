@@ -40,7 +40,11 @@ class MainMenuState extends lore.ScriptableState
 	var menuJson:MenuJSONData = Json.parse(Paths.getTextFromFile("data/menu.json"));
 	public static final loreEngineVersion:String = MacroTools.getEngineVersion();
 	public static final versionSuffix:String = ''; // just so i can add a suffix without breaking any version checks
-	public static final isNotFinal:Bool = false;
+	public static var isNotFinal(get, never):Bool; // i was stupid as hell when i made this so now i have to preserve compatibility!!!!
+	public static function get_isNotFinal():Bool {
+		return !releaseVersion;
+	}
+	public static final releaseVersion:Bool = #if final true #else false #end;
 	public static final commitHash:String = MacroTools.getGitCommitHash();
 	public static final psychEngineVersion:String = '0.6.3'; // to maximize compatibility
 	public static var curSelected:Int = 0;

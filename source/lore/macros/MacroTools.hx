@@ -45,7 +45,7 @@ class MacroTools {
             var values:Map<String, Dynamic> = [];
     
             if (exclude == null)
-                exclude = ["NONE_IS_ACTUALLY_A_VAR_BUT_THIS_PROBABLY_ISNT"];
+                exclude = [];
     
             switch (type.follow())
             {
