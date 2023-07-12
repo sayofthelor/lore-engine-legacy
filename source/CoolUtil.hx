@@ -3,6 +3,7 @@ package;
 import flixel.util.FlxSave;
 import flixel.FlxG;
 import openfl.utils.Assets;
+import flixel.util.FlxColor;
 import lime.utils.Assets as LimeAssets;
 import lime.utils.AssetLibrary;
 import lime.utils.AssetManifest;
@@ -37,6 +38,17 @@ class CoolUtil
 	public static var defaultDifficulty:String = 'Normal'; //The chart that has no suffix and starting difficulty on Freeplay/Story Mode
 
 	public static var difficulties:Array<String> = [];
+
+	inline public static function colorFromString(color:String):FlxColor
+		{
+			var hideChars = ~/[\t\n\r]/;
+			var color:String = hideChars.split(color).join('').trim();
+			if(color.startsWith('0x')) color = color.substr(4);
+	
+			var colorNum:Null<FlxColor> = FlxColor.fromString(color);
+			if(colorNum == null) colorNum = FlxColor.fromString('#$color');
+			return colorNum != null ? colorNum : FlxColor.WHITE;
+		}
 
 	inline public static function quantize(f:Float, snap:Float){
 		// changed so this actually works lol

@@ -1496,8 +1496,7 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "getColorFromHex", function(color:String) {
-			if(!color.startsWith('0x')) color = '0xff' + color;
-			return Std.parseInt(color);
+			return CoolUtil.colorFromString(color);
 		});
 
 		Lua_helper.add_callback(lua, "keyboardJustPressed", function(name:String)
@@ -1729,14 +1728,10 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "cameraFlash", function(camera:String, color:String, duration:Float,forced:Bool) {
-			var colorNum:Int = Std.parseInt(color);
-			if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
-			cameraFromString(camera).flash(colorNum, duration,null,forced);
+			cameraFromString(camera).flash(CoolUtil.colorFromString(color), duration,null,forced);
 		});
 		Lua_helper.add_callback(lua, "cameraFade", function(camera:String, color:String, duration:Float,forced:Bool) {
-			var colorNum:Int = Std.parseInt(color);
-			if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
-			cameraFromString(camera).fade(colorNum, duration,false,null,forced);
+			cameraFromString(camera).fade(CoolUtil.colorFromString(color), duration,false,null,forced);
 		});
 		Lua_helper.add_callback(lua, "setRatingPercent", function(value:Float) {
 			PlayState.instance.ratingPercent = value;
@@ -1847,18 +1842,16 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "makeGraphic", function(obj:String, width:Int, height:Int, color:String) {
-			var colorNum:Int = Std.parseInt(color);
-			if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
 
 			var spr:FlxSprite = PlayState.instance.getLuaObject(obj,false);
 			if(spr!=null) {
-				PlayState.instance.getLuaObject(obj,false).makeGraphic(width, height, colorNum);
+				PlayState.instance.getLuaObject(obj,false).makeGraphic(width, height, CoolUtil.colorFromString(color));
 				return;
 			}
 
 			var object:FlxSprite = Reflect.getProperty(getInstance(), obj);
 			if(object != null) {
-				object.makeGraphic(width, height, colorNum);
+				object.makeGraphic(width, height, CoolUtil.colorFromString(color));
 			}
 		});
 		Lua_helper.add_callback(lua, "addAnimationByPrefix", function(obj:String, name:String, prefix:String, framerate:Int = 24, loop:Bool = true) {
@@ -2462,11 +2455,8 @@ class FunkinLua {
 			var obj:FlxText = getTextObject(tag);
 			if(obj != null)
 			{
-				var colorNum:Int = Std.parseInt(color);
-				if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
-
 				obj.borderSize = size;
-				obj.borderColor = colorNum;
+				obj.borderColor = CoolUtil.colorFromString(color);
 				return true;
 			}
 			luaTrace("setTextBorder: Object " + tag + " doesn't exist!", false, false, FlxColor.RED);
@@ -2476,10 +2466,7 @@ class FunkinLua {
 			var obj:FlxText = getTextObject(tag);
 			if(obj != null)
 			{
-				var colorNum:Int = Std.parseInt(color);
-				if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
-
-				obj.color = colorNum;
+				obj.color = CoolUtil.colorFromString(color);
 				return true;
 			}
 			luaTrace("setTextColor: Object " + tag + " doesn't exist!", false, false, FlxColor.RED);
@@ -2729,10 +2716,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "luaSpriteMakeGraphic", function(tag:String, width:Int, height:Int, color:String) {
 			luaTrace("luaSpriteMakeGraphic is deprecated! Use makeGraphic instead", false, true);
 			if(PlayState.instance.modchartSprites.exists(tag)) {
-				var colorNum:Int = Std.parseInt(color);
-				if(!color.startsWith('0x')) colorNum = Std.parseInt('0xff' + color);
-
-				PlayState.instance.modchartSprites.get(tag).makeGraphic(width, height, colorNum);
+				PlayState.instance.modchartSprites.get(tag).makeGraphic(width, height, CoolUtil.colorFromString(color));
 			}
 		});
 		Lua_helper.add_callback(lua, "luaSpriteAddAnimationByPrefix", function(tag:String, name:String, prefix:String, framerate:Int = 24, loop:Bool = true) {
