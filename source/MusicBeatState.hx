@@ -215,7 +215,8 @@ private class StaticThingVSCWarningGetterArounder {
 		WeekEditorState,
 		WeekEditorFreeplayState,
 		editors.EditorPlayState,
-		TitleState,
+		//TitleState,
+		lore.InitState,
 		lore.CrashState
 	];
 }

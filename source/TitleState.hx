@@ -56,6 +56,7 @@ typedef TitleData =
 }
 class TitleState extends MusicBeatState
 {
+	// i would love to move these but compatibilityyyyyyyyyyyy
 	public static var muteKeys:Array<FlxKey> = [FlxKey.ZERO];
 	public static var volumeDownKeys:Array<FlxKey> = [FlxKey.NUMPADMINUS, FlxKey.MINUS];
 	public static var volumeUpKeys:Array<FlxKey> = [FlxKey.NUMPADPLUS, FlxKey.PLUS];
@@ -97,12 +98,6 @@ class TitleState extends MusicBeatState
 			Paths.clearUnusedMemory();
 		}
 
-		#if LUA_ALLOWED
-		Paths.pushGlobalMods();
-		#end
-		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
-		WeekData.loadTheFirstEnabledMod();
-
 		//trace(path, FileSystem.exists(path));
 
 		/*#if (polymod && !html5)
@@ -119,13 +114,6 @@ class TitleState extends MusicBeatState
 			}
 		}
 		#end*/
-
-		FlxG.game.focusLostFramerate = 60;
-		FlxG.sound.muteKeys = muteKeys;
-		FlxG.sound.volumeDownKeys = volumeDownKeys;
-		FlxG.sound.volumeUpKeys = volumeUpKeys;
-		FlxG.keys.preventDefaultKeys = [TAB];
-
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
 		// DEBUG BULLSHIT
@@ -158,8 +146,6 @@ class TitleState extends MusicBeatState
 		}
 		#end
 
-		Highscore.load();
-
 		// IGNORE THIS!!!
 		titleJSON = Json.parse(Paths.getTextFromFile('images/gfDanceTitle.json'));
 
@@ -184,43 +170,17 @@ class TitleState extends MusicBeatState
 
 		if(!initialized)
 		{
-			if(FlxG.save.data != null && FlxG.save.data.fullscreen)
-			{
-				FlxG.fullscreen = FlxG.save.data.fullscreen;
-				//trace('LOADED FULLSCREEN SETTING!!');
-			}
 			persistentUpdate = true;
 			persistentDraw = true;
 		}
 
-		if (FlxG.save.data.weekCompleted != null)
-		{
-			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
-		}
-
-		FlxG.mouse.visible = false;
-		Locale.init();
 		texts = [Locale.get("introText1"), Locale.get("introText2"), Locale.get("introText3"), Locale.get("introText4")];
 		#if FREEPLAY
 		MusicBeatState.switchState(new FreeplayState());
 		#elseif CHARTING
 		MusicBeatState.switchState(new ChartingState());
 		#else
-		if(FlxG.save.data.flashing == null && !FlashingState.leftState) {
-			FlxTransitionableState.skipNextTransIn = true;
-			FlxTransitionableState.skipNextTransOut = true;
-			MusicBeatState.switchState(new FlashingState());
-		} else {
-			if (initialized)
-				startIntro();
-			else
-			{
-				new FlxTimer().start(1, function(tmr:FlxTimer)
-				{
-					startIntro();
-				});
-			}
-		}
+		startIntro();
 		#end
 	}
 
