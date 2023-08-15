@@ -1,5 +1,6 @@
 package lore;
 
+import flixel.math.FlxPoint;
 import shadertoy.FlxShaderToyRuntimeShader;
 import hscript.Parser;
 import hscript.Interp;
@@ -35,7 +36,7 @@ class FunkinHX implements IFlxDestroyable {
     ];
     private var interp:Interp;
     public var scriptName:String = "unknown";
-    public var scriptType:FunkinHXType = NOEXEC;
+    public var scriptType:HScriptType = NOEXEC;
     public var loaded:Bool = false;
     public var ignoreErrors:Bool = false;
     private var identifier:Null<String> = null;
@@ -88,7 +89,7 @@ class FunkinHX implements IFlxDestroyable {
         if (interp != null) interp.variables.remove(k);
     }
 
-    public function new(f:String, ?primer:FunkinHX->Void = null, ?type:FunkinHXType = FILE):Void {
+    public function new(f:String, ?primer:FunkinHX->Void = null, ?type:HScriptType = FILE):Void {
         scriptName = f;
         scriptType = type;
         var ttr:String = null;
@@ -127,10 +128,18 @@ class FunkinHX implements IFlxDestroyable {
                     return null;
                 });
             }
+            set("async", (f:Void->Void) -> {
+                #if sys
+                sys.thread.Thread.create(f);
+                #else
+                FlxG.log.warn("Non-sys platform detected, function will run on main thread.");
+                f();
+                #end
+            });
             set("DiscordClient", Discord.DiscordClient);
-            set('preloadImage', (s:String) -> Paths.image(s));
-            set('preloadSound', (s:String) -> Paths.sound(s));
-            set('preloadMusic', (s:String) -> Paths.music(s));
+            set('preloadImage', function(s:String):Void { Paths.image(s); });
+            set('preloadSound', function(s:String):Void { Paths.sound(s); });
+            set('preloadMusic', function(s:String):Void { Paths.music(s); });
             set('FlxG', flixel.FlxG);
             set('FlxSprite', flixel.FlxSprite);
             set('FlxCamera', flixel.FlxCamera);
@@ -246,7 +255,8 @@ class FunkinHX implements IFlxDestroyable {
             set("FlxAxes", _dynamicify(MacroTools.getMapFromAbstract(flixel.util.FlxAxes)));
             set("FlxColor", _dynamicify(MacroTools.getMapFromAbstract(flixel.util.FlxColor)));
             set("FlxKey", _dynamicify(MacroTools.getMapFromAbstract(flixel.input.keyboard.FlxKey)));
-            set("FlxPoint", _dynamicify(MacroTools.getMapFromAbstract(flixel.math.FlxPoint)));
+            set("FlxPoint", flixel.math.FlxPoint.FlxBasePoint);
+            set("HScriptType", _dynamicify(MacroTools.getMapFromAbstract(HScriptType)));
             set("cast", inlineCast);
             if (primer != null) primer(this);
 
@@ -316,7 +326,7 @@ class FunkinHX implements IFlxDestroyable {
     
 }
 
-enum abstract FunkinHXType(Int) from Int to Int {
+enum abstract HScriptType(Int) from Int to Int {
     var FILE = 0;
     var STRING = 1;
     var NOEXEC = 2;
