@@ -111,8 +111,15 @@ class Main extends Sprite
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 		ClientPrefs.loadPrefs();
 		if (ClientPrefs.aspectRatio != '16:9') { // not a function to ensure you can't call it from the game
-			var _ratioArray:Array<Int> = [ for (i in ClientPrefs.aspectRatio.split(':')) Std.parseInt(i) ];
-			var _height:Int = Std.int((1280 / _ratioArray[0]) * _ratioArray[1]);
+			var _height:Int;
+			if (ClientPrefs.aspectRatio.contains(':')) {
+				var _ratioArray:Array<Int> = [ for (i in ClientPrefs.aspectRatio.split(':')) Std.parseInt(i) ];
+				_height = Std.int((1280 / _ratioArray[0]) * _ratioArray[1]);
+			}
+			else if (ClientPrefs.aspectRatio == 'Device') {
+				_height = Std.int((1280 / openfl.system.Capabilities.screenResolutionX) * openfl.system.Capabilities.screenResolutionY);
+			}
+			else _height = 720;
 			gameHeight = _height;
 			@:privateAccess Lib.current.stage.__setLogicalSize(gameWidth, gameHeight);
 			Lib.application.window.resize(gameWidth, gameHeight);
@@ -127,8 +134,7 @@ class Main extends Sprite
 		FlxG.autoPause = ClientPrefs.pauseOnFocusLost;
 
 		#if !mobile
-		fpsVar = new lore.FPS(3, 3, 0xFFFFFFFF);
-		addChild(fpsVar);
+		addChild(fpsVar = new lore.FPS(3, 3, 0xffffffff));
 		#end
 		#if desktop Assets.getImage("assets/images/coconut.jpg"); #end
 		#if html5
@@ -148,22 +154,6 @@ class Main extends Sprite
 	}
 
 	#if desktop
-	static final errorCrashFunnies:Array<String> = [
-		"Oops.",
-		"Not a fun day, I take it?",
-		"Sorry to bring your funkin' to a halt.",
-		"Also try Minecraft!",
-		"Main.hx isn't supposed to hold this much.",
-		"Flixel is wonderful.",
-		"No controlly is cannoli.",
-		"Not feeling it today, here's your error.",
-		"Stream Kawai Sprite.",
-		"Check for semicolons, kids.",
-		"Class is screwed. Or maybe not, I don't know.",
-		"How many headaches have you been through today?",
-		"Don't null-ly reference your objects, y'all!"
-	];
-
 	private final function onCrash(e:UncaughtErrorEvent):Void
 		{
 			var errMsg:String = "";

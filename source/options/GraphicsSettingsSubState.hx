@@ -17,7 +17,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			Locale.get("aspectRatioGraphicsDesc"),
 			'aspectRatio',
 			'string',
-			'16:9', ['16:9', '16:10', '3:2', '4:3', '5:4']);
+			'16:9', ['16:9', '16:10', '3:2', '4:3', '5:4', 'Device']);
 		addOption(option);
 
 		var option:Option = new Option(Locale.get("pauseOnFocusLostGraphicsText"),
