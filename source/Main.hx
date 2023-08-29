@@ -112,7 +112,7 @@ class Main extends Sprite
 		ClientPrefs.loadPrefs();
 		if (ClientPrefs.aspectRatio != '16:9') { // not a function to ensure you can't call it from the game
 			var _height:Int;
-			if (ClientPrefs.aspectRatio.contains(':')) {
+			if (ClientPrefs.aspectRatio.indexOf(':') != -1) {
 				var _ratioArray:Array<Int> = [ for (i in ClientPrefs.aspectRatio.split(':')) Std.parseInt(i) ];
 				_height = Std.int((1280 / _ratioArray[0]) * _ratioArray[1]);
 			}
