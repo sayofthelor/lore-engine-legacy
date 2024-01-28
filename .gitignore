@@ -22,3 +22,4 @@ export/*
 leakertrack.txt
 crash-dialog/build
 crash-built/
+.DS_Store

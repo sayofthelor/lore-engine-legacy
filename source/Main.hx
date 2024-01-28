@@ -108,7 +108,7 @@ class Main extends Sprite
 		#end
 	
 		ClientPrefs.loadDefaultKeys();
-		FlxG.save.bind('funkin', 'ninjamuffin99');
+		FlxG.save.bind('funkin', CoolUtil.getSavePath());
 		ClientPrefs.loadPrefs();
 		if (ClientPrefs.aspectRatio != '16:9') { // not a function to ensure you can't call it from the game
 			var _height:Int;

@@ -124,7 +124,7 @@ class FPS extends TextField
 		if (ClientPrefs.showMem) { templateText += '${memThing}{memory}'; if (ClientPrefs.showLore) templateText += "\n"; }
 		if (ClientPrefs.showLore) { templateText += '${loreThing}${(MainMenuState.loreEngineVersion.endsWith(".0") ? MainMenuState.loreEngineVersion.replace(".0", "") : MainMenuState.loreEngineVersion) + MainMenuState.versionSuffix}'; }
 		#if debug if (templateText != "") templateText += " "; templateText += '(debug)'; #end
-		if (MainMenuState.isNotFinal && MainMenuState.commitHash != "") { if (templateText != "") templateText += " "; templateText += '(${MainMenuState.commitHash.substr(0, 6)})'; }
+		#if !HIDE_HASH if (MainMenuState.isNotFinal && MainMenuState.commitHash != "") { if (templateText != "") templateText += " "; templateText += '(${MainMenuState.commitHash.substr(0, 6)})'; } #end
 		set_visibility(ClientPrefs.showFPS);
 		set_rainbowEnabled(ClientPrefs.rainbowFPS);
 		updatePosition();

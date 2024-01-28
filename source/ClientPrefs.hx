@@ -414,7 +414,7 @@ class ClientPrefs {
 				checkForUpdates = FlxG.save.data.checkForUpdates;
 			}
 			var save:FlxSave = new FlxSave();
-			save.bind('controls_v2', 'ninjamuffin99');
+			save.bind('controls_v2', CoolUtil.getSavePath());
 			if(save != null && save.data.customControls != null) {
 				var loadedControls:Map<String, Array<FlxKey>> = save.data.customControls;
 				for (control => keys in loadedControls) {
