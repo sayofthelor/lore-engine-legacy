@@ -26,7 +26,7 @@ Extra features include:
 - Shadertoy shader support
 - More to come!
 
-NOTE: If you're running on Linux, please use the official Linux build instead of running the game through Wine. FNF has quite a few input, stuttering, and minimization issues with Wine at the moment.
+NOTE: If you're running on Linux or Mac, please use the respective native build (or build it yourself) instead of running the game through Wine/GPTK. FNF has quite a few input, stuttering, and minimization issues with both at the moment through Wine/GPTK.
 
 use haxe 4.2.5 bozos
 
