@@ -1,4 +1,4 @@
- ### Note: Lore Engine is out of support and will not be updated to parity with Psych Engine v0.7, but feel free to report any current bugs.
+ ### Note: Lore Engine Legacy is out of support and will not be updated to parity with Psych Engine v0.7, but feel free to report any current bugs.
 <div align="center">
     <img src="https://user-images.githubusercontent.com/35895538/184577297-98b08bcc-3144-45a7-b33f-64a11dc3c652.png" width="40%" height="40%"/> 
     <br />
@@ -6,8 +6,8 @@
 <img src="https://img.shields.io/github/actions/workflow/status/sayofthelor/lore-engine/main.yml?style=for-the-badge" /> <img src="https://img.shields.io/github/v/release/sayofthelor/lore-engine?style=for-the-badge" /> <img src="https://img.shields.io/github/license/sayofthelor/lore-engine?style=for-the-badge" /> <img src="https://img.shields.io/github/forks/sayofthelor/lore-engine?style=for-the-badge" />
 </div>
 
-# Friday Night Funkin': Lore Engine
-Psych Engine with some neat tweaks.
+# Friday Night Funkin': Lore Engine Legacy
+Psych Engine v0.6.3 with some neat tweaks.
 
 Originally intended for an FNF mod for my Chemistry class, but that never came through.
 
@@ -24,7 +24,6 @@ Extra features include:
 - Added LUA functions
 - Custom noteskins per-character
 - Shadertoy shader support
-- More to come!
 
 NOTE: If you're running on Linux or Mac, please use the respective native build (or build it yourself) instead of running the game through Wine/GPTK. FNF has quite a few input, stuttering, and minimization issues with both at the moment through Wine/GPTK.
 
