@@ -10,6 +10,7 @@ import llua.Convert;
 
 import animateatlas.AtlasFrameMaker;
 import flixel.FlxG;
+import lore.macros.MacroTools;
 import lime.app.Application;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
@@ -3581,11 +3582,11 @@ class HScript
 		interp.variables.set("switchState", MusicBeatState.switchState);
         interp.variables.set("ModdedState", lore.ModdedState);
         interp.variables.set("ModdedSubState", lore.ModdedSubState);
-        interp.variables.set("FlxAxes", lore.FunkinHX._dynamicify(lore.macros.MacroTools.getMapFromAbstract(flixel.util.FlxAxes)));
-        interp.variables.set("FlxColor", lore.FunkinHX._dynamicify(lore.macros.MacroTools.getMapFromAbstract(flixel.util.FlxColor)));
-	    interp.variables.set("FlxKey", lore.FunkinHX._dynamicify(lore.macros.MacroTools.getMapFromAbstract(flixel.input.keyboard.FlxKey)));
+		interp.variables.set("FlxAxes", MacroTools.getAbstract(flixel.util.FlxAxes));
+		interp.variables.set("FlxColor", MacroTools.getAbstract(flixel.util.FlxColor));
+		interp.variables.set("FlxKey", MacroTools.getAbstract(flixel.input.keyboard.FlxKey));
         interp.variables.set("FlxPoint", flixel.math.FlxPoint.FlxBasePoint);
-        interp.variables.set("HScriptType", lore.FunkinHX._dynamicify(lore.macros.MacroTools.getMapFromAbstract(lore.FunkinHX.HScriptType)));
+        interp.variables.set("HScriptType", MacroTools.getAbstract(lore.FunkinHX.HScriptType));
 	}
 
 	public function execute(codeToRun:String):Dynamic

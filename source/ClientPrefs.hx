@@ -35,7 +35,11 @@ class ClientPrefs {
 	public static var framerate:Int = 60;
 	public static var underlayAlpha:Int = 0;
 	public static var hitSounds:String = "OFF";
-	public static var optimization:Bool = false;
+	public static var optimization(get, null):Bool = false;
+	// realizing now this fucked up more than it fixed and i don't wanna go through all of the code and change it
+	public static function get_optimization():Bool {
+		return false;
+	}
 	public static var ignoreSkin:Bool = false;
 	public static var fpsPosition:String = "BOTTOM LEFT";
 	public static var ratingPosition:String = "HUD";
@@ -63,6 +67,7 @@ class ClientPrefs {
 	public static var newTimeBar:Bool = true;
 	public static var showMS:Bool = true;
 	public static var checkForUpdates:Bool = true;
+
 	public static var compactFPS:Bool = false;
 	public static var showFPSNum:Bool = true;
 	public static var skipTransitions:Bool = false;
@@ -157,7 +162,6 @@ class ClientPrefs {
 		FlxG.save.data.framerate = framerate;
 		FlxG.save.data.hitSounds = hitSounds;
 		FlxG.save.data.hitsoundVolume = hitsoundVolume;
-		FlxG.save.data.optimization = optimization;
 		FlxG.save.data.showScoreBar = showScoreBar;
 		FlxG.save.data.pauseOnFocusLost = pauseOnFocusLost;
 		FlxG.save.data.ignoreSkin = ignoreSkin;
@@ -268,9 +272,6 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.hitSounds != null) {
 			hitSounds = FlxG.save.data.hitSounds;
-		}
-		if(FlxG.save.data.optimization != null) {
-			optimization = FlxG.save.data.optimization;
 		}
 		if(FlxG.save.data.tinyIcons != null) {
 			tinyIcons = FlxG.save.data.tinyIcons;

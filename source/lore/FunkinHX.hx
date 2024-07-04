@@ -47,18 +47,6 @@ class FunkinHX implements IFlxDestroyable {
         return c;
     }
 
-    /**
-     * Takes a Hash<Dynamic> and returns a Dynamic object.
-     * Used here to make map representations of static abstract fields be accessible like they are in an abstract before compiling.
-     * @param obj 
-     * @return Dynamic
-     */
-    private static function _dynamicify(obj:Map<String, Dynamic>):Dynamic {
-        var nd:Dynamic = {};
-        for (k => v in obj) Reflect.setField(nd, k, v);
-        return nd;
-    }
-
     public function destroy():Void {
         interp = null;
         scriptName = null;
@@ -89,7 +77,7 @@ class FunkinHX implements IFlxDestroyable {
         if (interp != null) interp.variables.remove(k);
     }
 
-    public function new(f:String, ?primer:FunkinHX->Void = null, ?type:HScriptType = FILE):Void {
+    public function new(?f:String, ?primer:FunkinHX->Void = null, ?type:HScriptType = FILE):Void {
         scriptName = f;
         scriptType = type;
         var ttr:String = null;
@@ -108,13 +96,17 @@ class FunkinHX implements IFlxDestroyable {
             }
         }
         if (maliciousLines.length > 0) {
-            var alertText:String = 'Th${maliciousLines.length == 1 ? "is line" : "ese lines"} of code are potentially malicious:\n\n{lines}\n\nWould you like to continue executing the script?'; 
-            alertText = alertText.replace("{lines}", maliciousLines.join("\n"));
+            var alertText:String = 'Th${maliciousLines.length == 1 ? "is line" : "ese lines"} of code are potentially malicious:\n\n${maliciousLines.join("\n")}\n\n';
+            alertText += #if windows 'Would you like to continue executing the script?' #else 'Make sure you trust this script. If not, close the game immediately.' #end ;
+            #if !windows
+            openfl.Lib.application.window.alert(alertText, 'Potentially malicious code detected');
+            #else
             var confirmation = WinAPI.messageBoxYN(alertText, 'Potentially malicious code detected');
             if (!confirmation) {
                 destroy();
                 return;
             }
+            #end
         }
         for (i in tempArray) tempBuf.add(i + "\n");
         ttr = tempBuf.toString();
@@ -252,11 +244,11 @@ class FunkinHX implements IFlxDestroyable {
             set("switchState", MusicBeatState.switchState);
             set("ModdedState", ModdedState);
             set("ModdedSubState", ModdedSubState);
-            set("FlxAxes", _dynamicify(MacroTools.getMapFromAbstract(flixel.util.FlxAxes)));
-            set("FlxColor", _dynamicify(MacroTools.getMapFromAbstract(flixel.util.FlxColor)));
-            set("FlxKey", _dynamicify(MacroTools.getMapFromAbstract(flixel.input.keyboard.FlxKey)));
+            set("FlxAxes", MacroTools.getAbstract(flixel.util.FlxAxes));
+            set("FlxColor", MacroTools.getAbstract(flixel.util.FlxColor));
+            set("FlxKey", MacroTools.getAbstract(flixel.input.keyboard.FlxKey));
             set("FlxPoint", flixel.math.FlxPoint.FlxBasePoint);
-            set("HScriptType", _dynamicify(MacroTools.getMapFromAbstract(HScriptType)));
+            set("HScriptType", MacroTools.getAbstract(HScriptType));
             set("cast", inlineCast);
             if (primer != null) primer(this);
 
@@ -302,14 +294,15 @@ class FunkinHX implements IFlxDestroyable {
             return ast;
         }
 
-        public function runFunc(f:String, args:Array<Dynamic> = null):Any {
+        public function runFunc(f:String, ?args:Array<Dynamic>):Any {
             if (!loaded) return null;
+            if (args == null) args = [];
             try {
                 return interp.callMethod(f, args);
             } catch (e:Dynamic) {
                 if (!ignoreErrors && !flixel.FlxG.keys.pressed.SHIFT) {
+                    inline CoolUtil.blockExecution(0.25); // to give the player time to hold shift
                     openfl.Lib.application.window.alert('Error with script: ' + scriptName + ' at line ' + interp.posInfos().lineNumber + ":\n" + e + '\n\nHold SHIFT to bypass the error if it\'s blocking gameplay.', 'Haxe script error');
-                    CoolUtil.blockExecution(0.25); // to give the player time to hold shift
                 }
                 return null;
             }

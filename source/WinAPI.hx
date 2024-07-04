@@ -36,25 +36,17 @@ class WinAPI {
         return alpha;
     }
 
-    // kudos to bing chatgpt thing i hate C++
-    #if windows
-    @:functionCode('
-        HWND hwnd = GetActiveWindow();
-        HMENU hmenu = GetSystemMenu(hwnd, FALSE);
-        if (enable) {
-            EnableMenuItem(hmenu, SC_CLOSE, MF_BYCOMMAND | MF_ENABLED);
-        } else {
-            EnableMenuItem(hmenu, SC_CLOSE, MF_BYCOMMAND | MF_GRAYED);
-        }
-    ')
-    #end
+    // if there's one thing i love it's funny one liners
     public static function setCloseButtonEnabled(enable:Bool) {
+        #if windows
+        untyped EnableMenuItem(untyped GetSystemMenu(untyped GetActiveWindow(), false), untyped SC_CLOSE, untyped MF_BYCOMMAND | enable ? untyped MF_ENABLED : untyped MF_GRAYED);
+        #end
         return enable;
     }
     // from indie cross \/ \/ \/
     public static function messageBoxYN(#if cpp msg:ConstCharStar = null, title:ConstCharStar = null #else msg:String = null, title:String = null #end):Bool {
         #if windows
-        var msgBox:Int = untyped MessageBox(null, msg, title, untyped __cpp__("MB_ICONQUESTION | MB_YESNO"));
+        var msgBox:Int = untyped MessageBox(null, msg, title, untyped MB_ICONQUESTION | untyped MB_YESNO);
         return msgBox == 6;
         #end
         return true;

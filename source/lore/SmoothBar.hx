@@ -830,8 +830,9 @@ class SmoothBar extends FlxSprite
 	{
 		if (parent != null)
 		{
-            if (_lerp) _lerpValue = FlxMath.lerp(value, _lerpValue, CoolUtil.boundTo(1 - (elapsed * 40), 0, 1));
 			updateValueFromParent();
+            if (_lerp) _lerpValue = FlxMath.lerp(value, _lerpValue, CoolUtil.boundTo(1 - (elapsed * 40), 0, 1));
+			if (_lerpValue < 0) _lerpValue = 0;
 
 			if (!fixedPosition)
 			{

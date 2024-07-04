@@ -1,5 +1,6 @@
 package;
 
+import lore.SmoothBar;
 import Achievements;
 import Conductor.Rating;
 import DialogueBoxPsych;
@@ -203,11 +204,11 @@ class PlayState extends MusicBeatState
 	public var combo:Int = 0;
 
 	private var healthBarBG:AttachedSprite;
-	public var healthBar:lore.SmoothBar;
+	public var healthBar:SmoothBar;
 	var songPercent:Float = 0;
 
 	private var timeBarBG:AttachedSprite;
-	public var timeBar:FlxBar;
+	public var timeBar:SmoothBar;
 	
 	public var marvs:Int = 0;
 
@@ -1142,7 +1143,7 @@ class PlayState extends MusicBeatState
 		timeBarBG.xAdd = -4;
 		timeBarBG.yAdd = -4;
 
-		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
+		timeBar = new SmoothBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
 			'songPercent', 0, 1);
 		timeBar.scrollFactor.set();
 		timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
@@ -1150,6 +1151,7 @@ class PlayState extends MusicBeatState
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
 		timeBarBG.sprTracker = timeBar;
+		timeBar.setRange(0, 1);
 
 		if(ClientPrefs.downScroll) timeTxt.y = ClientPrefs.newTimeBar ? timeBarBG.y - timeTxt.height - 3 : FlxG.height - 44 else timeTxt.y = ClientPrefs.newTimeBar ? timeBarBG.y + timeBarBG.height + 3 : 19;
 
@@ -1318,7 +1320,7 @@ class PlayState extends MusicBeatState
 		add(healthBarBG);
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 
-		healthBar = new lore.SmoothBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		healthBar = new SmoothBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
 		healthBar.numDivisions = 1000;
@@ -3389,8 +3391,10 @@ class PlayState extends MusicBeatState
 		var iconOffset:Int = 26;
 
 		// old: FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)
-		iconP1.x = healthBar.x + (healthBar.width * (1 - (@:privateAccess healthBar._lerpValue / 2))) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
-		iconP2.x = healthBar.x + (healthBar.width * (1 - (@:privateAccess healthBar._lerpValue / 2))) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+		@:privateAccess {
+			iconP1.x = healthBar.x + (healthBar.width * (1 - (healthBar._lerpValue / 2))) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
+			iconP2.x = healthBar.x + (healthBar.width * (1 - (healthBar._lerpValue / 2))) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+		}
 
 		if (health > 2)
 			health = 2;
