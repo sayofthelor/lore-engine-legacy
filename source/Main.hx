@@ -1,10 +1,12 @@
 package;
 
+import flixel.util.typeLimit.OneOfTwo;
 import lime.utils.Assets;
 import openfl.utils.Assets as OpenFLAssets;
 import haxe.Json;
 import flixel.math.FlxRandom;
 import flixel.graphics.FlxGraphic;
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -132,6 +134,7 @@ class Main extends Sprite
 		PlayerSettings.init();
 		ClientPrefs.loadPrefs();
 		FlxG.autoPause = ClientPrefs.pauseOnFocusLost;
+		FlxG.signals.gameResized.add(_onResize);
 
 		#if !mobile
 		addChild(fpsVar = new lore.FPS(3, 3, 0xffffffff));
@@ -151,6 +154,22 @@ class Main extends Sprite
 			});
 		}
 		#end
+	}
+
+	// fixes shader UV coordinates when the window is resized, thank you eggu.programming from the haxe discord
+	private static inline function _onResize(_w, _h) {
+		for (i in FlxG.cameras.list) __resetSpriteCache(i);
+		__resetSpriteCache(FlxG.game);
+	}
+
+	private static inline function __resetSpriteCache(spr:OneOfTwo<Sprite, FlxCamera>):Void {
+		if (spr == null) return;
+		if (spr is FlxCamera) __resetSpriteCache((spr:FlxCamera).flashSprite);
+		else {
+			var sprite:Sprite = (spr:Sprite);
+			sprite.__cacheBitmap = null;
+			sprite.__cacheBitmapData = null;
+		}
 	}
 
 	#if desktop
